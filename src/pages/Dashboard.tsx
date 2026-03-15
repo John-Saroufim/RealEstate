@@ -1,6 +1,10 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Flame, Dumbbell, TrendingUp, Calendar, Trophy, Target, Clock, Zap } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 import { Footer } from "@/components/layout/Footer";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, AreaChart, Area } from "recharts";
 
