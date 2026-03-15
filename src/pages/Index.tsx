@@ -59,7 +59,7 @@ const Index = () => {
               Your AI coach creates personalized workout programs, tracks your progress, and adapts to help you crush every goal.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/dashboard">
+              <Link to="/signup">
                 <Button size="lg" className="gradient-neon-bg text-primary-foreground font-semibold text-base px-8 hover:opacity-90 transition-opacity">
                   Start Training Free
                   <ChevronRight className="ml-1 h-4 w-4" />
