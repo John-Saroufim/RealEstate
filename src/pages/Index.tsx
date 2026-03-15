@@ -130,7 +130,7 @@ const Index = () => {
               <p className="text-muted-foreground max-w-md mx-auto mb-8">
                 Join thousands of athletes using AI to train smarter and see real results.
               </p>
-              <Link to="/dashboard">
+              <Link to="/signup">
                 <Button size="lg" className="gradient-neon-bg text-primary-foreground font-semibold text-base px-10 hover:opacity-90">
                   Get Started Free
                   <ChevronRight className="ml-1 h-4 w-4" />
