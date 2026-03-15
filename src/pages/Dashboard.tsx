@@ -1,6 +1,10 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Flame, Dumbbell, TrendingUp, Calendar, Trophy, Target, Clock, Zap } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 import { Footer } from "@/components/layout/Footer";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, AreaChart, Area } from "recharts";
 
@@ -45,6 +49,25 @@ const weekSchedule = [
 ];
 
 export default function Dashboard() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState<{ full_name: string } | null>(null);
+  const [hasOnboarding, setHasOnboarding] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    const load = async () => {
+      const { data: p } = await supabase.from("profiles").select("full_name").eq("id", user.id).single();
+      setProfile(p as any);
+      const { data: o } = await supabase.from("onboarding_responses").select("id").eq("user_id", user.id).maybeSingle();
+      setHasOnboarding(!!o);
+      if (!o) navigate("/onboarding");
+    };
+    load();
+  }, [user, navigate]);
+
+  const displayName = profile?.full_name || user?.email?.split("@")[0] || "Athlete";
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -52,7 +75,7 @@ export default function Dashboard() {
         <div className="container-max">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
             <h1 className="font-display text-3xl sm:text-4xl font-bold mb-2">
-              Welcome back, <span className="neon-text">Athlete</span>
+              Welcome back, <span className="neon-text">{displayName}</span>
             </h1>
             <p className="text-muted-foreground">Here's your training overview.</p>
           </motion.div>
