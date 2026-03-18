@@ -57,6 +57,12 @@ export default {
           2: "hsl(var(--surface-2))",
           3: "hsl(var(--surface-3))",
         },
+        crestline: {
+          bg: "hsl(var(--crestline-bg))",
+          surface: "hsl(var(--crestline-surface))",
+          gold: "hsl(var(--crestline-gold))",
+          muted: "hsl(var(--crestline-muted))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
