@@ -51,6 +51,10 @@ const App = () => (
             <Route path="/workout-tracker" element={<ProtectedRoute><WorkoutTracker /></ProtectedRoute>} />
             <Route path="/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
             <Route path="/ai-coach" element={<ProtectedRoute><AICoach /></ProtectedRoute>} />
+            <Route path="/crestline" element={<CrestlineHome />} />
+            <Route path="/crestline/properties" element={<CrestlineProperties />} />
+            <Route path="/crestline/about" element={<CrestlineAbout />} />
+            <Route path="/crestline/contact" element={<CrestlineContact />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
