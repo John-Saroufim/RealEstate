@@ -21,6 +21,10 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Onboarding from "./pages/Onboarding";
+import CrestlineHome from "./pages/crestline/CrestlineHome";
+import CrestlineProperties from "./pages/crestline/CrestlineProperties";
+import CrestlineAbout from "./pages/crestline/CrestlineAbout";
+import CrestlineContact from "./pages/crestline/CrestlineContact";
 
 const queryClient = new QueryClient();
 
