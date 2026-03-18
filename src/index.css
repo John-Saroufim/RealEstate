@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
 
 @layer base {
   :root {
@@ -55,6 +55,12 @@
     --gradient-neon: linear-gradient(135deg, hsl(152 100% 50%), hsl(170 100% 45%));
     --gradient-dark: linear-gradient(180deg, hsl(0 0% 6%), hsl(0 0% 3%));
     --gradient-card: linear-gradient(145deg, hsl(0 0% 8%), hsl(0 0% 5%));
+
+    /* CrestLine Estates tokens */
+    --crestline-bg: 220 20% 6%;
+    --crestline-surface: 220 18% 9%;
+    --crestline-gold: 38 65% 58%;
+    --crestline-muted: 220 10% 50%;
   }
 }
 

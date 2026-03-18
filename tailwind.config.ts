@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
         display: ["Space Grotesk", "system-ui", "sans-serif"],
+        serif: ["'Playfair Display'", "Georgia", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -56,6 +57,12 @@ export default {
           1: "hsl(var(--surface-1))",
           2: "hsl(var(--surface-2))",
           3: "hsl(var(--surface-3))",
+        },
+        crestline: {
+          bg: "hsl(var(--crestline-bg))",
+          surface: "hsl(var(--crestline-surface))",
+          gold: "hsl(var(--crestline-gold))",
+          muted: "hsl(var(--crestline-muted))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
