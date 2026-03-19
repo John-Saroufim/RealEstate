@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom";
-import { Building2, MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Mail } from "lucide-react";
+import { MontelibanoHouseLogo } from "@/components/crestline/MontelibanoHouseLogo";
 
 export function CrestlineFooter() {
   return (
     <footer className="bg-crestline-surface border-t border-crestline-gold/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
           <div>
             <Link to="/crestline" className="flex items-center gap-2 mb-5">
-              <Building2 className="h-6 w-6 text-crestline-gold" />
+              <MontelibanoHouseLogo className="h-6 w-6 text-crestline-gold" />
               <span className="font-serif text-lg font-bold text-white tracking-wide">
-                CrestLine <span className="text-crestline-gold">Estates</span>
+                Monte<span className="text-crestline-gold">libano</span>
               </span>
             </Link>
             <p className="text-sm text-crestline-muted leading-relaxed">
@@ -23,8 +24,8 @@ export function CrestlineFooter() {
             <div className="space-y-3">
               {[
                 { label: "Properties", to: "/crestline/properties" },
-                { label: "About Us", to: "/crestline/about" },
                 { label: "Contact", to: "/crestline/contact" },
+                { label: "About Us", to: "/crestline/about" },
               ].map((link) => (
                 <Link
                   key={link.to}
@@ -67,7 +68,7 @@ export function CrestlineFooter() {
 
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-crestline-muted">
-            © {new Date().getFullYear()} CrestLine Estates. All rights reserved.
+            © {new Date().getFullYear()} Montelibano. All rights reserved.
           </p>
           <div className="flex gap-6">
             {["Privacy Policy", "Terms of Service", "Sitemap"].map((item) => (

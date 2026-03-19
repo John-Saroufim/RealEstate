@@ -8,16 +8,32 @@ import heroImg from "@/assets/crestline-hero.jpg";
 import prop1 from "@/assets/crestline-prop1.jpg";
 import prop2 from "@/assets/crestline-prop2.jpg";
 import prop3 from "@/assets/crestline-prop3.jpg";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.6 } }),
+  hidden: { opacity: 0, y: 18 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.06, duration: 0.42, ease: [0.22, 1, 0.36, 1] },
+  }),
 };
 
-const featuredProperties = [
-  { img: prop1, title: "The Skyline Penthouse", price: "$4,250,000", location: "Upper East Side, New York", beds: 4, baths: 3 },
-  { img: prop2, title: "Mediterranean Villa", price: "$6,800,000", location: "Palm Beach, Florida", beds: 6, baths: 5 },
-  { img: prop3, title: "Sky Terrace Residence", price: "$3,900,000", location: "Manhattan, New York", beds: 3, baths: 3 },
+type Listing = {
+  id: string;
+  title: string;
+  price: number | null;
+  location: string | null;
+  beds: number | null;
+  baths: number | null;
+  image_url: string | null;
+};
+
+const staticFeatured = [
+  { id: "static-1", img: prop1, title: "The Skyline Penthouse", price: "$4,000,000", location: "Upper East Side, New York", beds: 4, baths: 3 },
+  { id: "static-2", img: prop2, title: "Mediterranean Villa", price: "$6,800,000", location: "Palm Beach, Florida", beds: 6, baths: 5 },
+  { id: "static-3", img: prop3, title: "Sky Terrace Residence", price: "$3,900,000", location: "Manhattan, New York", beds: 3, baths: 3 },
 ];
 
 const whyUs = [
@@ -34,9 +50,9 @@ const services = [
 ];
 
 const testimonials = [
-  { name: "Victoria Harrington", role: "Homeowner, Greenwich", text: "CrestLine made the entire process effortless. Their attention to detail and market knowledge secured us a property we didn't even know was available.", rating: 5 },
+  { name: "Victoria Harrington", role: "Homeowner, Greenwich", text: "Montelibano made the entire process effortless. Their attention to detail and market knowledge secured us a property we didn't even know was available.", rating: 5 },
   { name: "James & Catherine Wells", role: "Investors, Manhattan", text: "Exceptional service from start to finish. Their investment advisory helped us build a real estate portfolio that consistently outperforms the market.", rating: 5 },
-  { name: "Dr. Robert Eastman", role: "Homeowner, Palm Beach", text: "The level of discretion and professionalism is unmatched. CrestLine understood exactly what we were looking for and delivered beyond expectations.", rating: 5 },
+  { name: "Dr. Robert Eastman", role: "Homeowner, Palm Beach", text: "The level of discretion and professionalism is unmatched. Montelibano understood exactly what we were looking for and delivered beyond expectations.", rating: 5 },
 ];
 
 const faqs = [
@@ -55,6 +71,27 @@ const stats = [
 ];
 
 export default function CrestlineHome() {
+  const [featured, setFeatured] = useState<Listing[] | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      const { data, error } = await supabase
+        .from("listings")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(3);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      setFeatured((data ?? []) as Listing[]);
+    };
+
+    load();
+  }, []);
+
   return (
     <div className="min-h-screen bg-crestline-bg text-white font-sans">
       <CrestlineNavbar />
@@ -66,17 +103,17 @@ export default function CrestlineHome() {
           <div className="absolute inset-0 bg-gradient-to-r from-crestline-bg via-crestline-bg/70 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-crestline-bg via-transparent to-crestline-bg/40" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-24 lg:pt-20">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-2xl"
           >
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.2em] uppercase mb-4">
               Luxury Real Estate Redefined
             </p>
-            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] mb-6 text-white">
+            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] mb-6 text-white">
               Discover
               <br />
               <span className="text-crestline-gold">Extraordinary</span>
@@ -84,7 +121,7 @@ export default function CrestlineHome() {
               Living.
             </h1>
             <p className="text-lg text-white/70 mb-10 max-w-lg leading-relaxed">
-              CrestLine Estates curates the world's most exceptional properties for discerning buyers, investors, and families seeking uncompromising quality.
+              Montelibano curates the world's most exceptional properties for discerning buyers, investors, and families seeking uncompromising quality.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/crestline/properties">
@@ -126,11 +163,77 @@ export default function CrestlineHome() {
             <p className="text-crestline-muted max-w-xl mx-auto">Handpicked residences that represent the finest in luxury living across our most sought-after markets.</p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProperties.map((p, i) => (
-              <motion.div key={p.title} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-                <Link to="/crestline/properties" className="group block bg-crestline-surface border border-white/5 overflow-hidden hover:border-crestline-gold/20 transition-all duration-500">
+            {(featured && featured.length > 0 ? featured : null) ? (
+              (featured ?? []).map((p, i) => (
+                <motion.div key={p.id} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+                  <Link
+                    to={`/crestline/properties/${p.id}`}
+                    className="group block bg-crestline-surface border border-white/5 overflow-hidden hover:border-crestline-gold/20 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                  >
+                    <div className="relative overflow-hidden aspect-[4/3]">
+                      {p.image_url ? (
+                        <img
+                          src={p.image_url}
+                          alt={p.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-in-out"
+                        />
+                      ) : (
+                        <img
+                          src={prop1}
+                          alt={p.title}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-in-out"
+                        />
+                      )}
+                      <div className="absolute top-4 left-4 bg-crestline-bg/80 backdrop-blur-sm text-crestline-gold text-xs font-semibold px-3 py-1.5 tracking-wider uppercase">
+                        Featured
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <p className="text-crestline-gold font-serif text-xl font-bold mb-1">
+                        {p.price != null
+                          ? p.price.toLocaleString("en-US", {
+                              style: "currency",
+                              currency: "USD",
+                              maximumFractionDigits: 0,
+                            })
+                          : "Price on request"}
+                      </p>
+                      <h3 className="font-serif text-lg font-semibold text-white mb-2">{p.title}</h3>
+                      <div className="flex items-center gap-1.5 text-sm text-crestline-muted mb-4">
+                        <MapPin className="h-3.5 w-3.5" />
+                        {p.location ?? "Location available on request"}
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-crestline-muted border-t border-white/5 pt-4">
+                        {p.beds != null && (
+                          <span className="flex items-center gap-1.5"><Bed className="h-4 w-4" /> {p.beds} Beds</span>
+                        )}
+                        {p.baths != null && (
+                          <span className="flex items-center gap-1.5"><Bath className="h-4 w-4" /> {p.baths} Baths</span>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))
+            ) : (
+              staticFeatured.map((p, i) => (
+              <motion.div key={p.id} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+                <Link
+                  to={`/crestline/properties/${p.id}`}
+                  className="group block bg-crestline-surface border border-white/5 overflow-hidden hover:border-crestline-gold/20 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5"
+                >
                   <div className="relative overflow-hidden aspect-[4/3]">
-                    <img src={p.img} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img
+                      src={p.img}
+                      alt={p.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-in-out"
+                    />
                     <div className="absolute top-4 left-4 bg-crestline-bg/80 backdrop-blur-sm text-crestline-gold text-xs font-semibold px-3 py-1.5 tracking-wider uppercase">
                       Featured
                     </div>
@@ -149,7 +252,8 @@ export default function CrestlineHome() {
                   </div>
                 </Link>
               </motion.div>
-            ))}
+              ))
+            )}
           </div>
           <div className="text-center mt-12">
             <Link to="/crestline/properties">
@@ -165,13 +269,13 @@ export default function CrestlineHome() {
       <section className="py-20 sm:py-28 bg-crestline-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">The CrestLine Difference</p>
+            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">The Montelibano Difference</p>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Why Clients Choose Us</h2>
             <p className="text-crestline-muted max-w-xl mx-auto">A commitment to excellence that transforms every transaction into an exceptional experience.</p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {whyUs.map((item, i) => (
-              <motion.div key={item.title} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="bg-crestline-bg/50 border border-white/5 p-8 hover:border-crestline-gold/20 transition-all duration-300 group">
+              <motion.div key={item.title} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="bg-crestline-bg/50 border border-white/5 p-8 hover:border-crestline-gold/20 transition-all duration-300 group transform-gpu shadow-sm hover:shadow-md hover:-translate-y-0.5">
                 <div className="h-12 w-12 border border-crestline-gold/20 flex items-center justify-center mb-5 group-hover:bg-crestline-gold/10 transition-colors">
                   <item.icon className="h-5 w-5 text-crestline-gold" />
                 </div>
@@ -192,7 +296,7 @@ export default function CrestlineHome() {
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8">
             {services.map((s, i) => (
-              <motion.div key={s.title} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="border border-white/5 p-10 hover:border-crestline-gold/20 transition-all duration-300 text-center">
+              <motion.div key={s.title} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="border border-white/5 p-10 hover:border-crestline-gold/20 transition-all duration-300 text-center transform-gpu shadow-sm hover:shadow-md hover:-translate-y-0.5">
                 <h3 className="font-serif text-2xl font-bold text-crestline-gold mb-4">{s.title}</h3>
                 <p className="text-sm text-crestline-muted leading-relaxed mb-6">{s.desc}</p>
                 <Link to="/crestline/contact">
@@ -215,7 +319,7 @@ export default function CrestlineHome() {
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((t, i) => (
-              <motion.div key={t.name} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="bg-crestline-bg/50 border border-white/5 p-8">
+              <motion.div key={t.name} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="bg-crestline-bg/50 border border-white/5 p-8 transform-gpu shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
                 <div className="flex gap-1 mb-4">
                   {[...Array(t.rating)].map((_, j) => (
                     <Star key={j} className="h-4 w-4 text-crestline-gold fill-crestline-gold" />
@@ -247,7 +351,9 @@ export default function CrestlineHome() {
                   <span className="flex-1">{faq.q}</span>
                   <ChevronRight className="h-4 w-4 text-crestline-muted transition-transform group-open:rotate-90" />
                 </summary>
-                <div className="px-6 pb-6 pl-[3.25rem] text-sm text-crestline-muted leading-relaxed">{faq.a}</div>
+                <div className="px-6 pb-6 pl-[3.25rem] text-sm text-crestline-muted leading-relaxed overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-in-out group-open:max-h-[600px] group-open:opacity-100">
+                  {faq.a}
+                </div>
               </motion.details>
             ))}
           </div>

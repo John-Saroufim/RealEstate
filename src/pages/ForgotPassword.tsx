@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Dumbbell, Loader2, ArrowLeft } from "lucide-react";
+import { Building2, Loader2, ArrowLeft, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,19 +27,21 @@ export default function ForgotPassword() {
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 mb-6">
-            <Dumbbell className="h-8 w-8 text-primary" />
-            <span className="font-display text-2xl font-bold">IronForge<span className="text-primary"> AI</span></span>
+          <Link to="/crestline" className="inline-flex items-center gap-2 mb-6">
+            <Shield className="h-8 w-8 text-primary" />
+            <span className="font-display text-2xl font-bold">
+              Monte<span className="text-crestline-gold">libano</span>
+            </span>
           </Link>
-          <h1 className="font-display text-2xl font-bold">Reset password</h1>
-          <p className="text-muted-foreground text-sm mt-1">We'll send you a reset link</p>
+          <h1 className="font-display text-2xl font-bold">Reset broker password</h1>
+          <p className="text-muted-foreground text-sm mt-1">We’ll send a reset link to your email</p>
         </div>
 
         {sent ? (
           <div className="glass-card p-6 text-center">
             <p className="text-foreground mb-2">Check your email</p>
             <p className="text-sm text-muted-foreground mb-4">We sent a password reset link to <span className="text-primary">{email}</span></p>
-            <Link to="/login"><Button variant="outline" className="border-border">Back to login</Button></Link>
+            <Link to="/login"><Button variant="outline" className="border-border">Back to sign in</Button></Link>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="glass-card p-6 space-y-4">
