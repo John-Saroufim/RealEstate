@@ -50,9 +50,9 @@ const services = [
 ];
 
 const testimonials = [
-  { name: "Victoria Harrington", role: "Homeowner, Greenwich", text: "Montelibano made the entire process effortless. Their attention to detail and market knowledge secured us a property we didn't even know was available.", rating: 5 },
+  { name: "Victoria Harrington", role: "Homeowner, Greenwich", text: "RealEstate made the entire process effortless. Their attention to detail and market knowledge secured us a property we didn't even know was available.", rating: 5 },
   { name: "James & Catherine Wells", role: "Investors, Manhattan", text: "Exceptional service from start to finish. Their investment advisory helped us build a real estate portfolio that consistently outperforms the market.", rating: 5 },
-  { name: "Dr. Robert Eastman", role: "Homeowner, Palm Beach", text: "The level of discretion and professionalism is unmatched. Montelibano understood exactly what we were looking for and delivered beyond expectations.", rating: 5 },
+  { name: "Dr. Robert Eastman", role: "Homeowner, Palm Beach", text: "The level of discretion and professionalism is unmatched. RealEstate understood exactly what we were looking for and delivered beyond expectations.", rating: 5 },
 ];
 
 const faqs = [
@@ -121,7 +121,7 @@ export default function CrestlineHome() {
               Living.
             </h1>
             <p className="text-lg text-white/70 mb-10 max-w-lg leading-relaxed">
-              Montelibano curates the world's most exceptional properties for discerning buyers, investors, and families seeking uncompromising quality.
+              RealEstate curates the world's most exceptional properties for discerning buyers, investors, and families seeking uncompromising quality.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/crestline/properties">
@@ -269,7 +269,7 @@ export default function CrestlineHome() {
       <section className="py-20 sm:py-28 bg-crestline-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">The Montelibano Difference</p>
+            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">The RealEstate Difference</p>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Why Clients Choose Us</h2>
             <p className="text-crestline-muted max-w-xl mx-auto">A commitment to excellence that transforms every transaction into an exceptional experience.</p>
           </motion.div>

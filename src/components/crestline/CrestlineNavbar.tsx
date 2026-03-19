@@ -75,7 +75,7 @@ export function CrestlineNavbar() {
           <Link to="/crestline" className="flex items-center gap-2.5 shrink-0">
             <MontelibanoHouseLogo className="h-7 w-7 text-crestline-gold" />
             <span className="font-serif text-xl font-bold text-white tracking-wide">
-              Monte<span className="text-crestline-gold">libano</span>
+              RealEstate
             </span>
           </Link>
 

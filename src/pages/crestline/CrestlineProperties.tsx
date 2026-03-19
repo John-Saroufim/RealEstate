@@ -269,7 +269,7 @@ export default function CrestlineProperties() {
       </section>
 
       {/* Search & Filters */}
-      <section className="py-8 border-b border-white/5">
+      <section className="py-12 border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">

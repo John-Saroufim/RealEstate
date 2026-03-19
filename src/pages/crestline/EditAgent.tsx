@@ -229,7 +229,7 @@ export default function EditAgent() {
         </div>
       </section>
 
-      <section className="py-10">
+      <section className="py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {initialLoading ? (
             <p className="text-crestline-muted">Loading...</p>

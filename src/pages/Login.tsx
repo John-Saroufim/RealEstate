@@ -76,7 +76,7 @@ export default function Login() {
             <Link to="/crestline" className="inline-flex items-center gap-2 mb-6 justify-center">
               <Shield className="h-8 w-8 text-crestline-gold" />
               <span className="font-serif text-2xl font-bold">
-                Monte<span className="text-crestline-gold">libano</span>
+                RealEstate
               </span>
             </Link>
             <h1 className="font-serif text-3xl font-bold">Broker Sign In</h1>

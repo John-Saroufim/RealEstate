@@ -1,4 +1,4 @@
--- Demo seed: agents (Montelibano / real estate brokers)
+-- Demo seed: agents (RealEstate / real estate brokers)
 -- Run in Supabase SQL Editor.
 
 -- Updated-at helper (used by triggers)

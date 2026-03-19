@@ -179,7 +179,7 @@ export default function CrestlineContact() {
                   <CheckCircle2 className="h-14 w-14 text-crestline-gold mx-auto mb-6" />
                   <h3 className="font-serif text-2xl font-bold text-white mb-3">Thank You</h3>
                   <p className="text-crestline-muted max-w-md mx-auto">
-                    Your inquiry has been received. A Montelibano advisor will contact you within 24 hours to discuss your requirements.
+                    Your inquiry has been received. A RealEstate advisor will contact you within 24 hours to discuss your requirements.
                   </p>
                 </motion.div>
               ) : (

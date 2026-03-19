@@ -56,7 +56,7 @@ export default function Signup() {
           <Link to="/crestline" className="inline-flex items-center gap-2 mb-6">
             <Shield className="h-8 w-8 text-primary" />
             <span className="font-display text-2xl font-bold">
-              Monte<span className="text-crestline-gold">libano</span>
+              RealEstate
             </span>
           </Link>
           <h1 className="font-display text-2xl font-bold">Create broker account</h1>

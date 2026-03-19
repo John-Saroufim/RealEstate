@@ -11,7 +11,7 @@ export function CrestlineFooter() {
             <Link to="/crestline" className="flex items-center gap-2 mb-5">
               <MontelibanoHouseLogo className="h-6 w-6 text-crestline-gold" />
               <span className="font-serif text-lg font-bold text-white tracking-wide">
-                Monte<span className="text-crestline-gold">libano</span>
+                RealEstate
               </span>
             </Link>
             <p className="text-sm text-crestline-muted leading-relaxed">
@@ -68,7 +68,7 @@ export function CrestlineFooter() {
 
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-crestline-muted">
-            © {new Date().getFullYear()} Montelibano. All rights reserved.
+            © {new Date().getFullYear()} RealEstate. All rights reserved.
           </p>
           <div className="flex gap-6">
             {["Privacy Policy", "Terms of Service", "Sitemap"].map((item) => (

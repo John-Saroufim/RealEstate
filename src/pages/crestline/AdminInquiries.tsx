@@ -122,7 +122,7 @@ export default function AdminInquiries() {
         </div>
       </section>
 
-      <section className="py-10">
+      <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between mb-8">
             <div className="flex flex-wrap gap-2">
