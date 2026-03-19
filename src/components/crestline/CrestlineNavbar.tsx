@@ -7,11 +7,19 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { MontelibanoHouseLogo } from "@/components/crestline/MontelibanoHouseLogo";
 
-const navLinks = [
+const coreLinks = [
   { label: "Home", to: "/crestline" },
   { label: "Properties", to: "/crestline/properties" },
-  { label: "Contact", to: "/crestline/contact" },
+];
+
+const adminLinks = [
+  { label: "Inquiries", to: "/crestline/admin/inquiries" },
+  { label: "Listings Admin", to: "/crestline/admin/listings" },
+];
+
+const tailLinks = [
   { label: "About", to: "/crestline/about" },
+  { label: "Contact", to: "/crestline/contact" },
 ];
 
 export function CrestlineNavbar() {
@@ -71,57 +79,67 @@ export function CrestlineNavbar() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                aria-current={location.pathname === link.to ? "page" : undefined}
-                className={[
-                  "relative",
-                  "text-sm font-medium tracking-wide",
-                  "transition-colors duration-200",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
-                  location.pathname === link.to ? activeClass : inactiveAfterClass,
-                ].join(" ")}
-              >
-                {link.label}
-              </Link>
-            ))}
+          <div className="hidden md:flex items-center gap-6">
+            {/* Nav links: core → admin (if applicable) → About → Contact */}
+            <div className="flex items-center gap-5">
+              {coreLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  aria-current={location.pathname === link.to ? "page" : undefined}
+                  className={[
+                    "relative",
+                    "text-sm font-medium tracking-wide",
+                    "transition-colors duration-200",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                    location.pathname === link.to ? activeClass : inactiveAfterClass,
+                  ].join(" ")}
+                >
+                  {link.label}
+                </Link>
+              ))}
+
+              {!adminLoading && user && isAdmin && adminLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  aria-current={location.pathname.startsWith(link.to) ? "page" : undefined}
+                  className={[
+                    "relative",
+                    "text-sm font-medium tracking-wide",
+                    "transition-colors duration-200",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                    location.pathname.startsWith(link.to) ? activeClass : inactiveAfterClass,
+                  ].join(" ")}
+                >
+                  {link.label}
+                </Link>
+              ))}
+
+              {tailLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  aria-current={location.pathname === link.to ? "page" : undefined}
+                  className={[
+                    "relative",
+                    "text-sm font-medium tracking-wide",
+                    "transition-colors duration-200",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                    location.pathname === link.to ? activeClass : inactiveAfterClass,
+                  ].join(" ")}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Action buttons */}
             <Link to="/crestline/contact">
               <Button className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 font-semibold text-sm px-6 rounded-none h-9 transition-colors duration-200">
                 Schedule Viewing
               </Button>
             </Link>
-
-            {!adminLoading && user && isAdmin && (
-              <>
-                <Link
-                  to="/crestline/admin/inquiries"
-                  className={[
-                    "relative",
-                    "text-sm font-medium tracking-wide",
-                    "transition-colors duration-200",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
-                    location.pathname === "/crestline/admin/inquiries" ? activeClass : inactiveAfterClass,
-                  ].join(" ")}
-                >
-                  Inquiries
-                </Link>
-                <Link
-                  to="/crestline/admin/listings"
-                  className={[
-                    "relative",
-                    "text-sm font-medium tracking-wide",
-                    "transition-colors duration-200",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
-                    location.pathname.startsWith("/crestline/admin/listings") ? activeClass : inactiveAfterClass,
-                  ].join(" ")}
-                >
-                  Listings Admin
-                </Link>
-              </>
-            )}
 
             {user ? (
               <Link to="/logout">
@@ -177,7 +195,41 @@ export function CrestlineNavbar() {
               className="md:hidden fixed top-0 left-0 right-0 z-50 bg-crestline-bg/95 backdrop-blur-xl border-b border-crestline-gold/10 max-h-[100vh] overflow-y-auto"
             >
               <div className="px-4 py-6 space-y-4">
-                {navLinks.map((link) => (
+                {coreLinks.map((link) => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setOpen(false)}
+                    className={[
+                      "block text-sm font-medium tracking-wide",
+                      "transition-colors duration-200",
+                      location.pathname === link.to
+                        ? "text-crestline-gold"
+                        : "text-white/70 hover:text-white",
+                    ].join(" ")}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+
+                {!adminLoading && user && isAdmin && adminLinks.map((link) => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setOpen(false)}
+                    className={[
+                      "block text-sm font-medium tracking-wide",
+                      "transition-colors duration-200",
+                      location.pathname.startsWith(link.to)
+                        ? "text-crestline-gold"
+                        : "text-white/70 hover:text-white",
+                    ].join(" ")}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+
+                {tailLinks.map((link) => (
                   <Link
                     key={link.to}
                     to={link.to}
@@ -199,25 +251,6 @@ export function CrestlineNavbar() {
                     Schedule Viewing
                   </Button>
                 </Link>
-
-                {!adminLoading && user && isAdmin && (
-                  <>
-                    <Link
-                      to="/crestline/admin/inquiries"
-                      onClick={() => setOpen(false)}
-                      className="block text-sm font-medium tracking-wide text-white/70 hover:text-white"
-                    >
-                      Inquiries
-                    </Link>
-                    <Link
-                      to="/crestline/admin/listings"
-                      onClick={() => setOpen(false)}
-                      className="block text-sm font-medium tracking-wide text-white/70 hover:text-white"
-                    >
-                      Listings Admin
-                    </Link>
-                  </>
-                )}
 
                 {user ? (
                   <Link to="/logout" onClick={() => setOpen(false)}>
