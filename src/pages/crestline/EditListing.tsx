@@ -6,6 +6,7 @@ import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 
 type ListingForm = {
   title: string;
@@ -45,13 +46,14 @@ export default function EditListing() {
   const [files, setFiles] = useState<File[]>([]);
   const [agents, setAgents] = useState<Array<{ id: string; full_name: string | null; title: string | null }>>([]);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!isEditing) return;
 
     const load = async () => {
       setInitialLoading(true);
-      const { data, error } = await supabase.from("listings").select("*").eq("id", id).single();
+      const { data, error } = await (supabase as any).from("listings").select("*").eq("id", id).single();
       if (error) {
         console.error(error);
         setError("Failed to load listing.");
@@ -102,6 +104,10 @@ export default function EditListing() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!form.title?.trim()) {
+      setError("Title is required.");
+      return;
+    }
     setLoading(true);
     setError(null);
 
@@ -131,7 +137,7 @@ export default function EditListing() {
       const mainImageUrl = uploadedImages[0]?.publicUrl ?? (form.image_url ? form.image_url : null);
 
       const payload = {
-        title: form.title || null,
+        title: form.title.trim() || "Untitled",
         price: form.price ? Number(form.price) : null,
         location: form.location || null,
         beds: form.beds ? Number(form.beds) : null,
@@ -145,7 +151,7 @@ export default function EditListing() {
       };
 
       if (isEditing) {
-        const { error } = await supabase.from("listings").update(payload).eq("id", id);
+        const { error } = await (supabase as any).from("listings").update(payload).eq("id", id);
         if (error) throw error;
 
         // Best-effort gallery support: replace listing_images when new images are uploaded.
@@ -170,7 +176,7 @@ export default function EditListing() {
           }
         }
       } else {
-        const { data: inserted, error } = await supabase.from("listings").insert(payload).select("id").single();
+        const { data: inserted, error } = await (supabase as any).from("listings").insert(payload).select("id").single();
         if (error) throw error;
 
         if (uploadedImages.length > 0 && inserted?.id) {
@@ -189,10 +195,19 @@ export default function EditListing() {
         }
       }
 
+      toast({
+        title: "Saved",
+        description: isEditing ? "Listing updated." : "Listing created.",
+      });
       navigate("/crestline/admin/listings");
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Failed to save listing.");
+      const message = err?.message || "Failed to save listing.";
+      setError(message);
+      toast({
+        title: "Save failed",
+        description: message,
+      });
     } finally {
       setLoading(false);
     }

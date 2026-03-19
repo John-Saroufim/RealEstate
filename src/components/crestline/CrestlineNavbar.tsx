@@ -71,15 +71,15 @@ export function CrestlineNavbar() {
       ].join(" ")}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <Link to="/crestline" className="flex items-center gap-2.5">
+        <div className="flex items-center justify-between h-20 w-full">
+          <Link to="/crestline" className="flex items-center gap-2.5 shrink-0">
             <MontelibanoHouseLogo className="h-7 w-7 text-crestline-gold" />
             <span className="font-serif text-xl font-bold text-white tracking-wide">
               Monte<span className="text-crestline-gold">libano</span>
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 ml-auto">
+          <div className="hidden md:flex items-center gap-6 ml-12 lg:ml-16 flex-1 justify-end">
             {/* Nav links: core → admin (if applicable) → About → Contact */}
             <div className="flex items-center gap-5">
               {coreLinks.map((link) => (
