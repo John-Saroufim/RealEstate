@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const budgetOptions = [
   "Under $2M",
@@ -78,7 +79,7 @@ export default function CrestlineContact() {
         archived: false,
       };
 
-      const { error } = await (supabase as any).from("inquiries").insert(payload);
+              const { error } = await supabase.from("inquiries").insert(payload);
       if (error) throw error;
 
       setSubmitted(true);
