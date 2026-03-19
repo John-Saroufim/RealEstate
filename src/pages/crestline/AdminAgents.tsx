@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useToast } from "@/hooks/use-toast";
 import { Building2, Phone, User, Trash2, Pencil } from "lucide-react";
 import { AdminStatsOverview } from "@/components/crestline/admin/AdminStatsOverview";
@@ -55,7 +56,6 @@ export default function AdminAgents() {
         if (supErr) throw supErr;
         setAgents((data ?? []) as Agent[]);
       } catch (e: any) {
-        console.error(e);
         setError("Failed to load agents.");
       } finally {
         setLoading(false);
@@ -72,7 +72,6 @@ export default function AdminAgents() {
       setAgents((prev) => prev.map((a) => (a.id === agentId ? { ...a, is_active: nextActive } : a)));
       toast({ title: nextActive ? "Agent activated" : "Agent deactivated" });
     } catch (e: any) {
-      console.error(e);
       toast({ title: "Update failed", description: e?.message ?? "Please try again." });
     }
   };
@@ -85,7 +84,6 @@ export default function AdminAgents() {
       setAgents((prev) => prev.filter((a) => a.id !== agentId));
       toast({ title: "Agent deleted" });
     } catch (e: any) {
-      console.error(e);
       toast({ title: "Delete failed", description: e?.message ?? "Please try again." });
     }
   };
@@ -126,7 +124,7 @@ export default function AdminAgents() {
             <div className="text-xs text-crestline-muted">{agents.length} agents</div>
           </div>
 
-          {loading && <p className="text-crestline-muted">Loading agents...</p>}
+          {loading && <LoadingSpinner label="Loading agents..." />}
           {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
           {!loading && !error && agents.length === 0 && (

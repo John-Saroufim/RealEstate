@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 type ListingForm = {
   title: string;
@@ -55,7 +56,6 @@ export default function EditListing() {
       setInitialLoading(true);
       const { data, error } = await (supabase as any).from("listings").select("*").eq("id", id).single();
       if (error) {
-        console.error(error);
         setError("Failed to load listing.");
       } else if (data) {
         setForm({
@@ -124,7 +124,6 @@ export default function EditListing() {
                 .upload(filePath, file, { upsert: false });
 
               if (uploadError) {
-                console.error(uploadError);
                 throw new Error("Failed to upload image.");
               }
 
@@ -201,7 +200,6 @@ export default function EditListing() {
       });
       navigate("/crestline/admin/listings");
     } catch (err: any) {
-      console.error(err);
       const message = err?.message || "Failed to save listing.";
       setError(message);
       toast({
@@ -240,7 +238,7 @@ export default function EditListing() {
       <section className="py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {initialLoading ? (
-            <p className="text-crestline-muted">Loading...</p>
+            <LoadingSpinner label="Loading listing..." />
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && <p className="text-red-400 text-sm">{error}</p>}

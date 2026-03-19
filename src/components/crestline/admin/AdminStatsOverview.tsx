@@ -60,7 +60,6 @@ export function AdminStatsOverview() {
         setStats({ listings, inquiries, agents });
       } catch (e) {
         // Keep the dashboard functional even if counts fail.
-        console.error(e);
         if (!alive) return;
         setStats({ listings: 0, inquiries: 0, agents: 0 });
       } finally {

@@ -34,7 +34,6 @@ export function useIsAdmin() {
         .maybeSingle();
 
       if (error) {
-        console.error(error);
         setIsAdmin(false);
         return;
       }

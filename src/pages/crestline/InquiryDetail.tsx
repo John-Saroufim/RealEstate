@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
 import { ArrowLeft, Phone, Mail, User, Building2, Eye, EyeOff, Trash2 } from "lucide-react";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 type Inquiry = {
   id: string;
@@ -106,7 +107,6 @@ export default function InquiryDetail() {
           if (!aErr && aData) setAgent(aData as Agent);
         }
       } catch (e: any) {
-        console.error(e);
         setError(e?.message ?? "Failed to load inquiry.");
       } finally {
         setLoading(false);
@@ -128,7 +128,6 @@ export default function InquiryDetail() {
       setInquiry((prev) => (prev ? { ...prev, ...patch } : prev));
       toast({ title: "Saved", description: "Inquiry updated." });
     } catch (e: any) {
-      console.error(e);
       toast({ title: "Update failed", description: e?.message ?? "Please try again." });
     }
   };
@@ -142,7 +141,6 @@ export default function InquiryDetail() {
       navigate("/crestline/admin/inquiries");
       toast({ title: "Deleted", description: "Inquiry removed." });
     } catch (e: any) {
-      console.error(e);
       toast({ title: "Delete failed", description: e?.message ?? "Please try again." });
     }
   };
@@ -153,7 +151,7 @@ export default function InquiryDetail() {
         <CrestlineNavbar />
         <section className="pt-32 pb-16">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p className="text-crestline-muted">Loading inquiry...</p>
+                <LoadingSpinner label="Loading inquiry..." />
           </div>
         </section>
         <CrestlineFooter />

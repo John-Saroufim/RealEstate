@@ -124,7 +124,6 @@ export default function CrestlineProperties() {
       const { data, error } = await query;
 
       if (error) {
-        console.error(error);
         setError("Failed to load properties.");
       } else {
         setProperties((data ?? []) as Listing[]);

@@ -6,6 +6,7 @@ import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
 import { MapPin, Mail, Phone, Circle, Search, Check, EyeOff, Eye, Trash2 } from "lucide-react";
@@ -82,7 +83,6 @@ export default function AdminInquiries() {
         if (error) throw error;
         setInquiries((data ?? []) as Inquiry[]);
       } catch (e: any) {
-        console.error(e);
         setError("Failed to load inquiries.");
       } finally {
         setLoading(false);
@@ -98,7 +98,6 @@ export default function AdminInquiries() {
       if (error) throw error;
       setInquiries((prev) => prev.map((i) => (i.id === inquiryId ? { ...i, read: nextRead } : i)));
     } catch (e: any) {
-      console.error(e);
       toast({
         title: "Update failed",
         description: e?.message ?? "Please try again.",
@@ -163,7 +162,7 @@ export default function AdminInquiries() {
             </CardContent>
           </Card>
 
-          {loading && <p className="text-crestline-muted text-sm">Loading inquiries...</p>}
+          {loading && <LoadingSpinner label="Loading inquiries..." />}
           {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
           {!loading && !error && inquiries.length === 0 && (

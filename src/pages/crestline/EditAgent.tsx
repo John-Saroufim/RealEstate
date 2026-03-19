@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Upload } from "lucide-react";
 
 type Agent = {
@@ -100,7 +101,6 @@ export default function EditAgent() {
           is_active: Boolean(loaded.is_active),
         });
       } catch (e: any) {
-        console.error(e);
         setError(e?.message ?? "Failed to load agent.");
       } finally {
         setInitialLoading(false);
@@ -197,7 +197,6 @@ export default function EditAgent() {
       });
       navigate("/crestline/admin/agents");
     } catch (e: any) {
-      console.error(e);
       const message = e?.message || e?.error?.message || e?.toString?.() || "Failed to save agent.";
       setError(message);
       toast({
@@ -232,7 +231,7 @@ export default function EditAgent() {
       <section className="py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {initialLoading ? (
-            <p className="text-crestline-muted">Loading...</p>
+            <LoadingSpinner label="Loading agent..." />
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && <p className="text-red-400 text-sm">{error}</p>}

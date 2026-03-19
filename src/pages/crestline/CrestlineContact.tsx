@@ -97,7 +97,6 @@ export default function CrestlineContact() {
       });
       setErrors({});
     } catch (err: any) {
-      console.error(err);
       toast({
         title: "Could not submit inquiry",
         description: err?.message ?? "Please try again.",

@@ -5,6 +5,7 @@ import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { Button } from "@/components/ui/button";
 import { MapPin, Bed, Bath, Ruler, Plus, Pencil, Trash2 } from "lucide-react";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { AdminStatsOverview } from "@/components/crestline/admin/AdminStatsOverview";
 
 type Listing = {
@@ -36,7 +37,6 @@ export default function AdminListings() {
         .order("created_at", { ascending: false });
 
       if (error) {
-        console.error(error);
         setError("Failed to load listings.");
       } else {
         setListings(data as Listing[]);
@@ -54,8 +54,7 @@ export default function AdminListings() {
     if (!confirm("Delete this listing? This cannot be undone.")) return;
     const { error } = await supabase.from("listings").delete().eq("id", id);
     if (error) {
-      console.error(error);
-      alert("Failed to delete listing.");
+      setError("Failed to delete listing.");
       return;
     }
     setListings((prev) => prev.filter((l) => l.id !== id));
@@ -97,7 +96,7 @@ export default function AdminListings() {
 
       <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading && <p className="text-crestline-muted">Loading listings...</p>}
+          {loading && <LoadingSpinner label="Loading listings..." />}
           {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
           {!loading && listings.length === 0 && !error && (

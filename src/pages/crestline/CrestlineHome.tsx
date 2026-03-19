@@ -83,7 +83,6 @@ export default function CrestlineHome() {
         .limit(3);
 
       if (error) {
-        console.error(error);
         return;
       }
 

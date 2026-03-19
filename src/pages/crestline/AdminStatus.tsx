@@ -4,6 +4,7 @@ import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { AdminStatsOverview } from "@/components/crestline/admin/AdminStatsOverview";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function AdminStatus() {
   const { user } = useAuth();
@@ -26,7 +27,7 @@ export default function AdminStatus() {
       <section className="py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
-            <p className="text-crestline-muted">Loading...</p>
+            <LoadingSpinner label="Loading..." />
           ) : !user ? (
             <div className="border border-white/10 p-6 text-center rounded-none">
               <p className="text-crestline-muted mb-4">You are not logged in.</p>

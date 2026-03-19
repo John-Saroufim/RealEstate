@@ -183,7 +183,6 @@ export default function CrestlinePropertyDetails() {
           setRelated(relData as Property[]);
         }
       } catch (e: any) {
-        console.error(e);
         setError("Failed to load property.");
       } finally {
         setLoading(false);
@@ -250,7 +249,6 @@ export default function CrestlinePropertyDetails() {
 
       setInquiry({ full_name: "", email: "", phone: "", message: prefillMessage });
     } catch (e: any) {
-      console.error(e);
       toast({
         title: "Could not send inquiry",
         description: e?.message ?? "Please try again.",
