@@ -79,7 +79,7 @@ export function CrestlineNavbar() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-6 ml-auto">
             {/* Nav links: core → admin (if applicable) → About → Contact */}
             <div className="flex items-center gap-5">
               {coreLinks.map((link) => (
