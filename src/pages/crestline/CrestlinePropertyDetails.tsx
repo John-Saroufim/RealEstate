@@ -287,8 +287,8 @@ export default function CrestlinePropertyDetails() {
         ) : error || !property ? (
           <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="border border-white/10 p-8 text-center">
-              <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">Property</p>
-              <h1 className="font-serif text-3xl font-bold text-white mb-4">Not Found</h1>
+              <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Property</p>
+              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Not Found</h1>
               <p className="text-crestline-muted mb-6">{error ?? "This property does not exist."}</p>
               <Button
                 onClick={() => navigate("/crestline/properties")}
@@ -300,7 +300,7 @@ export default function CrestlinePropertyDetails() {
           </section>
         ) : (
           <>
-            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+            <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
               <div className="grid lg:grid-cols-5 gap-10">
                 <div className="lg:col-span-3">
                   {/* Gallery + Title */}
@@ -376,7 +376,7 @@ export default function CrestlinePropertyDetails() {
 
                     {property.description && (
                       <div className="border border-white/5 bg-crestline-surface p-6">
-                        <p className="text-sm text-crestline-muted uppercase tracking-wider font-semibold mb-3">
+                        <p className="text-sm text-crestline-muted uppercase tracking-wider font-semibold mb-4">
                           Property Description
                         </p>
                         <div className="text-sm sm:text-base text-white/85 leading-relaxed whitespace-pre-line">
@@ -389,7 +389,7 @@ export default function CrestlinePropertyDetails() {
                   {/* Amenities + Key facts */}
                   <div className="mt-10 grid md:grid-cols-2 gap-8">
                     <div className="border border-white/5 bg-crestline-surface p-6">
-                      <p className="text-sm text-crestline-muted uppercase tracking-wider font-semibold mb-3">
+                      <p className="text-sm text-crestline-muted uppercase tracking-wider font-semibold mb-4">
                         Key Details
                       </p>
                       <div className="grid grid-cols-2 gap-x-6 gap-y-3">
@@ -437,7 +437,7 @@ export default function CrestlinePropertyDetails() {
                     </div>
 
                     <div className="border border-white/5 bg-crestline-surface p-6">
-                      <p className="text-sm text-crestline-muted uppercase tracking-wider font-semibold mb-3">
+                      <p className="text-sm text-crestline-muted uppercase tracking-wider font-semibold mb-4">
                         Amenities
                       </p>
                       {coerceAmenities(property.amenities).length > 0 ? (
@@ -459,7 +459,7 @@ export default function CrestlinePropertyDetails() {
 
                   {/* Related */}
                   <div className="mt-12">
-                    <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">
+                    <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">
                       Related Properties
                     </p>
                     <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mb-6">Explore More Options</h2>
@@ -566,7 +566,7 @@ export default function CrestlinePropertyDetails() {
                       {submitted ? (
                         <div className="space-y-3">
                           <CheckCircle2 className="h-10 w-10 text-crestline-gold" />
-                          <p className="font-serif text-xl font-bold text-white">Inquiry Received</p>
+                          <p className="font-serif text-2xl font-bold text-white">Inquiry Received</p>
                           <p className="text-sm text-crestline-muted leading-relaxed">
                             Thanks for reaching out. We will contact you shortly regarding this property.
                           </p>

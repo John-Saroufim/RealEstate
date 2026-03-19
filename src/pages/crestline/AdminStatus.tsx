@@ -14,7 +14,7 @@ export default function AdminStatus() {
 
       <section className="pt-32 pb-12 border-b border-crestline-gold/10 bg-crestline-surface">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-3">Admin Status</h1>
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Admin Status</h1>
           <p className="text-crestline-muted">Helps verify which Supabase user is logged in.</p>
         </div>
       </section>

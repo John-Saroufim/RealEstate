@@ -260,7 +260,7 @@ export default function CrestlineProperties() {
       {/* Header */}
       <section className="pt-32 pb-12 bg-crestline-surface border-b border-crestline-gold/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">Our Portfolio</p>
+          <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Portfolio</p>
           <div className="flex flex-col gap-4">
             <h1 className="font-serif text-4xl sm:text-5xl font-bold text-white">Exclusive Properties</h1>
           </div>
@@ -401,7 +401,7 @@ export default function CrestlineProperties() {
                           : "Price on request"}
                       </p>
                       <h3 className="font-serif text-lg font-semibold text-white mb-2">{p.title}</h3>
-                      <div className="flex items-center gap-1.5 text-sm text-crestline-muted mb-3">
+                      <div className="flex items-center gap-1.5 text-sm text-crestline-muted mb-4">
                         <MapPin className="h-3.5 w-3.5" />
                         {p.location ?? "Location available on request"}
                       </div>

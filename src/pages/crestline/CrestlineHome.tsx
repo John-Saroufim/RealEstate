@@ -158,7 +158,7 @@ export default function CrestlineHome() {
       <section className="py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">Curated Selection</p>
+            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Curated Selection</p>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Featured Properties</h2>
             <p className="text-crestline-muted max-w-xl mx-auto">Handpicked residences that represent the finest in luxury living across our most sought-after markets.</p>
           </motion.div>
@@ -269,7 +269,7 @@ export default function CrestlineHome() {
       <section className="py-20 sm:py-28 bg-crestline-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">The RealEstate Difference</p>
+            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">The RealEstate Difference</p>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Why Clients Choose Us</h2>
             <p className="text-crestline-muted max-w-xl mx-auto">A commitment to excellence that transforms every transaction into an exceptional experience.</p>
           </motion.div>
@@ -291,7 +291,7 @@ export default function CrestlineHome() {
       <section className="py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">Our Services</p>
+            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Services</p>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Comprehensive Real Estate Solutions</h2>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -314,7 +314,7 @@ export default function CrestlineHome() {
       <section className="py-20 sm:py-28 bg-crestline-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">Testimonials</p>
+            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Testimonials</p>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">What Our Clients Say</h2>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -340,7 +340,7 @@ export default function CrestlineHome() {
       <section className="py-20 sm:py-28">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">FAQ</p>
+            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">FAQ</p>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Frequently Asked Questions</h2>
           </motion.div>
           <div className="space-y-4">

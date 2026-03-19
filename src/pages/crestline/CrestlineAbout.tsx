@@ -39,7 +39,7 @@ export default function CrestlineAbout() {
         </div>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
-            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">Our Story</p>
+            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Story</p>
             <h1 className="font-serif text-4xl sm:text-5xl font-bold text-white mb-6">
               Built on Trust. Driven by <span className="text-crestline-gold">Excellence.</span>
             </h1>
@@ -80,7 +80,7 @@ export default function CrestlineAbout() {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">What Guides Us</p>
+            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">What Guides Us</p>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white">Our Core Values</h2>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -99,7 +99,7 @@ export default function CrestlineAbout() {
       <section className="py-20 bg-crestline-surface">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-3">Our Journey</p>
+            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Journey</p>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white">Key Milestones</h2>
           </motion.div>
           <div className="space-y-8">
