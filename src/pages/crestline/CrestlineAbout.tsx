@@ -19,7 +19,7 @@ const values = [
 ];
 
 const milestones = [
-  { year: "2009", title: "Founded in New York", desc: "CrestLine Estates was established with a vision to redefine luxury real estate advisory." },
+  { year: "2009", title: "Founded in New York", desc: "Montelibano was established with a vision to redefine luxury real estate advisory." },
   { year: "2013", title: "Expanded to Florida", desc: "Opened our Palm Beach office, serving the growing demand for waterfront luxury properties." },
   { year: "2017", title: "$1 Billion in Sales", desc: "Reached a landmark milestone, solidifying our position as a premier luxury brokerage." },
   { year: "2021", title: "International Reach", desc: "Extended our advisory services to select international markets including London and Dubai." },
@@ -44,7 +44,7 @@ export default function CrestlineAbout() {
               Built on Trust. Driven by <span className="text-crestline-gold">Excellence.</span>
             </h1>
             <p className="text-crestline-muted max-w-2xl mx-auto leading-relaxed text-lg">
-              For over 15 years, CrestLine Estates has been the trusted partner for discerning buyers and sellers navigating the luxury real estate market. Our commitment to exceptional service, deep market expertise, and personal integrity has earned us a reputation as one of the most respected names in premium property.
+              For over 15 years, Montelibano has been the trusted partner for discerning buyers and sellers navigating the luxury real estate market. Our commitment to exceptional service, deep market expertise, and personal integrity has earned us a reputation as one of the most respected names in premium property.
             </p>
           </motion.div>
         </div>
@@ -54,7 +54,7 @@ export default function CrestlineAbout() {
       <section className="py-20 bg-crestline-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12">
-            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="border border-white/5 p-10">
+            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="border border-white/5 p-8 sm:p-10">
               <div className="h-12 w-12 border border-crestline-gold/20 flex items-center justify-center mb-5">
                 <Target className="h-5 w-5 text-crestline-gold" />
               </div>
@@ -63,7 +63,7 @@ export default function CrestlineAbout() {
                 To deliver a real estate experience defined by expertise, integrity, and personalized attention — connecting exceptional people with extraordinary properties.
               </p>
             </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="border border-white/5 p-10">
+            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="border border-white/5 p-8 sm:p-10">
               <div className="h-12 w-12 border border-crestline-gold/20 flex items-center justify-center mb-5">
                 <Eye className="h-5 w-5 text-crestline-gold" />
               </div>
@@ -116,11 +116,11 @@ export default function CrestlineAbout() {
         </div>
       </section>
 
-      {/* Why CrestLine */}
+      {/* Why Montelibano */}
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Why CrestLine?</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Why Montelibano?</h2>
           </motion.div>
           <div className="grid sm:grid-cols-2 gap-4">
             {[

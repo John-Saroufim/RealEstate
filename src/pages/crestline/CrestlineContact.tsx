@@ -53,16 +53,57 @@ export default function CrestlineContact() {
     e.preventDefault();
     if (!validate()) return;
     setLoading(true);
+    try {
+      const composedMessage = [
+        form.message.trim(),
+        form.interest ? `Interest: ${form.interest}` : null,
+        form.budget ? `Budget: ${form.budget}` : null,
+      ]
+        .filter(Boolean)
+        .join("\n\n");
 
-    // Simulate submission
-    await new Promise((r) => setTimeout(r, 1200));
+      const payload = {
+        full_name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim() || null,
+        message: composedMessage,
 
-    setLoading(false);
-    setSubmitted(true);
-    toast({
-      title: "Inquiry Submitted",
-      description: "Our team will be in touch within 24 hours.",
-    });
+        property_id: null,
+        property_title_snapshot: null,
+        agent_id: null,
+
+        inquiry_type: "general_inquiry",
+        status: "new",
+        read: false,
+        archived: false,
+      };
+
+      const { error } = await (supabase as any).from("inquiries").insert(payload);
+      if (error) throw error;
+
+      setSubmitted(true);
+      toast({
+        title: "Inquiry Submitted",
+        description: "Our team will be in touch within 24 hours.",
+      });
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        interest: "",
+        budget: "",
+        message: "",
+      });
+      setErrors({});
+    } catch (err: any) {
+      console.error(err);
+      toast({
+        title: "Could not submit inquiry",
+        description: err?.message ?? "Please try again.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (field: string, value: string) => {
@@ -137,7 +178,7 @@ export default function CrestlineContact() {
                   <CheckCircle2 className="h-14 w-14 text-crestline-gold mx-auto mb-6" />
                   <h3 className="font-serif text-2xl font-bold text-white mb-3">Thank You</h3>
                   <p className="text-crestline-muted max-w-md mx-auto">
-                    Your inquiry has been received. A CrestLine advisor will contact you within 24 hours to discuss your requirements.
+                    Your inquiry has been received. A Montelibano advisor will contact you within 24 hours to discuss your requirements.
                   </p>
                 </motion.div>
               ) : (
@@ -199,7 +240,7 @@ export default function CrestlineContact() {
                           key={b}
                           type="button"
                           onClick={() => handleChange("budget", form.budget === b ? "" : b)}
-                          className={`px-4 py-2 text-xs font-medium border transition-colors ${
+                          className={`px-4 py-2 text-xs font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
                             form.budget === b
                               ? "bg-crestline-gold text-crestline-bg border-crestline-gold"
                               : "border-white/10 text-white/70 hover:border-crestline-gold/30"

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Dumbbell, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Building2, Eye, EyeOff, Loader2, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -44,7 +44,7 @@ export default function Signup() {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Check your email to confirm your account!");
+      toast.success("Check your email to confirm your broker account!");
       navigate("/login");
     }
   };
@@ -53,12 +53,14 @@ export default function Signup() {
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 mb-6">
-            <Dumbbell className="h-8 w-8 text-primary" />
-            <span className="font-display text-2xl font-bold">IronForge<span className="text-primary"> AI</span></span>
+          <Link to="/crestline" className="inline-flex items-center gap-2 mb-6">
+            <Shield className="h-8 w-8 text-primary" />
+            <span className="font-display text-2xl font-bold">
+              Monte<span className="text-crestline-gold">libano</span>
+            </span>
           </Link>
-          <h1 className="font-display text-2xl font-bold">Create your account</h1>
-          <p className="text-muted-foreground text-sm mt-1">Start your transformation today</p>
+          <h1 className="font-display text-2xl font-bold">Create broker account</h1>
+          <p className="text-muted-foreground text-sm mt-1">You can add listings after you’re set up.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="glass-card p-6 space-y-4">
