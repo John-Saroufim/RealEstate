@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Building2, Phone, User, Trash2, Pencil } from "lucide-react";
+import { AdminStatsOverview } from "@/components/crestline/admin/AdminStatsOverview";
 
 type Agent = {
   id: string;
@@ -93,22 +94,27 @@ export default function AdminAgents() {
     <div className="min-h-screen bg-crestline-bg text-white font-sans">
       <CrestlineNavbar />
 
-      <section className="pt-32 pb-8 border-b border-crestline-gold/10 bg-crestline-surface">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-          <div>
-            <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white">Manage Agents</h1>
+      <section className="pt-32 pb-6 border-b border-crestline-gold/10 bg-crestline-surface">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+            <div>
+              <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
+              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white">Manage Agents</h1>
+            </div>
+            <Button
+              onClick={() => navigate("/crestline/admin/agents/new")}
+              className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none"
+            >
+              New Agent
+            </Button>
           </div>
-          <Button
-            onClick={() => navigate("/crestline/admin/agents/new")}
-            className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none"
-          >
-            New Agent
-          </Button>
+          <div className="mt-6">
+            <AdminStatsOverview />
+          </div>
         </div>
       </section>
 
-      <section className="py-12">
+      <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between mb-8">
             <Input
@@ -124,9 +130,16 @@ export default function AdminAgents() {
           {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
           {!loading && !error && agents.length === 0 && (
-            <div className="border border-white/5 p-8 text-center">
-              <p className="text-sm text-crestline-muted mb-4">No agents found.</p>
-              <Button onClick={() => navigate("/crestline/admin/agents/new")} className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none">
+            <div className="border border-white/5 p-10 text-center bg-crestline-surface">
+              <div className="mx-auto h-12 w-12 border border-crestline-gold/20 bg-crestline-bg/50 flex items-center justify-center mb-4">
+                <User className="h-6 w-6 text-crestline-gold" />
+              </div>
+              <p className="font-serif text-xl font-bold text-white mb-2">No agents yet</p>
+              <p className="text-sm text-crestline-muted mb-6">Create your first agent profile to start assigning advisors to listings.</p>
+              <Button
+                onClick={() => navigate("/crestline/admin/agents/new")}
+                className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none"
+              >
                 Create your first agent
               </Button>
             </div>

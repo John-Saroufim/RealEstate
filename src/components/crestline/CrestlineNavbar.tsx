@@ -90,7 +90,7 @@ export function CrestlineNavbar() {
                   className={[
                     "relative",
                     "text-sm font-medium tracking-wide",
-                    "transition-colors duration-200",
+                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
                     location.pathname === link.to ? activeClass : inactiveAfterClass,
                   ].join(" ")}
@@ -107,7 +107,7 @@ export function CrestlineNavbar() {
                   className={[
                     "relative",
                     "text-sm font-medium tracking-wide",
-                    "transition-colors duration-200",
+                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
                     location.pathname.startsWith(link.to) ? activeClass : inactiveAfterClass,
                   ].join(" ")}
@@ -124,7 +124,7 @@ export function CrestlineNavbar() {
                   className={[
                     "relative",
                     "text-sm font-medium tracking-wide",
-                    "transition-colors duration-200",
+                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
                     location.pathname === link.to ? activeClass : inactiveAfterClass,
                   ].join(" ")}
@@ -201,8 +201,8 @@ export function CrestlineNavbar() {
                     to={link.to}
                     onClick={() => setOpen(false)}
                     className={[
-                      "block text-sm font-medium tracking-wide",
-                      "transition-colors duration-200",
+                      "block text-sm font-medium tracking-wide px-2 py-2 rounded-none",
+                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
                       location.pathname === link.to
                         ? "text-crestline-gold"
                         : "text-white/70 hover:text-white",
@@ -218,8 +218,8 @@ export function CrestlineNavbar() {
                     to={link.to}
                     onClick={() => setOpen(false)}
                     className={[
-                      "block text-sm font-medium tracking-wide",
-                      "transition-colors duration-200",
+                      "block text-sm font-medium tracking-wide px-2 py-2 rounded-none",
+                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
                       location.pathname.startsWith(link.to)
                         ? "text-crestline-gold"
                         : "text-white/70 hover:text-white",
@@ -235,8 +235,8 @@ export function CrestlineNavbar() {
                     to={link.to}
                     onClick={() => setOpen(false)}
                     className={[
-                      "block text-sm font-medium tracking-wide",
-                      "transition-colors duration-200",
+                      "block text-sm font-medium tracking-wide px-2 py-2 rounded-none",
+                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
                       location.pathname === link.to
                         ? "text-crestline-gold"
                         : "text-white/70 hover:text-white",

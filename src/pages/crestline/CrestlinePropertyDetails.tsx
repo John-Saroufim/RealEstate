@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   Bed,
@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { PropertyCard } from "@/components/crestline/PropertyCard";
 
 type Property = {
   id: string;
@@ -318,10 +319,10 @@ export default function CrestlinePropertyDetails() {
                             loading="eager"
                             decoding="async"
                             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                            className="w-full h-[420px] sm:h-[460px] object-cover"
+                            className="w-full h-[320px] sm:h-[380px] md:h-[420px] lg:h-[460px] object-cover"
                           />
                         ) : (
-                          <div className="w-full h-[420px] sm:h-[460px] bg-white/5" />
+                          <div className="w-full h-[320px] sm:h-[380px] md:h-[420px] lg:h-[460px] bg-white/5" />
                         )}
                       </AnimatePresence>
 
@@ -464,46 +465,22 @@ export default function CrestlinePropertyDetails() {
                     </p>
                     <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mb-6">Explore More Options</h2>
                     {related.length > 0 ? (
-                      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                         {related.map((p) => (
-                          <Link
-                            key={p.id}
-                            to={`/crestline/properties/${p.id}`}
-                            className="group block bg-crestline-surface border border-white/5 overflow-hidden hover:border-crestline-gold/20 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 transform-gpu"
-                          >
-                            <div className="relative overflow-hidden aspect-[4/3]">
-                              {p.image_url ? (
-                                  <img
-                                    src={p.image_url}
-                                    alt={p.title ?? "Property"}
-                                    loading="lazy"
-                                    decoding="async"
-                                    className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-in-out"
-                                  />
-                              ) : (
-                                <div className="w-full h-full bg-white/5" />
-                              )}
-                              <div className="absolute top-4 left-4 bg-crestline-bg/80 backdrop-blur-sm text-crestline-gold text-xs font-semibold px-3 py-1.5 tracking-wider uppercase">
-                                {p.status ?? "For Sale"}
-                              </div>
-                            </div>
-                            <div className="p-6">
-                              <p className="text-crestline-gold font-serif text-lg font-bold mb-1">
-                                {formatPrice(p.price ?? null)}
-                              </p>
-                              <h3 className="font-serif text-base font-semibold text-white mb-2">{p.title}</h3>
-                              {p.location && (
-                                <div className="flex items-center gap-2 text-sm text-crestline-muted">
-                                  <MapPin className="h-4 w-4 text-crestline-gold" />
-                                  {p.location}
-                                </div>
-                              )}
-                              <div className="flex items-center gap-4 text-sm text-crestline-muted border-t border-white/5 pt-4 mt-4">
-                                {p.beds != null && <span className="flex items-center gap-1.5"><Bed className="h-4 w-4" /> {p.beds} Beds</span>}
-                                {p.baths != null && <span className="flex items-center gap-1.5"><Bath className="h-4 w-4" /> {p.baths} Baths</span>}
-                              </div>
-                            </div>
-                          </Link>
+                          <div key={p.id} className="h-full">
+                            <PropertyCard
+                              to={`/crestline/properties/${p.id}`}
+                              imageUrl={p.image_url}
+                              title={p.title}
+                              price={p.price}
+                              location={p.location}
+                              status={p.status}
+                              type={p.type}
+                              beds={p.beds}
+                              baths={p.baths}
+                              sqft={p.sqft}
+                            />
+                          </div>
                         ))}
                       </div>
                     ) : (

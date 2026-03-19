@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { MapPin, Bed, Bath, Search, SlidersHorizontal, X, Ruler } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { supabase } from "@/integrations/supabase/client";
+import { PropertyCard } from "@/components/crestline/PropertyCard";
 
 type Listing = {
   id: string;
@@ -339,7 +340,7 @@ export default function CrestlineProperties() {
             </p>
           )}
           {loading ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div
                   key={i}
@@ -359,75 +360,27 @@ export default function CrestlineProperties() {
               ))}
             </div>
           ) : !error && properties.length > 0 ? (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {properties.map((p, i) => (
                 <motion.div
                   key={p.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="group bg-crestline-surface border border-white/5 overflow-hidden hover:border-crestline-gold/20 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 transform-gpu"
+                  className="h-full"
                 >
-                  <Link to={`/crestline/properties/${p.id}`} className="block">
-                    <div className="relative overflow-hidden aspect-[4/3]">
-                    {p.image_url ? (
-                      <img
-                        src={p.image_url}
-                        alt={p.title}
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-in-out"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-crestline-muted text-xs">
-                        No image
-                      </div>
-                    )}
-                    <div className="absolute top-4 left-4 bg-crestline-bg/80 backdrop-blur-sm text-crestline-gold text-xs font-semibold px-3 py-1.5 tracking-wider uppercase">
-                      {p.status ?? "For Sale"}
-                    </div>
-                    <div className="absolute top-4 right-4 bg-crestline-bg/80 backdrop-blur-sm text-white text-xs px-3 py-1.5">
-                      {p.type ?? "Property"}
-                    </div>
-                    </div>
-                    <div className="p-6">
-                      <p className="text-crestline-gold font-serif text-xl font-bold mb-1">
-                        {p.price != null
-                          ? p.price.toLocaleString("en-US", {
-                              style: "currency",
-                              currency: "USD",
-                              maximumFractionDigits: 0,
-                            })
-                          : "Price on request"}
-                      </p>
-                      <h3 className="font-serif text-lg font-semibold text-white mb-2">{p.title}</h3>
-                      <div className="flex items-center gap-1.5 text-sm text-crestline-muted mb-4">
-                        <MapPin className="h-3.5 w-3.5" />
-                        {p.location ?? "Location available on request"}
-                      </div>
-                    {/* Keep cards visually consistent even when description is missing */}
-                      <p className="text-xs text-crestline-muted leading-relaxed mb-4 min-h-[3.2rem]">
-                        {p.description ?? ""}
-                      </p>
-                      <div className="flex items-center gap-4 text-sm text-crestline-muted border-t border-white/5 pt-4">
-                        {p.beds != null && (
-                          <span className="flex items-center gap-1.5">
-                            <Bed className="h-4 w-4" /> {p.beds} Beds
-                          </span>
-                        )}
-                        {p.baths != null && (
-                          <span className="flex items-center gap-1.5">
-                            <Bath className="h-4 w-4" /> {p.baths} Baths
-                          </span>
-                        )}
-                        {p.sqft != null && (
-                          <span className="flex items-center gap-1.5">
-                            <Ruler className="h-4 w-4" /> {p.sqft.toLocaleString()} sqft
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
+                  <PropertyCard
+                    to={`/crestline/properties/${p.id}`}
+                    imageUrl={p.image_url}
+                    title={p.title}
+                    price={p.price}
+                    location={p.location}
+                    status={p.status}
+                    type={p.type}
+                    beds={p.beds}
+                    baths={p.baths}
+                    sqft={p.sqft}
+                  />
                 </motion.div>
               ))}
             </div>

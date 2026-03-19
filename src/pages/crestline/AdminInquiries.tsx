@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
 import { MapPin, Mail, Phone, Circle, Search, Check, EyeOff, Eye, Trash2 } from "lucide-react";
+import { AdminStatsOverview } from "@/components/crestline/admin/AdminStatsOverview";
 
 type Inquiry = {
   id: string;
@@ -109,48 +110,58 @@ export default function AdminInquiries() {
     <div className="min-h-screen bg-crestline-bg text-white font-sans">
       <CrestlineNavbar />
 
-      <section className="pt-32 pb-8 border-b border-crestline-gold/10 bg-crestline-surface">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-          <div>
-            <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white">Inquiries</h1>
+      <section className="pt-32 pb-6 border-b border-crestline-gold/10 bg-crestline-surface">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+            <div>
+              <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
+              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white">Inquiries</h1>
+            </div>
+            <div className="text-xs text-crestline-muted flex items-center gap-2">
+              <Circle className="h-2.5 w-2.5 text-crestline-gold" />
+              {unreadCount} unread
+            </div>
           </div>
-          <div className="text-xs text-crestline-muted flex items-center gap-2">
-            <Circle className="h-2.5 w-2.5 text-crestline-gold" />
-            {unreadCount} unread
+
+          <div className="mt-6">
+            <AdminStatsOverview />
           </div>
         </div>
       </section>
 
-      <section className="py-12">
+      <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between mb-8">
-            <div className="flex flex-wrap gap-2">
-              {statusOptions.map((s) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => setStatusFilter(s.id)}
-                  className={`px-4 py-2 text-xs font-semibold border transition-colors rounded-none ${
-                    statusFilter === s.id
-                      ? "bg-crestline-gold text-crestline-bg border-crestline-gold"
-                      : "border-white/10 text-white/70 hover:border-crestline-gold/30"
-                  }`}
-                >
-                  {s.label}
-                </button>
-              ))}
-            </div>
+          <Card className="bg-crestline-surface border border-white/5 rounded-none">
+            <CardContent className="p-6">
+              <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+                <div className="flex flex-wrap gap-2">
+                  {statusOptions.map((s) => (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => setStatusFilter(s.id)}
+                      className={`px-4 py-2 text-xs font-semibold border transition-colors rounded-none ${
+                        statusFilter === s.id
+                          ? "bg-crestline-gold text-crestline-bg border-crestline-gold"
+                          : "border-white/10 text-white/70 hover:border-crestline-gold/30"
+                      }`}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
 
-            <div className="w-full lg:w-96">
-              <Input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search inquiries..."
-                className="bg-crestline-bg border-white/10 text-white placeholder:text-crestline-muted rounded-none h-12"
-              />
-            </div>
-          </div>
+                <div className="w-full lg:w-96">
+                  <Input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search inquiries..."
+                    className="bg-crestline-bg border-white/10 text-white placeholder:text-crestline-muted rounded-none h-12"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
           {loading && <p className="text-crestline-muted text-sm">Loading inquiries...</p>}
           {error && <p className="text-red-400 text-sm mb-4">{error}</p>}

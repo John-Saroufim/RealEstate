@@ -5,6 +5,7 @@ import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { Button } from "@/components/ui/button";
 import { MapPin, Bed, Bath, Ruler, Plus, Pencil, Trash2 } from "lucide-react";
+import { AdminStatsOverview } from "@/components/crestline/admin/AdminStatsOverview";
 
 type Listing = {
   id: string;
@@ -64,37 +65,48 @@ export default function AdminListings() {
     <div className="min-h-screen bg-crestline-bg text-white font-sans">
       <CrestlineNavbar />
 
-      <section className="pt-32 pb-8 border-b border-crestline-gold/10 bg-crestline-surface">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-          <div>
-            <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white">Manage Listings</h1>
+      <section className="pt-32 pb-6 border-b border-crestline-gold/10 bg-crestline-surface">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+            <div>
+              <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
+              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white">Manage Listings</h1>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Button
+                onClick={() => navigate("/crestline/admin/listings/new")}
+                className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none flex items-center gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                New Listing
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => navigate("/crestline/admin/agents")}
+                className="border-white/20 text-white hover:bg-white/5 rounded-none flex items-center gap-2"
+              >
+                Manage Agents
+              </Button>
+            </div>
           </div>
-          <Button
-            onClick={() => navigate("/crestline/admin/listings/new")}
-            className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none flex items-center gap-2"
-          >
-            <Plus className="h-4 w-4" />
-            New Listing
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => navigate("/crestline/admin/agents")}
-            className="border-white/20 text-white hover:bg-white/5 rounded-none flex items-center gap-2"
-          >
-            Manage Agents
-          </Button>
+          <div className="mt-6">
+            <AdminStatsOverview />
+          </div>
         </div>
       </section>
 
-      <section className="py-12">
+      <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading && <p className="text-crestline-muted">Loading listings...</p>}
           {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
           {!loading && listings.length === 0 && !error && (
-            <div className="border border-white/5 p-8 text-center">
-              <p className="text-sm text-crestline-muted mb-4">No listings yet.</p>
+            <div className="border border-white/5 p-10 text-center bg-crestline-surface">
+              <div className="mx-auto h-12 w-12 border border-crestline-gold/20 bg-crestline-bg/50 flex items-center justify-center mb-4">
+                <Pencil className="h-6 w-6 text-crestline-gold" />
+              </div>
+              <p className="font-serif text-xl font-bold text-white mb-2">No listings yet</p>
+              <p className="text-sm text-crestline-muted mb-6">Add your first property to start managing galleries, agents, and inquiry submissions.</p>
               <Button
                 onClick={() => navigate("/crestline/admin/listings/new")}
                 className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none"
