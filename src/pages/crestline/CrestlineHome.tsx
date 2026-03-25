@@ -20,6 +20,10 @@ function formatUsd(n: number) {
   return n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 }
 
+function clampNumber(n: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, n));
+}
+
 const fadeUp = {
   hidden: { opacity: 0, y: 18 },
   visible: (i: number) => ({
@@ -331,25 +335,60 @@ export default function CrestlineHome() {
                       </label>
                       {priceStats ? (
                         <>
-                          <div className="flex items-center justify-between gap-4 text-[12px] text-white/70 mb-2">
-                            <span className="tabular-nums">{formatUsd(heroPriceMin ?? priceStats.min)}</span>
-                            <span className="text-white/45">to</span>
-                            <span className="tabular-nums">{formatUsd(heroPriceMax ?? priceStats.max)}</span>
+                          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 mb-2">
+                            <Input
+                              type="number"
+                              min={priceStats.min}
+                              max={heroPriceMax ?? priceStats.max}
+                              step={priceStats.step}
+                              value={Math.round(heroPriceMin ?? priceStats.min)}
+                              onChange={(e) => {
+                                const raw = Number(e.target.value);
+                                if (!Number.isFinite(raw)) return;
+                                const upperBound = heroPriceMax ?? priceStats.max;
+                                const next = clampNumber(Math.round(raw), priceStats.min, upperBound);
+                                setHeroPriceMin(next);
+                              }}
+                              className="h-10 bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-xl focus-visible:ring-sky-200/50 tabular-nums"
+                              aria-label="Minimum price"
+                            />
+                            <span className="text-white/45 text-center">to</span>
+                            <Input
+                              type="number"
+                              min={heroPriceMin ?? priceStats.min}
+                              max={priceStats.max}
+                              step={priceStats.step}
+                              value={Math.round(heroPriceMax ?? priceStats.max)}
+                              onChange={(e) => {
+                                const raw = Number(e.target.value);
+                                if (!Number.isFinite(raw)) return;
+                                const lowerBound = heroPriceMin ?? priceStats.min;
+                                const next = clampNumber(Math.round(raw), lowerBound, priceStats.max);
+                                setHeroPriceMax(next);
+                              }}
+                              className="h-10 bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-xl focus-visible:ring-sky-200/50 tabular-nums"
+                              aria-label="Maximum price"
+                            />
                           </div>
-                          <Slider
-                            min={priceStats.min}
-                            max={priceStats.max}
-                            step={priceStats.step}
-                            disabled={priceStatsLoading || priceStats.min === priceStats.max}
-                            value={[heroPriceMin ?? priceStats.min, heroPriceMax ?? priceStats.max]}
-                            onValueChange={(v) => {
-                              const [minV, maxV] = v;
-                              setHeroPriceMin(minV);
-                              setHeroPriceMax(maxV);
-                            }}
-                            className="h-6"
-                            aria-label="Price range (min to max)"
-                          />
+                          <div className="flex h-10 items-center">
+                            <Slider
+                              min={priceStats.min}
+                              max={priceStats.max}
+                              step={priceStats.step}
+                              disabled={priceStatsLoading || priceStats.min === priceStats.max}
+                              value={[heroPriceMin ?? priceStats.min, heroPriceMax ?? priceStats.max]}
+                              onValueChange={(v) => {
+                                const [minV, maxV] = v;
+                                setHeroPriceMin(minV);
+                                setHeroPriceMax(maxV);
+                              }}
+                              className="w-full"
+                              aria-label="Price range (min to max)"
+                            />
+                          </div>
+                          <p className="mt-1 text-[11px] text-white/65 tabular-nums">
+                            {formatUsd(heroPriceMin ?? priceStats.min)} - {formatUsd(heroPriceMax ?? priceStats.max)}
+                          </p>
                         </>
                       ) : (
                         <div className="w-full h-12 bg-transparent border border-white/20 text-white/60 rounded-xl px-3 flex items-center">
