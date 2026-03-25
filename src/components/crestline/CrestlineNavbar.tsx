@@ -193,9 +193,20 @@ export function CrestlineNavbar() {
               transition={{ duration: 0.18 }}
               role="dialog"
               aria-modal="true"
-              className="md:hidden fixed top-0 left-0 right-0 z-50 bg-crestline-bg/95 backdrop-blur-xl border-b border-crestline-gold/10 max-h-[100vh] overflow-y-auto"
+              className="md:hidden fixed top-20 left-0 right-0 z-50 bg-crestline-bg/95 backdrop-blur-xl border-b border-crestline-gold/10 max-h-[min(85vh,640px)] overflow-y-auto"
             >
-              <div className="px-4 py-6 space-y-5">
+              <div className="px-4 pt-5 pb-6 space-y-5">
+                <div className="flex items-center justify-between">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-crestline-muted/95">Menu</div>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl hover:bg-slate-100 text-slate-900"
+                    aria-label="Close menu"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
                 {coreLinks.map((link) => (
                   <Link
                     key={link.to}
