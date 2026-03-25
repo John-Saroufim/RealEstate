@@ -289,7 +289,7 @@ export function PropertyFiltersPanel({
     // Keep it simple: union + stable ordering.
     return Array.from(new Set([...names, ...locs]))
       .map((s) => s.trim())
-      .filter((s) => s.length > 0 && !s.toLowerCase().startsWith("demo listing"));
+      .filter((s) => s.length > 0 && !/^\s*demo\s*listing/i.test(s));
   }, [locationSuggestions, nameSuggestions]);
 
   useEffect(() => {

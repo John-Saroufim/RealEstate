@@ -31,6 +31,13 @@ function parsePriceParam(raw: string | null): number | null {
   return n;
 }
 
+function isDemoListingTitle(title: string | null | undefined): boolean {
+  const s = String(title ?? "").trim();
+  // Handles variations like "DEMO Listing #1", "Demo listing-1", etc.
+  // Anchored so we don't accidentally remove real titles containing "demo listing" text.
+  return /^\s*demo\s*listing/i.test(s);
+}
+
 export default function CrestlineProperties() {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
@@ -158,7 +165,8 @@ export default function CrestlineProperties() {
       else if (sort === "price_desc") query = query.order("price", { ascending: false });
       else query = query.order("created_at", { ascending: false });
 
-      query = query.limit(200);
+      // Avoid truncating the results (admin shows full count).
+      query = query.limit(1000);
 
       const { data, error } = await query;
 
@@ -168,7 +176,7 @@ export default function CrestlineProperties() {
         let next = (data ?? []) as Listing[];
         // Remove seeded/demo data from the public properties experience.
         // This keeps the UI from showing placeholder "DEMO Listing ..." rows.
-        next = next.filter((p) => !String(p.title ?? "").trim().toLowerCase().startsWith("demo listing"));
+        next = next.filter((p) => !isDemoListingTitle(p.title));
         if (favoritesOnly) {
           const favIds = readFavoriteIds();
           next = next.filter((p) => favIds.has(p.id));
@@ -272,7 +280,7 @@ export default function CrestlineProperties() {
           ),
         ).sort((a, b) => a.localeCompare(b));
 
-        const filtered = uniq.filter((t) => !t.trim().toLowerCase().startsWith("demo listing"));
+        const filtered = uniq.filter((t) => !isDemoListingTitle(t));
         if (filtered.length > 0) setNameSuggestions(filtered);
       } catch {
         // Keep empty; user can still type freely.
