@@ -308,10 +308,17 @@ export default function EditListing() {
           {initialLoading ? (
             <LoadingSpinner label="Loading listing..." />
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {error && <p className="text-red-400 text-sm">{error}</p>}
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-6 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-6 shadow-[0_20px_50px_-28px_rgba(15,23,42,0.3)] sm:p-8"
+            >
+              {error && (
+                <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+              )}
 
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="rounded-xl border border-slate-200 bg-white/90 p-4 sm:p-5">
+                <h2 className="mb-4 font-serif text-lg font-semibold text-slate-900">Property Details</h2>
+                <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">
                     Title
@@ -321,7 +328,7 @@ export default function EditListing() {
                     value={form.title}
                     onChange={handleChange}
                     required
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
+                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
                   />
                 </div>
                 <div>
@@ -335,7 +342,7 @@ export default function EditListing() {
                     step="1"
                     value={form.price}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
+                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
                   />
                 </div>
                 <div>
@@ -346,7 +353,7 @@ export default function EditListing() {
                     name="location"
                     value={form.location}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
+                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
                   />
                 </div>
                 <div>
@@ -357,7 +364,7 @@ export default function EditListing() {
                     name="type"
                     value={form.type}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
+                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
                   />
                 </div>
                 <div>
@@ -370,7 +377,7 @@ export default function EditListing() {
                     min="0"
                     value={form.beds}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
+                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
                   />
                 </div>
                 <div>
@@ -383,7 +390,7 @@ export default function EditListing() {
                     min="0"
                     value={form.baths}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
+                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
                   />
                 </div>
                 <div>
@@ -396,7 +403,7 @@ export default function EditListing() {
                     min="0"
                     value={form.sqft}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
+                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
                   />
                 </div>
                 <div>
@@ -407,7 +414,7 @@ export default function EditListing() {
                     value={form.status}
                     onValueChange={(v) => setForm((prev) => ({ ...prev, status: v }))}
                   >
-                    <SelectTrigger className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl h-10">
+                    <SelectTrigger className="bg-white border-slate-200 text-slate-900 rounded-xl h-10 shadow-sm">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent className="bg-white text-slate-900 rounded-xl">
@@ -427,7 +434,7 @@ export default function EditListing() {
                   <select
                     value={form.agent_id}
                     onChange={(e) => setForm((prev) => ({ ...prev, agent_id: e.target.value }))}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl h-10 px-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50"
+                    className="bg-white border-slate-200 text-slate-900 rounded-xl h-10 px-3 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50"
                   >
                     <option value="">Unassigned</option>
                     {agents.map((a) => (
@@ -439,8 +446,9 @@ export default function EditListing() {
                   </select>
                 </div>
               </div>
+              </div>
 
-              <div>
+              <div className="rounded-xl border border-slate-200 bg-white/90 p-4 sm:p-5">
                 <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">
                   Description
                 </label>
@@ -449,11 +457,11 @@ export default function EditListing() {
                   value={form.description}
                   onChange={handleChange}
                   rows={4}
-                  className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl resize-none"
+                  className="bg-white border-slate-200 text-slate-900 rounded-xl resize-none shadow-sm"
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 rounded-xl border border-slate-200 bg-white/90 p-4 sm:p-5">
                 <label className="block text-xs text-crestline-muted uppercase tracking-wider">
                   Property Media
                 </label>
@@ -464,7 +472,7 @@ export default function EditListing() {
                       <img
                         src={form.image_url}
                         alt={form.title}
-                        className="w-full border border-slate-200"
+                        className="w-full border border-slate-200 rounded-lg"
                       />
                       <button
                         type="button"
@@ -481,7 +489,7 @@ export default function EditListing() {
                   type="file"
                   accept="image/*,video/*"
                   onChange={handleAddMedia}
-                  className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl file:bg-crestline-gold file:text-crestline-on-gold file:border-0 file:px-3 file:py-1.5 file:text-xs"
+                  className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm file:bg-crestline-gold file:text-crestline-on-gold file:border-0 file:px-3 file:py-1.5 file:text-xs"
                 />
                 {selectedMedia.length > 0 ? (
                   <div className="grid gap-3 sm:grid-cols-2">
@@ -512,7 +520,7 @@ export default function EditListing() {
                 </p>
               </div>
 
-              <div className="flex justify-end gap-3 pt-4">
+              <div className="flex justify-end gap-3 pt-2">
                 <Button
                   type="button"
                   variant="outline"
