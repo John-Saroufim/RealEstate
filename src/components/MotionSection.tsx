@@ -13,9 +13,8 @@ export function MotionSection({ delayMs = 0, className, children, ...props }: Mo
   return (
     <motion.section
       className={className}
-      initial={reducedMotion ? false : { opacity: 0, y: 16 }}
-      whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
-      viewport={reducedMotion ? undefined : { once: true, amount: 0.22 }}
+      initial={reducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={
         reducedMotion
           ? undefined
