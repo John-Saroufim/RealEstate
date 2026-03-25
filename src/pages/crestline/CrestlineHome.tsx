@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Building2, Shield, TrendingUp, Users, ChevronRight, ArrowRight, Phone, CheckCircle2, HelpCircle, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import heroImg from "@/assets/crestline-hero.jpg";
@@ -14,6 +15,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { PropertyCard } from "@/components/crestline/PropertyCard";
 import { ReviewStars } from "@/components/crestline/ReviewStars";
 import { MotionSection } from "@/components/MotionSection";
+
+function formatUsd(n: number) {
+  return n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+}
 
 const fadeUp = {
   hidden: { opacity: 0, y: 18 },
@@ -86,17 +91,14 @@ export default function CrestlineHome() {
   const [reviewsError, setReviewsError] = useState<string | null>(null);
 
   // Hero search state
-  const priceRanges = [
-    { id: "any", label: "Any" },
-    { id: "under_2", label: "Under $2M", min: null as number | null, max: 2000000 },
-    { id: "2_5", label: "$2M – $5M", min: 2000000, max: 5000000 },
-    { id: "5_10", label: "$5M – $10M", min: 5000000, max: 10000000 },
-    { id: "10_plus", label: "$10M+", min: 10000000, max: null as number | null },
-  ];
+  type PriceStats = { min: number; max: number; avg: number; step: number };
+  const [priceStats, setPriceStats] = useState<PriceStats | null>(null);
+  const [priceStatsLoading, setPriceStatsLoading] = useState(true);
+  const [heroPriceMin, setHeroPriceMin] = useState<number | null>(null);
+  const [heroPriceMax, setHeroPriceMax] = useState<number | null>(null);
 
   const [heroLocation, setHeroLocation] = useState("");
   const [heroType, setHeroType] = useState<string>("All");
-  const [heroPriceRange, setHeroPriceRange] = useState(priceRanges[0].id);
   const [heroTypesLoading, setHeroTypesLoading] = useState(true);
   const [heroTypes, setHeroTypes] = useState<string[]>(["Villa", "Penthouse", "Estate", "Townhouse"]);
   const [heroLocationsLoading, setHeroLocationsLoading] = useState(true);
@@ -154,6 +156,54 @@ export default function CrestlineHome() {
     loadLocations();
   }, []);
 
+  useEffect(() => {
+    const loadPriceStats = async () => {
+      try {
+        setPriceStatsLoading(true);
+
+        const { data, error } = await supabase.from("listings").select("price").limit(5000);
+        if (error) throw error;
+
+        const prices = (data ?? [])
+          .map((r) => (r as any).price)
+          .filter((p): p is number => typeof p === "number" && Number.isFinite(p) && p >= 0);
+
+        if (prices.length === 0) {
+          // Fallback: keep the UI functional even if prices are unexpectedly missing.
+          const fallbackAvg = 2_500_000;
+          const fallback = { min: 0, max: 10_000_000, avg: fallbackAvg, step: Math.max(1, Math.round(fallbackAvg * 0.02)) };
+          setPriceStats(fallback);
+          setHeroPriceMin(fallback.min);
+          setHeroPriceMax(fallback.max);
+          return;
+        }
+
+        const min = Math.min(...prices);
+        const max = Math.max(...prices);
+        const avg = prices.reduce((acc, n) => acc + n, 0) / prices.length;
+
+        // Slider "rate": bigger average price -> bigger step size -> faster price changes per thumb movement.
+        const step = Math.max(1, Math.round(avg * 0.02));
+
+        const stats: PriceStats = { min, max, avg, step };
+        setPriceStats(stats);
+        setHeroPriceMin(min);
+        setHeroPriceMax(max);
+      } catch {
+        // Fallback if the query fails.
+        const fallbackAvg = 2_500_000;
+        const fallback = { min: 0, max: 10_000_000, avg: fallbackAvg, step: Math.max(1, Math.round(fallbackAvg * 0.02)) };
+        setPriceStats(fallback);
+        setHeroPriceMin(fallback.min);
+        setHeroPriceMax(fallback.max);
+      } finally {
+        setPriceStatsLoading(false);
+      }
+    };
+
+    loadPriceStats();
+  }, []);
+
   const handleBrowseProperties = () => {
     const params = new URLSearchParams();
 
@@ -162,10 +212,14 @@ export default function CrestlineHome() {
 
     if (heroType && heroType !== "All") params.set("type", heroType);
 
-    const selectedPrice = priceRanges.find((p) => p.id === heroPriceRange) ?? priceRanges[0];
-    if (selectedPrice.id !== "any") {
-      if (selectedPrice.min != null) params.set("min_price", String(selectedPrice.min));
-      if (selectedPrice.max != null) params.set("max_price", String(selectedPrice.max));
+    if (priceStats && heroPriceMin != null && heroPriceMax != null) {
+      let minP = Math.round(heroPriceMin);
+      let maxP = Math.round(heroPriceMax);
+      if (minP > maxP) [minP, maxP] = [maxP, minP];
+
+      // Only apply filters if user has moved away from the full available range.
+      if (minP > priceStats.min) params.set("min_price", String(minP));
+      if (maxP < priceStats.max) params.set("max_price", String(maxP));
     }
 
     const queryString = params.toString();
@@ -275,17 +329,33 @@ export default function CrestlineHome() {
                       <label className="block text-xs text-white/70 uppercase tracking-wider mb-2">
                         Price
                       </label>
-                      <select
-                        value={heroPriceRange}
-                        onChange={(e) => setHeroPriceRange(e.target.value)}
-                        className="w-full h-12 bg-transparent border border-white/20 text-white rounded-xl px-3 focus:outline-none focus:ring-2 focus:ring-sky-200/50"
-                      >
-                        {priceRanges.map((p) => (
-                          <option key={p.id} value={p.id} className="bg-slate-900">
-                            {p.label}
-                          </option>
-                        ))}
-                      </select>
+                      {priceStats ? (
+                        <>
+                          <div className="flex items-center justify-between gap-4 text-[12px] text-white/70 mb-2">
+                            <span className="tabular-nums">{formatUsd(heroPriceMin ?? priceStats.min)}</span>
+                            <span className="text-white/45">to</span>
+                            <span className="tabular-nums">{formatUsd(heroPriceMax ?? priceStats.max)}</span>
+                          </div>
+                          <Slider
+                            min={priceStats.min}
+                            max={priceStats.max}
+                            step={priceStats.step}
+                            disabled={priceStatsLoading || priceStats.min === priceStats.max}
+                            value={[heroPriceMin ?? priceStats.min, heroPriceMax ?? priceStats.max]}
+                            onValueChange={(v) => {
+                              const [minV, maxV] = v;
+                              setHeroPriceMin(minV);
+                              setHeroPriceMax(maxV);
+                            }}
+                            className="h-6"
+                            aria-label="Price range (min to max)"
+                          />
+                        </>
+                      ) : (
+                        <div className="w-full h-12 bg-transparent border border-white/20 text-white/60 rounded-xl px-3 flex items-center">
+                          Loading price range…
+                        </div>
+                      )}
                     </div>
 
                     <div className="text-left">
