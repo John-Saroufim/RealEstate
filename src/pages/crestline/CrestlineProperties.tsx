@@ -119,19 +119,20 @@ export default function CrestlineProperties() {
       setLoading(shouldShowSkeleton);
       setError(null);
 
-      const q = qParam.trim();
-      // Supabase `.or()` uses commas as OR separators, so if the user typed `Palm Beach, FL`
-      // we split into tokens and build a safe OR string with no commas inside values.
-      const qTokens = q.length > 0 ? q.split(",").map((t) => t.trim()).filter(Boolean) : [];
+      const q = qParam.trim().replace(/\s+/g, " ");
 
       let query = supabase.from("listings").select("*");
 
       if (q) {
-        const tokensToUse = qTokens.length > 0 ? qTokens : [q];
-        const orConditions = tokensToUse
-          .flatMap((token) => [`title.ilike.%${token}%`, `location.ilike.%${token}%`])
-          .join(",");
-        query = query.or(orConditions);
+        if (q.includes(",")) {
+          // If the user is searching by full location (e.g. "Palm Beach, FL"),
+          // do a single location match. This prevents the token "FL" from matching
+          // every "* , FL" location.
+          query = query.ilike("location", `%${q}%`);
+        } else {
+          // For partial searches (no comma), allow title OR location matches.
+          query = query.or(`title.ilike.%${q}%,location.ilike.%${q}%`);
+        }
       }
 
       if (selectedType !== "All") query = query.eq("type", selectedType);
