@@ -165,7 +165,7 @@ export default function CrestlineHome() {
               <Link to="/crestline/contact">
                 <Button
                   variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10 font-semibold text-base px-8 py-3 rounded-none h-auto"
+                  className="bg-transparent border-white/40 text-white hover:bg-white/10 hover:text-white font-semibold text-base px-8 py-3 rounded-none h-auto"
                 >
                   Schedule Consultation
                 </Button>

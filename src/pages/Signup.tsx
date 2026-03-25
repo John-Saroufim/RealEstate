@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Building2, Eye, EyeOff, Loader2, Shield } from "lucide-react";
+import { Eye, EyeOff, Loader2, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -44,62 +44,62 @@ export default function Signup() {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Check your email to confirm your broker account!");
+      toast.success("Check your email to confirm your account!");
       navigate("/login");
     }
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-crestline-bg text-slate-900 flex items-center justify-center px-4 py-12">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/crestline" className="inline-flex items-center gap-2 mb-6">
-            <Shield className="h-8 w-8 text-primary" />
-            <span className="font-display text-2xl font-bold">
+            <Shield className="h-8 w-8 text-crestline-gold" />
+            <span className="font-serif text-2xl font-bold">
               RealEstate
             </span>
           </Link>
-          <h1 className="font-display text-2xl font-bold">Create broker account</h1>
-          <p className="text-muted-foreground text-sm mt-1">You can add listings after you’re set up.</p>
+          <h1 className="font-serif text-2xl font-bold">Create account</h1>
+          <p className="text-crestline-muted text-sm mt-1">You can add listings after you’re set up.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="glass-card p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-crestline-surface border border-slate-200 p-6 space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="fullName">Full Name</Label>
-            <Input id="fullName" placeholder="John Doe" value={fullName} onChange={(e) => setFullName(e.target.value)} className="bg-secondary border-border" />
+            <Label htmlFor="fullName" className="text-crestline-muted">Full Name</Label>
+            <Input id="fullName" placeholder="John Doe" value={fullName} onChange={(e) => setFullName(e.target.value)} className="bg-crestline-bg/20 border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-none" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="bg-secondary border-border" />
+            <Label htmlFor="email" className="text-crestline-muted">Email</Label>
+            <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="bg-crestline-bg/20 border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-none" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-crestline-muted">Password</Label>
             <div className="relative">
-              <Input id="password" type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-secondary border-border pr-10" />
-              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+              <Input id="password" type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-crestline-bg/20 border-slate-200 text-slate-900 placeholder:text-crestline-muted pr-10 rounded-none" />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-crestline-muted hover:text-slate-900">
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
-            <Input id="confirmPassword" type={showPassword ? "text" : "password"} placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="bg-secondary border-border" />
+            <Label htmlFor="confirmPassword" className="text-crestline-muted">Confirm Password</Label>
+            <Input id="confirmPassword" type={showPassword ? "text" : "password"} placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="bg-crestline-bg/20 border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-none" />
           </div>
           <div className="flex items-center gap-2">
             <Checkbox id="terms" checked={acceptTerms} onCheckedChange={(v) => setAcceptTerms(v as boolean)} />
-            <Label htmlFor="terms" className="text-sm text-muted-foreground cursor-pointer">
-              I accept the <span className="text-primary">Terms of Service</span> and <span className="text-primary">Privacy Policy</span>
+            <Label htmlFor="terms" className="text-sm text-crestline-muted cursor-pointer">
+              I accept the <span className="text-crestline-gold">Terms of Service</span> and <span className="text-crestline-gold">Privacy Policy</span>
             </Label>
           </div>
-          <Button type="submit" disabled={loading} className="w-full gradient-neon-bg text-primary-foreground font-semibold hover:opacity-90">
+          <Button type="submit" disabled={loading} className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none font-semibold">
             {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
             Create Account
           </Button>
         </form>
 
-        <p className="text-center text-sm text-muted-foreground mt-6">
+        <p className="text-center text-sm text-crestline-muted mt-6">
           Already have an account?{" "}
-          <Link to="/login" className="text-primary hover:underline font-medium">Sign in</Link>
+          <Link to="/login" className="text-crestline-gold hover:underline font-medium">Login</Link>
         </p>
       </motion.div>
     </div>

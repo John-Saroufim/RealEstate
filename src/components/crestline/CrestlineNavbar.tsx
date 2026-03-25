@@ -157,7 +157,7 @@ export function CrestlineNavbar() {
                   variant="outline"
                   className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none font-semibold text-sm px-4 h-9 transition-colors duration-200"
                 >
-                  Broker Login
+                  Login
                 </Button>
               </Link>
             )}
@@ -262,7 +262,7 @@ export function CrestlineNavbar() {
                 ) : (
                   <Link to="/login" onClick={() => setOpen(false)}>
                     <Button className="w-full bg-slate-50 border-slate-200 text-slate-900 hover:bg-slate-100 font-semibold text-sm rounded-none mt-2 h-11 transition-colors duration-200">
-                      Broker Login
+                      Login
                     </Button>
                   </Link>
                 )}

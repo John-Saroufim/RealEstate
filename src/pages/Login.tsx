@@ -79,7 +79,7 @@ export default function Login() {
                 RealEstate
               </span>
             </Link>
-            <h1 className="font-serif text-3xl font-bold">Broker Sign In</h1>
+            <h1 className="font-serif text-3xl font-bold">Login</h1>
             <p className="text-crestline-muted text-sm mt-2">
               Sign in to add and edit listings. Non-admins will return to the public site.
             </p>
@@ -141,7 +141,7 @@ export default function Login() {
           <p className="text-center text-sm text-crestline-muted mt-6">
             Don't have an account?{" "}
             <Link to="/signup" className="text-crestline-gold hover:underline font-medium">
-              Create broker account
+              Create account
             </Link>
           </p>
         </motion.div>
