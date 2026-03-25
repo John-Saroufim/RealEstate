@@ -193,7 +193,7 @@ export function CrestlineNavbar() {
               transition={{ duration: 0.18 }}
               role="dialog"
               aria-modal="true"
-              className="md:hidden fixed top-20 left-0 right-0 z-50 bg-crestline-bg/95 backdrop-blur-xl border-b border-crestline-gold/10 max-h-[min(85vh,640px)] overflow-y-auto"
+              className="md:hidden fixed top-0 left-0 right-0 z-50 bg-crestline-bg/95 backdrop-blur-xl border-b border-crestline-gold/10 max-h-[min(85vh,640px)] overflow-y-auto"
             >
               <div className="px-4 pt-5 pb-6 space-y-5">
                 <div className="flex items-center justify-between">
