@@ -355,56 +355,61 @@ export default function CrestlineHome() {
                       </label>
                       {priceStats ? (
                         <>
-                          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 mb-1.5">
-                            <Input
-                              type="text"
-                              inputMode="numeric"
-                              autoComplete="off"
-                              value={heroPriceMinInput}
-                              onChange={(e) => {
-                                const nextRaw = e.target.value;
-                                setHeroPriceMinInput(nextRaw);
-                                const parsed = parsePriceDigits(nextRaw);
-                                if (parsed == null) return;
-                                const upperBound = heroPriceMax ?? priceStats.max;
-                                const next = clampNumber(parsed, priceStats.min, upperBound);
-                                setHeroPriceMin(next);
-                              }}
-                              onBlur={() => {
-                                const parsed = parsePriceDigits(heroPriceMinInput);
-                                const upperBound = heroPriceMax ?? priceStats.max;
-                                const next = parsed == null ? priceStats.min : clampNumber(parsed, priceStats.min, upperBound);
-                                setHeroPriceMin(next);
-                                setHeroPriceMinInput(formatPriceNumber(next));
-                              }}
-                              className="h-10 bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-xl focus-visible:ring-sky-200/50 tabular-nums"
-                              aria-label="Minimum price"
-                            />
-                            <span className="text-white/45 text-center">to</span>
-                            <Input
-                              type="text"
-                              inputMode="numeric"
-                              autoComplete="off"
-                              value={heroPriceMaxInput}
-                              onChange={(e) => {
-                                const nextRaw = e.target.value;
-                                setHeroPriceMaxInput(nextRaw);
-                                const parsed = parsePriceDigits(nextRaw);
-                                if (parsed == null) return;
-                                const lowerBound = heroPriceMin ?? priceStats.min;
-                                const next = clampNumber(parsed, lowerBound, priceStats.max);
-                                setHeroPriceMax(next);
-                              }}
-                              onBlur={() => {
-                                const parsed = parsePriceDigits(heroPriceMaxInput);
-                                const lowerBound = heroPriceMin ?? priceStats.min;
-                                const next = parsed == null ? priceStats.max : clampNumber(parsed, lowerBound, priceStats.max);
-                                setHeroPriceMax(next);
-                                setHeroPriceMaxInput(formatPriceNumber(next));
-                              }}
-                              className="h-10 bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-xl focus-visible:ring-sky-200/50 tabular-nums text-right"
-                              aria-label="Maximum price"
-                            />
+                          <div className="grid grid-cols-2 gap-2 mb-1.5">
+                            <div className="space-y-1">
+                              <p className="text-[10px] uppercase tracking-wider text-white/55">Min</p>
+                              <input
+                                type="text"
+                                inputMode="numeric"
+                                autoComplete="off"
+                                value={heroPriceMinInput}
+                                onChange={(e) => {
+                                  const nextRaw = e.target.value;
+                                  setHeroPriceMinInput(nextRaw);
+                                  const parsed = parsePriceDigits(nextRaw);
+                                  if (parsed == null) return;
+                                  const upperBound = heroPriceMax ?? priceStats.max;
+                                  const next = clampNumber(parsed, priceStats.min, upperBound);
+                                  setHeroPriceMin(next);
+                                }}
+                                onBlur={() => {
+                                  const parsed = parsePriceDigits(heroPriceMinInput);
+                                  const upperBound = heroPriceMax ?? priceStats.max;
+                                  const next = parsed == null ? priceStats.min : clampNumber(parsed, priceStats.min, upperBound);
+                                  setHeroPriceMin(next);
+                                  setHeroPriceMinInput(formatPriceNumber(next));
+                                }}
+                                className="relative z-10 h-9 w-full rounded-lg border border-white/25 bg-black/20 px-2 text-sm text-white outline-none ring-0 placeholder:text-white/45 focus:border-sky-200/70"
+                                aria-label="Minimum price"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <p className="text-[10px] uppercase tracking-wider text-white/55 text-right">Max</p>
+                              <input
+                                type="text"
+                                inputMode="numeric"
+                                autoComplete="off"
+                                value={heroPriceMaxInput}
+                                onChange={(e) => {
+                                  const nextRaw = e.target.value;
+                                  setHeroPriceMaxInput(nextRaw);
+                                  const parsed = parsePriceDigits(nextRaw);
+                                  if (parsed == null) return;
+                                  const lowerBound = heroPriceMin ?? priceStats.min;
+                                  const next = clampNumber(parsed, lowerBound, priceStats.max);
+                                  setHeroPriceMax(next);
+                                }}
+                                onBlur={() => {
+                                  const parsed = parsePriceDigits(heroPriceMaxInput);
+                                  const lowerBound = heroPriceMin ?? priceStats.min;
+                                  const next = parsed == null ? priceStats.max : clampNumber(parsed, lowerBound, priceStats.max);
+                                  setHeroPriceMax(next);
+                                  setHeroPriceMaxInput(formatPriceNumber(next));
+                                }}
+                                className="relative z-10 h-9 w-full rounded-lg border border-white/25 bg-black/20 px-2 text-right text-sm text-white outline-none ring-0 placeholder:text-white/45 focus:border-sky-200/70"
+                                aria-label="Maximum price"
+                              />
+                            </div>
                           </div>
                           <div className="flex h-8 items-center">
                             <Slider
@@ -424,9 +429,6 @@ export default function CrestlineHome() {
                               aria-label="Price range (min to max)"
                             />
                           </div>
-                          <p className="text-[11px] text-white/65 tabular-nums">
-                            {formatUsd(heroPriceMin ?? priceStats.min)} - {formatUsd(heroPriceMax ?? priceStats.max)}
-                          </p>
                         </>
                       ) : (
                         <div className="w-full h-12 bg-transparent border border-white/20 text-white/60 rounded-xl px-3 flex items-center">
