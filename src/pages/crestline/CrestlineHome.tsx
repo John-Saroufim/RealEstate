@@ -355,9 +355,10 @@ export default function CrestlineHome() {
                       </label>
                       {priceStats ? (
                         <>
-                          <div className="grid grid-cols-2 gap-2 mb-1.5">
-                            <div className="space-y-1">
-                              <p className="text-[10px] uppercase tracking-wider text-white/55">Min</p>
+                          <div className="rounded-xl border border-white/15 bg-black/15 p-2.5 space-y-2">
+                            <div className="grid grid-cols-2 gap-2">
+                              <div className="space-y-1">
+                                <p className="text-[10px] uppercase tracking-wider text-white/55">Min</p>
                               <input
                                 type="number"
                                 min={priceStats.min}
@@ -384,12 +385,12 @@ export default function CrestlineHome() {
                                 onKeyDown={(e) => {
                                   if (e.key === "Enter") (e.target as HTMLInputElement).blur();
                                 }}
-                                className="relative z-10 h-9 w-full rounded-lg border border-white/25 bg-black/20 px-2 text-sm text-white outline-none ring-0 placeholder:text-white/45 focus:border-sky-200/70"
+                                className="relative z-10 h-9 w-full rounded-lg border border-white/25 bg-black/25 px-2.5 text-sm font-medium text-white [appearance:textfield] outline-none ring-0 placeholder:text-white/45 focus:border-sky-200/70 focus:ring-1 focus:ring-sky-200/35"
                                 aria-label="Minimum price"
                               />
-                            </div>
-                            <div className="space-y-1">
-                              <p className="text-[10px] uppercase tracking-wider text-white/55 text-right">Max</p>
+                              </div>
+                              <div className="space-y-1">
+                                <p className="text-[10px] uppercase tracking-wider text-white/55 text-right">Max</p>
                               <input
                                 type="number"
                                 min={heroPriceMin ?? priceStats.min}
@@ -416,28 +417,33 @@ export default function CrestlineHome() {
                                 onKeyDown={(e) => {
                                   if (e.key === "Enter") (e.target as HTMLInputElement).blur();
                                 }}
-                                className="relative z-10 h-9 w-full rounded-lg border border-white/25 bg-black/20 px-2 text-right text-sm text-white outline-none ring-0 placeholder:text-white/45 focus:border-sky-200/70"
+                                className="relative z-10 h-9 w-full rounded-lg border border-white/25 bg-black/25 px-2.5 text-right text-sm font-medium text-white [appearance:textfield] outline-none ring-0 placeholder:text-white/45 focus:border-sky-200/70 focus:ring-1 focus:ring-sky-200/35"
                                 aria-label="Maximum price"
                               />
+                              </div>
                             </div>
-                          </div>
-                          <div className="flex h-8 items-center">
-                            <Slider
-                              min={priceStats.min}
-                              max={priceStats.max}
-                              step={priceStats.step}
-                              disabled={priceStatsLoading || priceStats.min === priceStats.max}
-                              value={[heroPriceMin ?? priceStats.min, heroPriceMax ?? priceStats.max]}
-                              onValueChange={(v) => {
-                                const [minV, maxV] = v;
-                                setHeroPriceMin(minV);
-                                setHeroPriceMax(maxV);
-                                setHeroPriceMinInput(formatPriceNumber(minV));
-                                setHeroPriceMaxInput(formatPriceNumber(maxV));
-                              }}
-                              className="w-full -translate-y-1"
-                              aria-label="Price range (min to max)"
-                            />
+                            <div className="flex h-8 items-center">
+                              <Slider
+                                min={priceStats.min}
+                                max={priceStats.max}
+                                step={priceStats.step}
+                                disabled={priceStatsLoading || priceStats.min === priceStats.max}
+                                value={[heroPriceMin ?? priceStats.min, heroPriceMax ?? priceStats.max]}
+                                onValueChange={(v) => {
+                                  const [minV, maxV] = v;
+                                  setHeroPriceMin(minV);
+                                  setHeroPriceMax(maxV);
+                                  setHeroPriceMinInput(formatPriceNumber(minV));
+                                  setHeroPriceMaxInput(formatPriceNumber(maxV));
+                                }}
+                                className="w-full"
+                                aria-label="Price range (min to max)"
+                              />
+                            </div>
+                            <div className="flex items-center justify-between text-[10px] text-white/55 tabular-nums">
+                              <span>{formatUsd(priceStats.min)}</span>
+                              <span>{formatUsd(priceStats.max)}</span>
+                            </div>
                           </div>
                         </>
                       ) : (
