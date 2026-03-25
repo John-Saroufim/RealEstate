@@ -43,11 +43,12 @@ function formatWhen(iso: string | null | undefined) {
 function statusBadgeClasses(status: string) {
   switch (status) {
     case "pending":
-      return "bg-blue-500/15 border-blue-500/35 text-blue-100";
+      // Light-theme readable badge for "pending" reviews
+      return "bg-blue-50 border-blue-200 text-blue-900";
     case "approved":
-      return "bg-emerald-500/15 border-emerald-500/30 text-emerald-200";
+      return "bg-emerald-50 border-emerald-200 text-emerald-900";
     case "rejected":
-      return "bg-red-500/15 border-red-500/30 text-red-200";
+      return "bg-red-50 border-red-200 text-red-800";
     default:
       return "bg-slate-50 border-slate-200 text-slate-700";
   }
@@ -234,7 +235,7 @@ export default function AdminReviews() {
                     </div>
 
                     <div className="min-w-0">
-                      <div className="text-xs text-slate-700 leading-relaxed max-h-12 overflow-hidden">
+                      <div className="text-xs text-slate-700 leading-relaxed max-h-28 overflow-hidden">
                         {excerpt(r.message, 180)}
                       </div>
                     </div>
@@ -255,7 +256,7 @@ export default function AdminReviews() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="rounded-none h-9 px-3 border border-emerald-600/45 bg-emerald-500/8 text-emerald-800 hover:bg-emerald-500/14 hover:text-emerald-900"
+                        className="rounded-none h-9 px-3 border border-emerald-600/45 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 hover:text-emerald-900"
                         onClick={() => updateStatus(r.id, "approved")}
                       >
                         <Check className="h-3.5 w-3.5 mr-1" /> Approve
@@ -263,7 +264,7 @@ export default function AdminReviews() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="rounded-none h-9 px-3 border border-red-600/45 bg-red-500/8 text-red-800 hover:bg-red-500/14 hover:text-red-900"
+                        className="rounded-none h-9 px-3 border border-red-600/45 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900"
                         onClick={() => updateStatus(r.id, "rejected")}
                       >
                         <X className="h-3.5 w-3.5 mr-1" /> Reject
@@ -271,7 +272,7 @@ export default function AdminReviews() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="rounded-none h-9 px-3 border border-red-600/45 bg-red-500/10 text-red-800 hover:bg-red-500/14 hover:text-red-900"
+                        className="rounded-none h-9 px-3 border border-red-600/35 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900"
                         onClick={() => handleDelete(r.id)}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -317,7 +318,7 @@ export default function AdminReviews() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="rounded-none h-9 px-3 border border-emerald-600/45 bg-emerald-500/8 text-emerald-800 hover:bg-emerald-500/14 hover:text-emerald-900 flex items-center"
+                          className="rounded-none h-9 px-3 border border-emerald-600/45 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 hover:text-emerald-900 flex items-center"
                           onClick={() => updateStatus(r.id, "approved")}
                         >
                           Approve
@@ -325,7 +326,7 @@ export default function AdminReviews() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="rounded-none h-9 px-3 border border-red-600/45 bg-red-500/8 text-red-800 hover:bg-red-500/14 hover:text-red-900 flex items-center"
+                          className="rounded-none h-9 px-3 border border-red-600/45 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900 flex items-center"
                           onClick={() => updateStatus(r.id, "rejected")}
                         >
                           Reject
@@ -333,7 +334,7 @@ export default function AdminReviews() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="rounded-none h-9 px-3 border border-red-600/45 bg-red-500/10 text-red-800 hover:bg-red-500/14 hover:text-red-900 flex items-center"
+                          className="rounded-none h-9 px-3 border border-red-600/35 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900 flex items-center"
                           onClick={() => handleDelete(r.id)}
                         >
                           <Trash2 className="h-3.5 w-3.5" />
