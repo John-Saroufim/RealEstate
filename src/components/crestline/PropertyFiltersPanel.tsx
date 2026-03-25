@@ -1,5 +1,5 @@
 import { useId, useMemo, type ReactNode } from "react";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Search, SlidersHorizontal, X, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -242,6 +242,9 @@ type PropertyFiltersPanelProps = {
   sort: string;
   availableTypes: string[];
   locationSuggestions?: string[];
+  favoritesOnly: boolean;
+  favoritesCount: number;
+  onToggleFavoritesOnly: () => void;
   priceMin: number | null;
   priceMax: number | null;
   bedsMin: number;
@@ -263,6 +266,9 @@ export function PropertyFiltersPanel({
   sort,
   availableTypes,
   locationSuggestions,
+  favoritesOnly,
+  favoritesCount,
+  onToggleFavoritesOnly,
   priceMin,
   priceMax,
   bedsMin,
@@ -404,6 +410,29 @@ export function PropertyFiltersPanel({
             >
               <SlidersHorizontal className="h-4 w-4" />
               All filters
+            </Button>
+          </div>
+
+          {/* Favorites toggle (DB/public listings are filtered client-side based on the hearts you clicked). */}
+          <div className="mt-4 flex items-center justify-start gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onToggleFavoritesOnly}
+              className={[
+                "h-12 rounded-xl border border-slate-200 bg-white px-4 font-medium text-slate-900 shadow-sm transition-all duration-200",
+                "hover:border-crestline-gold/35 hover:bg-slate-50 hover:text-slate-900",
+                favoritesOnly ? "border-crestline-gold/40 bg-crestline-gold/10 text-crestline-gold" : "",
+              ].join(" ")}
+            >
+              <Heart
+                className={favoritesOnly ? "h-4 w-4 fill-current" : "h-4 w-4"}
+                strokeWidth={favoritesOnly ? 0 : 2}
+              />
+              <span className="ml-2">Favorites</span>
+              <span className="ml-2 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-slate-100 px-2 text-xs text-slate-700">
+                {favoritesCount}
+              </span>
             </Button>
           </div>
         </div>

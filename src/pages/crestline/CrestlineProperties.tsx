@@ -40,6 +40,7 @@ export default function CrestlineProperties() {
   const selectedType = searchParams.get("type") ?? "All";
   const selectedStatus = searchParams.get("status") ?? "All";
   const sort = searchParams.get("sort") ?? "newest";
+  const favoritesOnly = searchParams.get("favorites") === "1";
 
   const priceMin = parsePriceParam(searchParams.get("min_price"));
   const priceMax = parsePriceParam(searchParams.get("max_price"));
@@ -93,6 +94,25 @@ export default function CrestlineProperties() {
     setSearchParams(new URLSearchParams(), { replace: true });
   };
 
+  const toggleFavoritesOnly = () => {
+    const next = new URLSearchParams(searchParams);
+    if (favoritesOnly) next.delete("favorites");
+    else next.set("favorites", "1");
+    setSearchParams(next, { replace: true });
+  };
+
+  const favoritesKey = "crestline_favorites_v1";
+  const readFavoriteIds = (): Set<string> => {
+    try {
+      const raw = window.localStorage.getItem(favoritesKey);
+      const ids = raw ? (JSON.parse(raw) as unknown) : [];
+      if (!Array.isArray(ids)) return new Set<string>();
+      return new Set(ids.filter((x) => typeof x === "string") as string[]);
+    } catch {
+      return new Set<string>();
+    }
+  };
+
   useEffect(() => {
     const load = async () => {
       const shouldShowSkeleton = properties.length === 0;
@@ -100,16 +120,18 @@ export default function CrestlineProperties() {
       setError(null);
 
       const q = qParam.trim();
-      const qEscapedForOr =
-        q.length > 0
-          ? // `supabase.or("a, b")` treats commas as OR separators, so escape commas to keep them literal.
-            q.replaceAll(",", "\\,")
-          : "";
+      // Supabase `.or()` uses commas as OR separators, so if the user typed `Palm Beach, FL`
+      // we split into tokens and build a safe OR string with no commas inside values.
+      const qTokens = q.length > 0 ? q.split(",").map((t) => t.trim()).filter(Boolean) : [];
 
       let query = supabase.from("listings").select("*");
 
       if (q) {
-        query = query.or(`title.ilike.%${qEscapedForOr}%,location.ilike.%${qEscapedForOr}%`);
+        const tokensToUse = qTokens.length > 0 ? qTokens : [q];
+        const orConditions = tokensToUse
+          .flatMap((token) => [`title.ilike.%${token}%`, `location.ilike.%${token}%`])
+          .join(",");
+        query = query.or(orConditions);
       }
 
       if (selectedType !== "All") query = query.eq("type", selectedType);
@@ -136,13 +158,18 @@ export default function CrestlineProperties() {
       if (error) {
         setError("Failed to load properties.");
       } else {
-        setProperties((data ?? []) as Listing[]);
+        let next = (data ?? []) as Listing[];
+        if (favoritesOnly) {
+          const favIds = readFavoriteIds();
+          next = next.filter((p) => favIds.has(p.id));
+        }
+        setProperties(next);
       }
       setLoading(false);
     };
 
     load();
-  }, [qParam, selectedType, selectedStatus, priceMin, priceMax, bedsMin, bathsMin, sort]);
+  }, [qParam, selectedType, selectedStatus, priceMin, priceMax, bedsMin, bathsMin, sort, favoritesOnly]);
 
   useEffect(() => {
     const loadTypes = async () => {
@@ -236,6 +263,18 @@ export default function CrestlineProperties() {
               clearFilters={clearFilters}
               hasActiveFilters={hasActiveFilters}
               onOpenMobileFilters={() => setMobileFiltersOpen(true)}
+              favoritesOnly={favoritesOnly}
+              onToggleFavoritesOnly={toggleFavoritesOnly}
+              favoritesCount={(() => {
+                try {
+                  // For UI only; safe fallback.
+                  const raw = window.localStorage.getItem(favoritesKey);
+                  const ids = raw ? (JSON.parse(raw) as unknown) : [];
+                  return Array.isArray(ids) ? ids.filter((x) => typeof x === "string").length : 0;
+                } catch {
+                  return 0;
+                }
+              })()}
             />
           </div>
 
