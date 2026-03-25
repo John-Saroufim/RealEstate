@@ -24,6 +24,18 @@ function clampNumber(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n));
 }
 
+function parsePriceDigits(raw: string): number | null {
+  const digits = raw.replace(/\D/g, "");
+  if (!digits) return null;
+  const n = Number(digits);
+  if (!Number.isFinite(n)) return null;
+  return Math.round(n);
+}
+
+function formatPriceNumber(n: number) {
+  return Math.round(n).toLocaleString("en-US");
+}
+
 const fadeUp = {
   hidden: { opacity: 0, y: 18 },
   visible: (i: number) => ({
@@ -100,6 +112,8 @@ export default function CrestlineHome() {
   const [priceStatsLoading, setPriceStatsLoading] = useState(true);
   const [heroPriceMin, setHeroPriceMin] = useState<number | null>(null);
   const [heroPriceMax, setHeroPriceMax] = useState<number | null>(null);
+  const [heroPriceMinInput, setHeroPriceMinInput] = useState("");
+  const [heroPriceMaxInput, setHeroPriceMaxInput] = useState("");
 
   const [heroLocation, setHeroLocation] = useState("");
   const [heroType, setHeroType] = useState<string>("All");
@@ -179,6 +193,8 @@ export default function CrestlineHome() {
           setPriceStats(fallback);
           setHeroPriceMin(fallback.min);
           setHeroPriceMax(fallback.max);
+          setHeroPriceMinInput(formatPriceNumber(fallback.min));
+          setHeroPriceMaxInput(formatPriceNumber(fallback.max));
           return;
         }
 
@@ -193,6 +209,8 @@ export default function CrestlineHome() {
         setPriceStats(stats);
         setHeroPriceMin(min);
         setHeroPriceMax(max);
+        setHeroPriceMinInput(formatPriceNumber(min));
+        setHeroPriceMaxInput(formatPriceNumber(max));
       } catch {
         // Fallback if the query fails.
         const fallbackAvg = 2_500_000;
@@ -200,6 +218,8 @@ export default function CrestlineHome() {
         setPriceStats(fallback);
         setHeroPriceMin(fallback.min);
         setHeroPriceMax(fallback.max);
+        setHeroPriceMinInput(formatPriceNumber(fallback.min));
+        setHeroPriceMaxInput(formatPriceNumber(fallback.max));
       } finally {
         setPriceStatsLoading(false);
       }
@@ -337,34 +357,48 @@ export default function CrestlineHome() {
                         <>
                           <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 mb-1.5">
                             <Input
-                              type="number"
-                              min={priceStats.min}
-                              max={heroPriceMax ?? priceStats.max}
-                              step={priceStats.step}
-                              value={Math.round(heroPriceMin ?? priceStats.min)}
+                              type="text"
+                              inputMode="numeric"
+                              value={heroPriceMinInput}
                               onChange={(e) => {
-                                const raw = Number(e.target.value);
-                                if (!Number.isFinite(raw)) return;
+                                const nextRaw = e.target.value;
+                                setHeroPriceMinInput(nextRaw);
+                                const parsed = parsePriceDigits(nextRaw);
+                                if (parsed == null) return;
                                 const upperBound = heroPriceMax ?? priceStats.max;
-                                const next = clampNumber(Math.round(raw), priceStats.min, upperBound);
+                                const next = clampNumber(parsed, priceStats.min, upperBound);
                                 setHeroPriceMin(next);
+                              }}
+                              onBlur={() => {
+                                const parsed = parsePriceDigits(heroPriceMinInput);
+                                const upperBound = heroPriceMax ?? priceStats.max;
+                                const next = parsed == null ? priceStats.min : clampNumber(parsed, priceStats.min, upperBound);
+                                setHeroPriceMin(next);
+                                setHeroPriceMinInput(formatPriceNumber(next));
                               }}
                               className="h-8 px-0 bg-transparent border-0 text-white placeholder:text-white/50 rounded-none focus-visible:ring-0 focus-visible:outline-none tabular-nums"
                               aria-label="Minimum price"
                             />
                             <span className="text-white/45 text-center">to</span>
                             <Input
-                              type="number"
-                              min={heroPriceMin ?? priceStats.min}
-                              max={priceStats.max}
-                              step={priceStats.step}
-                              value={Math.round(heroPriceMax ?? priceStats.max)}
+                              type="text"
+                              inputMode="numeric"
+                              value={heroPriceMaxInput}
                               onChange={(e) => {
-                                const raw = Number(e.target.value);
-                                if (!Number.isFinite(raw)) return;
+                                const nextRaw = e.target.value;
+                                setHeroPriceMaxInput(nextRaw);
+                                const parsed = parsePriceDigits(nextRaw);
+                                if (parsed == null) return;
                                 const lowerBound = heroPriceMin ?? priceStats.min;
-                                const next = clampNumber(Math.round(raw), lowerBound, priceStats.max);
+                                const next = clampNumber(parsed, lowerBound, priceStats.max);
                                 setHeroPriceMax(next);
+                              }}
+                              onBlur={() => {
+                                const parsed = parsePriceDigits(heroPriceMaxInput);
+                                const lowerBound = heroPriceMin ?? priceStats.min;
+                                const next = parsed == null ? priceStats.max : clampNumber(parsed, lowerBound, priceStats.max);
+                                setHeroPriceMax(next);
+                                setHeroPriceMaxInput(formatPriceNumber(next));
                               }}
                               className="h-8 px-0 bg-transparent border-0 text-white placeholder:text-white/50 rounded-none focus-visible:ring-0 focus-visible:outline-none tabular-nums text-right"
                               aria-label="Maximum price"
@@ -381,6 +415,8 @@ export default function CrestlineHome() {
                                 const [minV, maxV] = v;
                                 setHeroPriceMin(minV);
                                 setHeroPriceMax(maxV);
+                                setHeroPriceMinInput(formatPriceNumber(minV));
+                                setHeroPriceMaxInput(formatPriceNumber(maxV));
                               }}
                               className="w-full -translate-y-1"
                               aria-label="Price range (min to max)"
