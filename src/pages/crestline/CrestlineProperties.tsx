@@ -20,7 +20,6 @@ type Listing = {
   sqft: number | null;
   type: string | null;
   status: string | null;
-  description: string | null;
   image_url: string | null;
 };
 
@@ -121,7 +120,10 @@ export default function CrestlineProperties() {
 
       const q = qParam.trim().replace(/\s+/g, " ");
 
-      let query = supabase.from("listings").select("*");
+      // Only fetch fields needed for the property cards (smaller payload = faster filters).
+      let query = supabase
+        .from("listings")
+        .select("id,title,price,location,beds,baths,sqft,type,status,image_url");
 
       if (q) {
         if (q.includes(",")) {

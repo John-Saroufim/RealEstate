@@ -1,4 +1,4 @@
-import { useId, useMemo, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useState, type ReactNode } from "react";
 import { Search, SlidersHorizontal, X, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -278,6 +278,22 @@ export function PropertyFiltersPanel({
   hasActiveFilters,
   onOpenMobileFilters,
 }: PropertyFiltersPanelProps) {
+  const [draftQ, setDraftQ] = useState(qParam);
+
+  useEffect(() => {
+    setDraftQ(qParam);
+  }, [qParam]);
+
+  // Debounce search typing so we don't spam Supabase queries.
+  useEffect(() => {
+    const t = window.setTimeout(() => {
+      setParam("q", draftQ);
+    }, 350);
+    return () => window.clearTimeout(t);
+    // Intentionally only depend on draftQ; setParam is stable from parent.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draftQ]);
+
   const activePills = useMemo(() => {
     const pills: { id: string; label: string; onRemove: () => void }[] = [];
     const q = qParam.trim();
@@ -396,10 +412,11 @@ export function PropertyFiltersPanel({
               <Search className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-crestline-muted/90" />
               <Input
                 placeholder="Search by name or location…"
-                value={qParam}
-                onChange={(e) => setParam("q", e.target.value)}
+                value={draftQ}
+                onChange={(e) => setDraftQ(e.target.value)}
                 list={locationSuggestions && locationSuggestions.length > 0 ? "crestline-properties-search-locations" : undefined}
                 className={cn(searchInputClass, "w-full")}
+                onBlur={() => setParam("q", draftQ)}
               />
             </div>
             <Button
