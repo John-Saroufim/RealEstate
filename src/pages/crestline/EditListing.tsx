@@ -6,8 +6,20 @@ import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+
+const LISTING_STATUSES = ["For Sale", "For Rent", "Sold", "Featured"] as const;
+
+function listingStatusOptions(current: string | null): string[] {
+  const base = [...LISTING_STATUSES];
+  const s = current?.trim();
+  if (s && !(LISTING_STATUSES as readonly string[]).includes(s)) {
+    return [s, ...base];
+  }
+  return base;
+}
 
 type ListingForm = {
   title: string;
@@ -335,12 +347,21 @@ export default function EditListing() {
                   <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">
                     Status
                   </label>
-                  <Input
-                    name="status"
+                  <Select
                     value={form.status}
-                    onChange={handleChange}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
-                  />
+                    onValueChange={(v) => setForm((prev) => ({ ...prev, status: v }))}
+                  >
+                    <SelectTrigger className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none h-10">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white text-slate-900 rounded-none">
+                      {listingStatusOptions(form.status).map((s) => (
+                        <SelectItem key={s} value={s} className="cursor-pointer">
+                          {s}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div>
