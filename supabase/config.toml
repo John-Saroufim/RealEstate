@@ -1,1 +1,6 @@
 project_id = "qfxzvpoloezqleksvsju"
+
+# Allow the AI chat widget to call `chat` without requiring a logged-in user.
+# If you prefer only authenticated users, set verify_jwt = true and redeploy.
+[functions.chat]
+verify_jwt = false

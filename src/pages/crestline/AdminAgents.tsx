@@ -89,7 +89,7 @@ export default function AdminAgents() {
   };
 
   return (
-    <div className="min-h-screen bg-crestline-bg text-white font-sans">
+    <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
       <CrestlineNavbar />
 
       <section className="pt-32 pb-6 border-b border-crestline-gold/10 bg-crestline-surface">
@@ -97,17 +97,17 @@ export default function AdminAgents() {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div>
               <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white">Manage Agents</h1>
+              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">Manage Agents</h1>
             </div>
             <Button
               onClick={() => navigate("/crestline/admin/agents/new")}
-              className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none"
+              className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
             >
               New Agent
             </Button>
           </div>
           <div className="mt-6">
-            <AdminStatsOverview />
+            <AdminStatsOverview keys={["agents"]} />
           </div>
         </div>
       </section>
@@ -119,7 +119,7 @@ export default function AdminAgents() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search agents..."
-              className="bg-crestline-bg border-white/10 text-white rounded-none h-12 lg:w-96"
+              className="bg-crestline-bg border-slate-200 text-slate-900 rounded-none h-12 lg:w-96"
             />
             <div className="text-xs text-crestline-muted">{agents.length} agents</div>
           </div>
@@ -128,15 +128,15 @@ export default function AdminAgents() {
           {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
           {!loading && !error && agents.length === 0 && (
-            <div className="border border-white/5 p-10 text-center bg-crestline-surface">
+            <div className="border border-slate-200 p-10 text-center bg-crestline-surface">
               <div className="mx-auto h-12 w-12 border border-crestline-gold/20 bg-crestline-bg/50 flex items-center justify-center mb-4">
                 <User className="h-6 w-6 text-crestline-gold" />
               </div>
-              <p className="font-serif text-xl font-bold text-white mb-2">No agents yet</p>
+              <p className="font-serif text-xl font-bold text-slate-900 mb-2">No agents yet</p>
               <p className="text-sm text-crestline-muted mb-6">Create your first agent profile to start assigning advisors to listings.</p>
               <Button
                 onClick={() => navigate("/crestline/admin/agents/new")}
-                className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none"
+                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
               >
                 Create your first agent
               </Button>
@@ -146,20 +146,20 @@ export default function AdminAgents() {
           {!loading && !error && agents.length > 0 && (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {agents.map((a) => (
-                <Card key={a.id} className="bg-crestline-surface border border-white/5 rounded-none overflow-hidden">
+                <Card key={a.id} className="bg-crestline-surface border border-slate-200 rounded-none overflow-hidden">
                   <CardContent className="p-6 space-y-4">
                     <div className="flex items-start gap-4">
                       {a.profile_image_url ? (
-                        <img src={a.profile_image_url} alt={a.full_name ?? "Agent"} className="h-16 w-16 object-cover border border-white/10" />
+                        <img src={a.profile_image_url} alt={a.full_name ?? "Agent"} className="h-16 w-16 object-cover border border-slate-200" />
                       ) : (
-                        <div className="h-16 w-16 bg-white/5 border border-white/10" />
+                        <div className="h-16 w-16 bg-slate-50 border border-slate-200" />
                       )}
                       <div className="flex-1">
-                        <div className="font-serif text-xl font-bold text-white leading-tight">{a.full_name ?? "Agent"}</div>
+                        <div className="font-serif text-xl font-bold text-slate-900 leading-tight">{a.full_name ?? "Agent"}</div>
                         {a.title ? <div className="text-xs text-crestline-gold uppercase tracking-wider mt-1">{a.title}</div> : null}
                         {a.city ? <div className="text-sm text-crestline-muted mt-2">{a.city}</div> : null}
                         <div className="mt-3 flex flex-wrap gap-2 items-center">
-                          <Badge className={a.is_active ? "bg-crestline-gold text-crestline-bg" : "bg-white/5 text-white"} variant="secondary">
+                          <Badge className={a.is_active ? "bg-crestline-gold text-crestline-on-gold" : "bg-slate-50 text-slate-900"} variant="secondary">
                             {a.is_active ? "Active" : "Inactive"}
                           </Badge>
                         </div>
@@ -176,7 +176,7 @@ export default function AdminAgents() {
                     <div className="flex justify-between gap-2 pt-2">
                       <Button
                         variant="outline"
-                        className="border-white/20 text-white hover:bg-white/5 rounded-none h-9 px-3 text-xs flex items-center gap-1.5"
+                        className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none h-9 px-3 text-xs flex items-center gap-1.5"
                         onClick={() => navigate(`/crestline/admin/agents/${a.id}`)}
                       >
                         <Pencil className="h-3.5 w-3.5" />
@@ -185,7 +185,7 @@ export default function AdminAgents() {
                       <div className="flex gap-2">
                         <Button
                           variant="outline"
-                          className="border-white/20 text-white hover:bg-white/5 rounded-none h-9 px-3 text-xs"
+                          className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none h-9 px-3 text-xs"
                           onClick={() => handleToggleActive(a.id, !a.is_active)}
                         >
                           {a.is_active ? "Deactivate" : "Activate"}

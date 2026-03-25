@@ -6,62 +6,64 @@
 
 @layer base {
   :root {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 96%;
+    --background: 210 33% 98%;
+    --foreground: 222 30% 14%;
 
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 96%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 30% 14%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 30% 14%;
 
-    --primary: 152 100% 50%;
-    --primary-foreground: 0 0% 4%;
+    --primary: 221 56% 38%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 96%;
+    --secondary: 210 22% 95%;
+    --secondary-foreground: 222 30% 14%;
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 55%;
+    --muted: 210 20% 95%;
+    --muted-foreground: 218 12% 42%;
 
-    --accent: 152 100% 50%;
-    --accent-foreground: 0 0% 4%;
+    --accent: 210 24% 94%;
+    --accent-foreground: 222 30% 14%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 96%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 14%;
-    --input: 0 0% 14%;
-    --ring: 152 100% 50%;
+    --border: 214 18% 87%;
+    --input: 214 18% 87%;
+    --ring: 221 56% 45%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 152 100% 50%;
-    --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border: 0 0% 14%;
-    --sidebar-ring: 152 100% 50%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 30% 14%;
+    --sidebar-primary: 221 56% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 22% 95%;
+    --sidebar-accent-foreground: 222 30% 14%;
+    --sidebar-border: 214 18% 87%;
+    --sidebar-ring: 221 56% 45%;
 
-    /* Custom tokens */
+    /* Custom tokens (legacy gym / shared) */
     --neon: 152 100% 50%;
     --neon-glow: 0 0 20px hsl(152 100% 50% / 0.4);
     --neon-glow-strong: 0 0 40px hsl(152 100% 50% / 0.6);
-    --surface-1: 0 0% 7%;
-    --surface-2: 0 0% 10%;
-    --surface-3: 0 0% 14%;
+    --surface-1: 210 24% 97%;
+    --surface-2: 210 20% 95%;
+    --surface-3: 214 18% 91%;
     --gradient-neon: linear-gradient(135deg, hsl(152 100% 50%), hsl(170 100% 45%));
-    --gradient-dark: linear-gradient(180deg, hsl(0 0% 6%), hsl(0 0% 3%));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 8%), hsl(0 0% 5%));
+    --gradient-dark: linear-gradient(180deg, hsl(210 33% 98%), hsl(0 0% 100%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(210 24% 97%));
 
-    /* RealEstate tokens */
-    --crestline-bg: 220 20% 6%;
-    --crestline-surface: 220 18% 9%;
-    --crestline-gold: 38 65% 58%;
-    /* Slightly lighter muted text for premium readability */
-    --crestline-muted: 220 10% 62%;
+    /* RealEstate tokens (light luxury) */
+    --crestline-bg: 210 33% 98%;
+    --crestline-surface: 210 24% 96%;
+    /* Primary brand accent (blue; token name kept for compatibility) */
+    --crestline-gold: 221 56% 38%;
+    --crestline-muted: 218 12% 42%;
+    --crestline-ink: 222 30% 14%;
+    --crestline-on-gold: 0 0% 100%;
   }
 }
 
@@ -98,7 +100,7 @@
 
   .glass-card {
     @apply bg-card border border-border rounded-xl backdrop-blur-sm;
-    background: linear-gradient(145deg, hsl(0 0% 8% / 0.8), hsl(0 0% 5% / 0.8));
+    background: linear-gradient(145deg, hsl(0 0% 100% / 0.92), hsl(210 22% 96% / 0.92));
   }
 
   .gradient-neon-bg {
@@ -123,12 +125,12 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: hsl(0 0% 4%);
+  background: hsl(210 20% 94%);
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(0 0% 20%);
+  background: hsl(215 14% 70%);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(0 0% 30%);
+  background: hsl(215 14% 58%);
 }

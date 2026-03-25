@@ -14,6 +14,7 @@ const coreLinks = [
 
 const adminLinks = [
   { label: "Inquiries", to: "/crestline/admin/inquiries" },
+  { label: "Reviews", to: "/crestline/admin/reviews" },
   { label: "Listings Admin", to: "/crestline/admin/listings" },
 ];
 
@@ -58,7 +59,7 @@ export function CrestlineNavbar() {
   }, []);
 
   const inactiveAfterClass = useMemo(() => {
-    return "text-white/70 hover:text-white after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-crestline-gold after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300";
+    return "text-slate-600 hover:text-slate-900 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-crestline-gold after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300";
   }, []);
 
   return (
@@ -74,14 +75,14 @@ export function CrestlineNavbar() {
         <div className="flex items-center justify-between h-20 w-full">
           <Link to="/crestline" className="flex items-center gap-2.5 shrink-0">
             <MontelibanoHouseLogo className="h-7 w-7 text-crestline-gold" />
-            <span className="font-serif text-xl font-bold text-white tracking-wide">
+            <span className="font-serif text-2xl font-bold text-slate-900 tracking-wide leading-none">
               RealEstate
             </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-6 ml-12 lg:ml-16 flex-1 justify-end">
             {/* Nav links: core → admin (if applicable) → About → Contact */}
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-8">
               {coreLinks.map((link) => (
                 <Link
                   key={link.to}
@@ -89,9 +90,9 @@ export function CrestlineNavbar() {
                   aria-current={location.pathname === link.to ? "page" : undefined}
                   className={[
                     "relative",
-                    "text-sm font-medium tracking-wide",
+                    "text-[16px] font-medium tracking-wide leading-6",
                     "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
                     location.pathname === link.to ? activeClass : inactiveAfterClass,
                   ].join(" ")}
                 >
@@ -106,9 +107,9 @@ export function CrestlineNavbar() {
                   aria-current={location.pathname.startsWith(link.to) ? "page" : undefined}
                   className={[
                     "relative",
-                    "text-sm font-medium tracking-wide",
+                    "text-[16px] font-medium tracking-wide leading-6",
                     "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
                     location.pathname.startsWith(link.to) ? activeClass : inactiveAfterClass,
                   ].join(" ")}
                 >
@@ -123,9 +124,9 @@ export function CrestlineNavbar() {
                   aria-current={location.pathname === link.to ? "page" : undefined}
                   className={[
                     "relative",
-                    "text-sm font-medium tracking-wide",
+                    "text-[16px] font-medium tracking-wide leading-6",
                     "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
                     location.pathname === link.to ? activeClass : inactiveAfterClass,
                   ].join(" ")}
                 >
@@ -136,7 +137,7 @@ export function CrestlineNavbar() {
 
             {/* Action buttons */}
             <Link to="/crestline/contact">
-              <Button className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 font-semibold text-sm px-6 rounded-none h-9 transition-colors duration-200">
+              <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm px-6 rounded-none h-9 transition-colors duration-200">
                 Schedule Viewing
               </Button>
             </Link>
@@ -145,7 +146,7 @@ export function CrestlineNavbar() {
               <Link to="/logout">
                 <Button
                   variant="outline"
-                  className="border-white/20 text-white hover:bg-white/5 rounded-none font-semibold text-sm px-4 h-9 transition-colors duration-200"
+                  className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none font-semibold text-sm px-4 h-9 transition-colors duration-200"
                 >
                   Log out
                 </Button>
@@ -154,7 +155,7 @@ export function CrestlineNavbar() {
               <Link to="/login">
                 <Button
                   variant="outline"
-                  className="border-white/20 text-white hover:bg-white/5 rounded-none font-semibold text-sm px-4 h-9 transition-colors duration-200"
+                  className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none font-semibold text-sm px-4 h-9 transition-colors duration-200"
                 >
                   Broker Login
                 </Button>
@@ -163,7 +164,7 @@ export function CrestlineNavbar() {
           </div>
 
           <button
-            className="md:hidden text-white"
+            className="md:hidden text-slate-900"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
@@ -181,7 +182,7 @@ export function CrestlineNavbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="md:hidden fixed inset-0 bg-black/50 z-40"
+              className="md:hidden fixed inset-0 bg-slate-900/50 z-40"
               onClick={() => setOpen(false)}
             />
 
@@ -194,18 +195,18 @@ export function CrestlineNavbar() {
               aria-modal="true"
               className="md:hidden fixed top-0 left-0 right-0 z-50 bg-crestline-bg/95 backdrop-blur-xl border-b border-crestline-gold/10 max-h-[100vh] overflow-y-auto"
             >
-              <div className="px-4 py-6 space-y-4">
+              <div className="px-4 py-6 space-y-5">
                 {coreLinks.map((link) => (
                   <Link
                     key={link.to}
                     to={link.to}
                     onClick={() => setOpen(false)}
                     className={[
-                      "block text-sm font-medium tracking-wide px-2 py-2 rounded-none",
-                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                      "block text-[16px] font-medium tracking-wide leading-6 px-2 py-2.5 rounded-none",
+                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
                       location.pathname === link.to
                         ? "text-crestline-gold"
-                        : "text-white/70 hover:text-white",
+                        : "text-slate-600 hover:text-slate-900",
                     ].join(" ")}
                   >
                     {link.label}
@@ -218,11 +219,11 @@ export function CrestlineNavbar() {
                     to={link.to}
                     onClick={() => setOpen(false)}
                     className={[
-                      "block text-sm font-medium tracking-wide px-2 py-2 rounded-none",
-                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                      "block text-[16px] font-medium tracking-wide leading-6 px-2 py-2.5 rounded-none",
+                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
                       location.pathname.startsWith(link.to)
                         ? "text-crestline-gold"
-                        : "text-white/70 hover:text-white",
+                        : "text-slate-600 hover:text-slate-900",
                     ].join(" ")}
                   >
                     {link.label}
@@ -235,11 +236,11 @@ export function CrestlineNavbar() {
                     to={link.to}
                     onClick={() => setOpen(false)}
                     className={[
-                      "block text-sm font-medium tracking-wide px-2 py-2 rounded-none",
-                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+                      "block text-[16px] font-medium tracking-wide leading-6 px-2 py-2.5 rounded-none",
+                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
                       location.pathname === link.to
                         ? "text-crestline-gold"
-                        : "text-white/70 hover:text-white",
+                        : "text-slate-600 hover:text-slate-900",
                     ].join(" ")}
                   >
                     {link.label}
@@ -247,20 +248,20 @@ export function CrestlineNavbar() {
                 ))}
 
                 <Link to="/crestline/contact" onClick={() => setOpen(false)}>
-                  <Button className="w-full bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 font-semibold text-sm rounded-none mt-2 h-11 transition-colors duration-200">
+                  <Button className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm rounded-none mt-2 h-11 transition-colors duration-200">
                     Schedule Viewing
                   </Button>
                 </Link>
 
                 {user ? (
                   <Link to="/logout" onClick={() => setOpen(false)}>
-                    <Button className="w-full bg-white/5 border-white/10 text-white hover:bg-white/10 font-semibold text-sm rounded-none mt-2 h-11 transition-colors duration-200">
+                    <Button className="w-full bg-slate-50 border-slate-200 text-slate-900 hover:bg-slate-100 font-semibold text-sm rounded-none mt-2 h-11 transition-colors duration-200">
                       Log out
                     </Button>
                   </Link>
                 ) : (
                   <Link to="/login" onClick={() => setOpen(false)}>
-                    <Button className="w-full bg-white/5 border-white/10 text-white hover:bg-white/10 font-semibold text-sm rounded-none mt-2 h-11 transition-colors duration-200">
+                    <Button className="w-full bg-slate-50 border-slate-200 text-slate-900 hover:bg-slate-100 font-semibold text-sm rounded-none mt-2 h-11 transition-colors duration-200">
                       Broker Login
                     </Button>
                   </Link>

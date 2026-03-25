@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
   Bed,
   Bath,
@@ -14,6 +13,8 @@ import {
   Package2,
   Users,
   Waves,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
@@ -87,8 +88,20 @@ function coerceAmenities(value: unknown): string[] {
 export default function CrestlinePropertyDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
-  const reducedMotion = useReducedMotion();
+
+  const backFrom = (location.state as { from?: string } | undefined)?.from;
+
+  const goBack = useCallback(() => {
+    if (backFrom) {
+      navigate(backFrom);
+    } else {
+      navigate(-1);
+    }
+  }, [backFrom, navigate]);
+
+  const galleryRef = useRef<HTMLDivElement>(null);
 
   const [property, setProperty] = useState<Property | null>(null);
   const [gallery, setGallery] = useState<GalleryImage[]>([]);
@@ -262,69 +275,180 @@ export default function CrestlinePropertyDetails() {
   const statusBadge = status || "For Sale";
 
   const images = gallery;
-  const activeImage = images[Math.min(activeImageIndex, Math.max(0, images.length - 1))];
+
+  const scrollToSlide = useCallback(
+    (index: number, behavior: ScrollBehavior = "smooth") => {
+      const el = galleryRef.current;
+      if (!el || images.length === 0) return;
+      const clamped = Math.max(0, Math.min(index, images.length - 1));
+      const w = el.offsetWidth;
+      el.scrollTo({ left: clamped * w, behavior });
+      setActiveImageIndex(clamped);
+    },
+    [images.length],
+  );
+
+  const handleGalleryScroll = useCallback(() => {
+    const el = galleryRef.current;
+    if (!el || images.length <= 1) return;
+    const w = el.offsetWidth;
+    if (w <= 0) return;
+    const idx = Math.round(el.scrollLeft / w);
+    const clamped = Math.max(0, Math.min(idx, images.length - 1));
+    setActiveImageIndex((prev) => (prev === clamped ? prev : clamped));
+  }, [images.length]);
+
+  useEffect(() => {
+    const el = galleryRef.current;
+    if (!el || gallery.length === 0) return;
+    el.scrollTo({ left: 0, behavior: "auto" });
+    setActiveImageIndex(0);
+  }, [id, gallery.length]);
 
   return (
-    <div className="min-h-screen bg-crestline-bg text-white font-sans">
+    <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
       <CrestlineNavbar />
 
       <div className="pt-32">
         {loading ? (
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={goBack}
+              className="group -ml-2 mb-8 gap-1 rounded-none px-2 text-crestline-muted hover:bg-transparent hover:text-crestline-gold"
+              aria-label="Go back to previous page"
+            >
+              <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+              Back
+            </Button>
             <div className="grid lg:grid-cols-5 gap-10">
               <div className="lg:col-span-3">
-                <div className="w-full aspect-[16/10] bg-white/5 animate-pulse" />
+                <div className="w-full aspect-[16/10] bg-slate-50 animate-pulse" />
               </div>
               <div className="lg:col-span-2">
-                <div className="h-6 w-2/3 bg-white/5 animate-pulse mb-4" />
-                <div className="h-10 w-full bg-white/5 animate-pulse mb-4" />
-                <div className="h-20 w-full bg-white/5 animate-pulse mb-4" />
-                <div className="h-40 w-full bg-white/5 animate-pulse" />
+                <div className="h-6 w-2/3 bg-slate-50 animate-pulse mb-4" />
+                <div className="h-10 w-full bg-slate-50 animate-pulse mb-4" />
+                <div className="h-20 w-full bg-slate-50 animate-pulse mb-4" />
+                <div className="h-40 w-full bg-slate-50 animate-pulse" />
               </div>
             </div>
           </section>
         ) : error || !property ? (
           <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div className="border border-white/10 p-8 text-center">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={goBack}
+              className="group -ml-2 mb-8 gap-1 rounded-none px-2 text-crestline-muted hover:bg-transparent hover:text-crestline-gold"
+              aria-label="Go back to previous page"
+            >
+              <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+              Back
+            </Button>
+            <div className="border border-slate-200 p-8 text-center">
               <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Property</p>
-              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Not Found</h1>
+              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Not Found</h1>
               <p className="text-crestline-muted mb-6">{error ?? "This property does not exist."}</p>
               <Button
                 onClick={() => navigate("/crestline/properties")}
-                className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none"
+                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
               >
-                Back to Properties
+                View all listings
               </Button>
             </div>
           </section>
         ) : (
           <>
             <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={goBack}
+                className="group -ml-2 mb-8 gap-1 rounded-none px-2 text-crestline-muted hover:bg-transparent hover:text-crestline-gold"
+                aria-label="Go back to previous page"
+              >
+                <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+                Back
+              </Button>
               <div className="grid lg:grid-cols-5 gap-10">
                 <div className="lg:col-span-3">
                   {/* Gallery + Title */}
-                  <div className="relative border border-white/5 bg-crestline-surface overflow-hidden">
-                    <div className="relative">
-                      <AnimatePresence mode="wait">
-                        {activeImage ? (
-                          <motion.img
-                            key={activeImage.id}
-                            initial={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
-                            src={activeImage.url}
-                            alt={activeImage.alt}
-                            loading="eager"
-                            decoding="async"
-                            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                            className="w-full h-[320px] sm:h-[380px] md:h-[420px] lg:h-[460px] object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-[320px] sm:h-[380px] md:h-[420px] lg:h-[460px] bg-white/5" />
-                        )}
-                      </AnimatePresence>
+                  <div className="relative border border-slate-200 bg-crestline-surface overflow-hidden">
+                    <div
+                      className="relative"
+                      role="region"
+                      aria-roledescription="carousel"
+                      aria-label="Property photos"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (images.length <= 1) return;
+                        if (e.key === "ArrowLeft") {
+                          e.preventDefault();
+                          scrollToSlide(activeImageIndex - 1);
+                        } else if (e.key === "ArrowRight") {
+                          e.preventDefault();
+                          scrollToSlide(activeImageIndex + 1);
+                        }
+                      }}
+                    >
+                      {images.length > 0 ? (
+                        <div className="relative">
+                          <div
+                            ref={galleryRef}
+                            onScroll={handleGalleryScroll}
+                            className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-pan-x"
+                          >
+                            {images.map((img) => (
+                              <div
+                                key={img.id}
+                                className="min-w-full shrink-0 snap-center"
+                              >
+                                <img
+                                  src={img.url}
+                                  alt={img.alt}
+                                  loading="eager"
+                                  decoding="async"
+                                  draggable={false}
+                                  className="w-full h-[320px] sm:h-[380px] md:h-[420px] lg:h-[460px] object-cover select-none"
+                                />
+                              </div>
+                            ))}
+                          </div>
 
-                      <div className="absolute top-5 left-5 bg-crestline-bg/80 backdrop-blur-sm text-crestline-gold text-xs font-semibold px-3 py-1.5 tracking-wider uppercase">
+                          {images.length > 1 && (
+                            <>
+                              <div className="pointer-events-none absolute inset-y-0 left-0 flex w-14 items-center bg-gradient-to-r from-crestline-bg/60 to-transparent sm:w-20" />
+                              <div className="pointer-events-none absolute inset-y-0 right-0 flex w-14 items-center justify-end bg-gradient-to-l from-crestline-bg/60 to-transparent sm:w-20" />
+                              <button
+                                type="button"
+                                aria-label="Previous photo"
+                                onClick={() => scrollToSlide(activeImageIndex - 1)}
+                                disabled={activeImageIndex <= 0}
+                                className="absolute left-2 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center border border-slate-200 bg-white/90 text-slate-900 backdrop-blur-sm transition-opacity hover:bg-white disabled:pointer-events-none disabled:opacity-30"
+                              >
+                                <ChevronLeft className="h-6 w-6" />
+                              </button>
+                              <button
+                                type="button"
+                                aria-label="Next photo"
+                                onClick={() => scrollToSlide(activeImageIndex + 1)}
+                                disabled={activeImageIndex >= images.length - 1}
+                                className="absolute right-2 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center border border-slate-200 bg-white/90 text-slate-900 backdrop-blur-sm transition-opacity hover:bg-white disabled:pointer-events-none disabled:opacity-30"
+                              >
+                                <ChevronRight className="h-6 w-6" />
+                              </button>
+                              <div className="absolute bottom-4 right-4 z-10 bg-crestline-bg/80 px-2.5 py-1 text-[11px] font-semibold tabular-nums text-slate-800 backdrop-blur-sm border border-slate-200">
+                                {activeImageIndex + 1} / {images.length}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="w-full h-[320px] sm:h-[380px] md:h-[420px] lg:h-[460px] bg-slate-50" />
+                      )}
+
+                      <div className="absolute top-5 left-5 z-10 bg-crestline-bg/80 backdrop-blur-sm text-crestline-gold text-xs font-semibold px-3 py-1.5 tracking-wider uppercase">
                         {statusBadge}
                       </div>
                     </div>
@@ -336,11 +460,11 @@ export default function CrestlinePropertyDetails() {
                             <button
                               key={img.id}
                               type="button"
-                              onClick={() => setActiveImageIndex(idx)}
+                              onClick={() => scrollToSlide(idx)}
                               aria-label={`View image ${idx + 1}`}
                               className={[
                                 "relative shrink-0 w-20 h-14 sm:w-24 sm:h-16 border transition-all duration-200",
-                                idx === activeImageIndex ? "border-crestline-gold" : "border-white/10 hover:border-crestline-gold/30",
+                                idx === activeImageIndex ? "border-crestline-gold" : "border-slate-200 hover:border-crestline-gold/30",
                               ].join(" ")}
                             >
                               <img
@@ -358,7 +482,7 @@ export default function CrestlinePropertyDetails() {
                   </div>
 
                   <div className="mt-6">
-                    <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-2">
+                    <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-2">
                       {property.title}
                     </h1>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4">
@@ -374,11 +498,11 @@ export default function CrestlinePropertyDetails() {
                     </div>
 
                     {property.description && (
-                      <div className="border border-white/5 bg-crestline-surface p-6">
+                      <div className="border border-slate-200 bg-crestline-surface p-6">
                         <p className="text-sm text-crestline-muted uppercase tracking-wider font-semibold mb-4">
                           Property Description
                         </p>
-                        <div className="text-sm sm:text-base text-white/85 leading-relaxed whitespace-pre-line">
+                        <div className="text-sm sm:text-base text-slate-700 leading-relaxed whitespace-pre-line">
                           {property.description}
                         </div>
                       </div>
@@ -387,55 +511,55 @@ export default function CrestlinePropertyDetails() {
 
                   {/* Amenities + Key facts */}
                   <div className="mt-10 grid md:grid-cols-2 gap-8">
-                    <div className="border border-white/5 bg-crestline-surface p-6">
+                    <div className="border border-slate-200 bg-crestline-surface p-6">
                       <p className="text-sm text-crestline-muted uppercase tracking-wider font-semibold mb-4">
                         Key Details
                       </p>
                       <div className="grid grid-cols-2 gap-x-6 gap-y-3">
                         {property.beds != null && (
-                          <div className="flex items-center gap-2 text-sm text-white/85">
+                          <div className="flex items-center gap-2 text-sm text-slate-700">
                             <Bed className="h-4 w-4 text-crestline-gold" /> {property.beds} Beds
                           </div>
                         )}
                         {property.baths != null && (
-                          <div className="flex items-center gap-2 text-sm text-white/85">
+                          <div className="flex items-center gap-2 text-sm text-slate-700">
                             <Bath className="h-4 w-4 text-crestline-gold" /> {property.baths} Baths
                           </div>
                         )}
                         {property.sqft != null && (
-                          <div className="flex items-center gap-2 text-sm text-white/85">
+                          <div className="flex items-center gap-2 text-sm text-slate-700">
                             <Ruler className="h-4 w-4 text-crestline-gold" /> {property.sqft.toLocaleString()} sqft
                           </div>
                         )}
                         {property.type && (
-                          <div className="flex items-center gap-2 text-sm text-white/85">
+                          <div className="flex items-center gap-2 text-sm text-slate-700">
                             <Building2 className="h-4 w-4 text-crestline-gold" /> {property.type}
                           </div>
                         )}
                         {property.year_built != null && (
-                          <div className="flex items-center gap-2 text-sm text-white/85">
+                          <div className="flex items-center gap-2 text-sm text-slate-700">
                             <CheckCircle2 className="h-4 w-4 text-crestline-gold" /> Built {property.year_built}
                           </div>
                         )}
                         {property.lot_size && (
-                          <div className="flex items-center gap-2 text-sm text-white/85">
+                          <div className="flex items-center gap-2 text-sm text-slate-700">
                             <Package2 className="h-4 w-4 text-crestline-gold" /> Lot {property.lot_size}
                           </div>
                         )}
                         {property.parking && (
-                          <div className="flex items-center gap-2 text-sm text-white/85">
+                          <div className="flex items-center gap-2 text-sm text-slate-700">
                             <Waves className="h-4 w-4 text-crestline-gold" /> {property.parking}
                           </div>
                         )}
                         {property.hoa && (
-                          <div className="flex items-center gap-2 text-sm text-white/85">
+                          <div className="flex items-center gap-2 text-sm text-slate-700">
                             <Users className="h-4 w-4 text-crestline-gold" /> {property.hoa}
                           </div>
                         )}
                       </div>
                     </div>
 
-                    <div className="border border-white/5 bg-crestline-surface p-6">
+                    <div className="border border-slate-200 bg-crestline-surface p-6">
                       <p className="text-sm text-crestline-muted uppercase tracking-wider font-semibold mb-4">
                         Amenities
                       </p>
@@ -444,7 +568,7 @@ export default function CrestlinePropertyDetails() {
                           {coerceAmenities(property.amenities).slice(0, 12).map((a) => (
                             <span
                               key={a}
-                              className="px-3 py-1 text-xs border border-white/10 bg-crestline-bg/40 text-white/80"
+                              className="px-3 py-1 text-xs border border-slate-200 bg-crestline-bg/40 text-slate-700"
                             >
                               {a}
                             </span>
@@ -461,7 +585,7 @@ export default function CrestlinePropertyDetails() {
                     <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">
                       Related Properties
                     </p>
-                    <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white mb-6">Explore More Options</h2>
+                    <h2 className="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mb-6">Explore More Options</h2>
                     {related.length > 0 ? (
                       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                         {related.map((p) => (
@@ -492,7 +616,7 @@ export default function CrestlinePropertyDetails() {
                   <div className="space-y-6">
                     {/* Agent card */}
                     {agent ? (
-                      <div className="border border-white/5 bg-crestline-surface p-6">
+                      <div className="border border-slate-200 bg-crestline-surface p-6">
                         <p className="text-sm text-crestline-muted uppercase tracking-wider font-semibold mb-4">
                           Your Advisor
                         </p>
@@ -501,13 +625,13 @@ export default function CrestlinePropertyDetails() {
                             <img
                               src={agent.profile_image_url}
                               alt={agent.full_name ?? "Advisor"}
-                              className="w-16 h-16 rounded-none border border-white/10 object-cover"
+                              className="w-16 h-16 rounded-none border border-slate-200 object-cover"
                             />
                           ) : (
-                            <div className="w-16 h-16 border border-white/10 bg-white/5" />
+                            <div className="w-16 h-16 border border-slate-200 bg-slate-50" />
                           )}
                           <div className="flex-1">
-                            <div className="font-serif text-lg font-bold text-white">{agent.full_name ?? "Agent"}</div>
+                            <div className="font-serif text-lg font-bold text-slate-900">{agent.full_name ?? "Agent"}</div>
                             {agent.title && <div className="text-xs text-crestline-gold uppercase tracking-wider mt-1">{agent.title}</div>}
                             {agent.phone && (
                               <div className="flex items-center gap-2 text-sm text-crestline-muted mt-3">
@@ -522,7 +646,7 @@ export default function CrestlinePropertyDetails() {
                         )}
                       </div>
                     ) : (
-                      <div className="border border-white/5 bg-crestline-surface p-6">
+                      <div className="border border-slate-200 bg-crestline-surface p-6">
                         <p className="text-sm text-crestline-muted uppercase tracking-wider font-semibold mb-4">
                           Private Consultation
                         </p>
@@ -533,7 +657,7 @@ export default function CrestlinePropertyDetails() {
                     )}
 
                     {/* Inquiry form */}
-                    <div className="border border-white/5 bg-crestline-surface p-6">
+                    <div className="border border-slate-200 bg-crestline-surface p-6">
                       <p className="text-sm text-crestline-muted uppercase tracking-wider font-semibold mb-4">
                         Inquire About This Property
                       </p>
@@ -541,13 +665,13 @@ export default function CrestlinePropertyDetails() {
                       {submitted ? (
                         <div className="space-y-3">
                           <CheckCircle2 className="h-10 w-10 text-crestline-gold" />
-                          <p className="font-serif text-2xl font-bold text-white">Inquiry Received</p>
+                          <p className="font-serif text-2xl font-bold text-slate-900">Inquiry Received</p>
                           <p className="text-sm text-crestline-muted leading-relaxed">
                             Thanks for reaching out. We will contact you shortly regarding this property.
                           </p>
                           <Button
                             onClick={() => navigate("/crestline/properties")}
-                            className="w-full bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none"
+                            className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
                           >
                             Back to Properties
                           </Button>
@@ -561,7 +685,7 @@ export default function CrestlinePropertyDetails() {
                             <Input
                               value={inquiry.full_name}
                               onChange={(e) => setInquiry((p) => ({ ...p, full_name: e.target.value }))}
-                              className="bg-crestline-bg border-white/10 text-white placeholder:text-white/20 rounded-none h-12 focus-visible:ring-crestline-gold/50"
+                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none h-12 focus-visible:ring-crestline-gold/50"
                               placeholder="John Smith"
                             />
                             {fieldErrors.full_name && (
@@ -577,7 +701,7 @@ export default function CrestlinePropertyDetails() {
                               type="email"
                               value={inquiry.email}
                               onChange={(e) => setInquiry((p) => ({ ...p, email: e.target.value }))}
-                              className="bg-crestline-bg border-white/10 text-white placeholder:text-white/20 rounded-none h-12 focus-visible:ring-crestline-gold/50"
+                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none h-12 focus-visible:ring-crestline-gold/50"
                               placeholder="john@example.com"
                             />
                             {fieldErrors.email && (
@@ -592,7 +716,7 @@ export default function CrestlinePropertyDetails() {
                             <Input
                               value={inquiry.phone}
                               onChange={(e) => setInquiry((p) => ({ ...p, phone: e.target.value }))}
-                              className="bg-crestline-bg border-white/10 text-white placeholder:text-white/20 rounded-none h-12 focus-visible:ring-crestline-gold/50"
+                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none h-12 focus-visible:ring-crestline-gold/50"
                               placeholder="+1 (555) 000-0000"
                             />
                           </div>
@@ -605,7 +729,7 @@ export default function CrestlinePropertyDetails() {
                               value={inquiry.message}
                               onChange={(e) => setInquiry((p) => ({ ...p, message: e.target.value }))}
                               rows={5}
-                              className="bg-crestline-bg border-white/10 text-white placeholder:text-white/20 rounded-none focus-visible:ring-crestline-gold/50 resize-none"
+                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none focus-visible:ring-crestline-gold/50 resize-none"
                             />
                             {fieldErrors.message && (
                               <p className="text-xs text-red-400 mt-1">{fieldErrors.message}</p>
@@ -615,7 +739,7 @@ export default function CrestlinePropertyDetails() {
                           <Button
                             type="submit"
                             disabled={submitting}
-                            className="w-full bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none h-12 font-semibold text-sm"
+                            className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none h-12 font-semibold text-sm"
                           >
                             {submitting ? (
                               <>

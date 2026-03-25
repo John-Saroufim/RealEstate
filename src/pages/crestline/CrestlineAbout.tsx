@@ -28,7 +28,7 @@ const milestones = [
 
 export default function CrestlineAbout() {
   return (
-    <div className="min-h-screen bg-crestline-bg text-white font-sans">
+    <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
       <CrestlineNavbar />
 
       {/* Header */}
@@ -40,7 +40,7 @@ export default function CrestlineAbout() {
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Story</p>
-            <h1 className="font-serif text-4xl sm:text-5xl font-bold text-white mb-6">
+            <h1 className="font-serif text-4xl sm:text-5xl font-bold text-slate-900 mb-6">
               Built on Trust. Driven by <span className="text-crestline-gold">Excellence.</span>
             </h1>
             <p className="text-crestline-muted max-w-2xl mx-auto leading-relaxed text-lg">
@@ -54,20 +54,20 @@ export default function CrestlineAbout() {
       <section className="py-20 bg-crestline-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12">
-            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="border border-white/5 p-8 sm:p-10">
+            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="border border-slate-200 p-8 sm:p-10">
               <div className="h-12 w-12 border border-crestline-gold/20 flex items-center justify-center mb-5">
                 <Target className="h-5 w-5 text-crestline-gold" />
               </div>
-              <h3 className="font-serif text-2xl font-bold text-white mb-4">Our Mission</h3>
+              <h3 className="font-serif text-2xl font-bold text-slate-900 mb-4">Our Mission</h3>
               <p className="text-crestline-muted leading-relaxed">
                 To deliver a real estate experience defined by expertise, integrity, and personalized attention — connecting exceptional people with extraordinary properties.
               </p>
             </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="border border-white/5 p-8 sm:p-10">
+            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="border border-slate-200 p-8 sm:p-10">
               <div className="h-12 w-12 border border-crestline-gold/20 flex items-center justify-center mb-5">
                 <Eye className="h-5 w-5 text-crestline-gold" />
               </div>
-              <h3 className="font-serif text-2xl font-bold text-white mb-4">Our Vision</h3>
+              <h3 className="font-serif text-2xl font-bold text-slate-900 mb-4">Our Vision</h3>
               <p className="text-crestline-muted leading-relaxed">
                 To be the most trusted name in luxury real estate — known for elevating every transaction into a seamless, rewarding experience that exceeds expectations.
               </p>
@@ -81,13 +81,13 @@ export default function CrestlineAbout() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">What Guides Us</p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white">Our Core Values</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">Our Core Values</h2>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((v, i) => (
-              <motion.div key={v.title} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="border border-white/5 p-8 hover:border-crestline-gold/20 transition-colors">
+              <motion.div key={v.title} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="border border-slate-200 p-8 hover:border-crestline-gold/20 transition-colors">
                 <v.icon className="h-8 w-8 text-crestline-gold mb-5" />
-                <h3 className="font-serif text-lg font-semibold text-white mb-2">{v.title}</h3>
+                <h3 className="font-serif text-lg font-semibold text-slate-900 mb-2">{v.title}</h3>
                 <p className="text-sm text-crestline-muted leading-relaxed">{v.desc}</p>
               </motion.div>
             ))}
@@ -100,14 +100,14 @@ export default function CrestlineAbout() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Journey</p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white">Key Milestones</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">Key Milestones</h2>
           </motion.div>
           <div className="space-y-8">
             {milestones.map((m, i) => (
               <motion.div key={m.year} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="flex gap-6 items-start">
                 <div className="text-crestline-gold font-serif text-lg font-bold w-16 shrink-0 pt-1">{m.year}</div>
                 <div className="border-l border-crestline-gold/20 pl-6 pb-2">
-                  <h3 className="font-serif text-lg font-semibold text-white mb-1">{m.title}</h3>
+                  <h3 className="font-serif text-lg font-semibold text-slate-900 mb-1">{m.title}</h3>
                   <p className="text-sm text-crestline-muted leading-relaxed">{m.desc}</p>
                 </div>
               </motion.div>
@@ -120,7 +120,7 @@ export default function CrestlineAbout() {
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-12">
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Why RealEstate?</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Why RealEstate?</h2>
           </motion.div>
           <div className="grid sm:grid-cols-2 gap-4">
             {[
@@ -133,13 +133,13 @@ export default function CrestlineAbout() {
             ].map((item, i) => (
               <motion.div key={i} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="flex items-start gap-3 p-4">
                 <CheckCircle2 className="h-5 w-5 text-crestline-gold shrink-0 mt-0.5" />
-                <span className="text-sm text-white/80">{item}</span>
+                <span className="text-sm text-slate-700">{item}</span>
               </motion.div>
             ))}
           </div>
           <div className="text-center mt-12">
             <Link to="/crestline/contact">
-              <Button className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 font-semibold text-base px-10 py-3 rounded-none h-auto">
+              <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-base px-10 py-3 rounded-none h-auto">
                 Get in Touch <ChevronRight className="ml-1 h-4 w-4" />
               </Button>
             </Link>

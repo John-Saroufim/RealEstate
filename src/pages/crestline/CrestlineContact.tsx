@@ -112,14 +112,14 @@ export default function CrestlineContact() {
   };
 
   return (
-    <div className="min-h-screen bg-crestline-bg text-white font-sans">
+    <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
       <CrestlineNavbar />
 
       {/* Header */}
       <section className="pt-32 pb-12 bg-crestline-surface border-b border-crestline-gold/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Get In Touch</p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-bold text-white mb-4">Contact Us</h1>
+          <h1 className="font-serif text-4xl sm:text-5xl font-bold text-slate-900 mb-4">Contact Us</h1>
           <p className="text-crestline-muted max-w-xl">Ready to explore your next investment or dream home? Our advisors are here to help.</p>
         </div>
       </section>
@@ -131,19 +131,19 @@ export default function CrestlineContact() {
             {/* Info */}
             <div className="lg:col-span-2 space-y-8">
               <div>
-                <h3 className="font-serif text-xl font-semibold text-white mb-6">Our Offices</h3>
+                <h3 className="font-serif text-xl font-semibold text-slate-900 mb-6">Our Offices</h3>
                 <div className="space-y-6">
                   <div className="flex gap-4">
                     <MapPin className="h-5 w-5 text-crestline-gold shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-white text-sm">New York</p>
+                      <p className="font-semibold text-slate-900 text-sm">New York</p>
                       <p className="text-sm text-crestline-muted">200 Park Avenue, Suite 1500<br />New York, NY 10166</p>
                     </div>
                   </div>
                   <div className="flex gap-4">
                     <MapPin className="h-5 w-5 text-crestline-gold shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-white text-sm">Palm Beach</p>
+                      <p className="font-semibold text-slate-900 text-sm">Palm Beach</p>
                       <p className="text-sm text-crestline-muted">340 Royal Palm Way, Suite 200<br />Palm Beach, FL 33480</p>
                     </div>
                   </div>
@@ -163,7 +163,7 @@ export default function CrestlineContact() {
                   <span className="text-sm text-crestline-muted">Mon–Fri: 9:00 AM – 6:00 PM EST</span>
                 </div>
               </div>
-              <div className="border border-white/5 p-6 bg-crestline-surface">
+              <div className="border border-slate-200 p-6 bg-crestline-surface">
                 <p className="text-xs text-crestline-gold uppercase tracking-wider font-semibold mb-2">Private Consultations</p>
                 <p className="text-sm text-crestline-muted leading-relaxed">
                   For high-value inquiries or confidential requirements, we offer private consultations by appointment at our offices or a location of your choosing.
@@ -176,13 +176,13 @@ export default function CrestlineContact() {
               {submitted ? (
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="border border-crestline-gold/20 p-12 text-center">
                   <CheckCircle2 className="h-14 w-14 text-crestline-gold mx-auto mb-6" />
-                  <h3 className="font-serif text-2xl font-bold text-white mb-4">Thank You</h3>
+                  <h3 className="font-serif text-2xl font-bold text-slate-900 mb-4">Thank You</h3>
                   <p className="text-crestline-muted max-w-md mx-auto">
                     Your inquiry has been received. A RealEstate advisor will contact you within 24 hours to discuss your requirements.
                   </p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="border border-white/5 p-8 sm:p-10 space-y-6">
+                <form onSubmit={handleSubmit} className="border border-slate-200 p-8 sm:p-10 space-y-6">
                   <div className="grid sm:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">Full Name *</label>
@@ -190,7 +190,7 @@ export default function CrestlineContact() {
                         value={form.name}
                         onChange={(e) => handleChange("name", e.target.value)}
                         placeholder="John Smith"
-                        className="bg-crestline-bg border-white/10 text-white placeholder:text-white/20 rounded-none h-12 focus-visible:ring-crestline-gold/50"
+                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none h-12 focus-visible:ring-crestline-gold/50"
                       />
                       {errors.name && <p className="text-xs text-red-400 mt-1">{errors.name}</p>}
                     </div>
@@ -201,7 +201,7 @@ export default function CrestlineContact() {
                         value={form.email}
                         onChange={(e) => handleChange("email", e.target.value)}
                         placeholder="john@example.com"
-                        className="bg-crestline-bg border-white/10 text-white placeholder:text-white/20 rounded-none h-12 focus-visible:ring-crestline-gold/50"
+                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none h-12 focus-visible:ring-crestline-gold/50"
                       />
                       {errors.email && <p className="text-xs text-red-400 mt-1">{errors.email}</p>}
                     </div>
@@ -214,7 +214,7 @@ export default function CrestlineContact() {
                         value={form.phone}
                         onChange={(e) => handleChange("phone", e.target.value)}
                         placeholder="+1 (555) 000-0000"
-                        className="bg-crestline-bg border-white/10 text-white placeholder:text-white/20 rounded-none h-12 focus-visible:ring-crestline-gold/50"
+                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none h-12 focus-visible:ring-crestline-gold/50"
                       />
                     </div>
                     <div>
@@ -222,7 +222,7 @@ export default function CrestlineContact() {
                       <select
                         value={form.interest}
                         onChange={(e) => handleChange("interest", e.target.value)}
-                        className="w-full h-12 bg-crestline-bg border border-white/10 text-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-crestline-gold/50"
+                        className="w-full h-12 bg-crestline-bg border border-slate-200 text-slate-900 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-crestline-gold/50"
                       >
                         <option value="" className="bg-crestline-bg">Select type...</option>
                         {interestOptions.map((o) => (
@@ -242,8 +242,8 @@ export default function CrestlineContact() {
                           onClick={() => handleChange("budget", form.budget === b ? "" : b)}
                           className={`px-4 py-2 text-xs font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
                             form.budget === b
-                              ? "bg-crestline-gold text-crestline-bg border-crestline-gold"
-                              : "border-white/10 text-white/70 hover:border-crestline-gold/30"
+                              ? "bg-crestline-gold text-crestline-on-gold border-crestline-gold"
+                              : "border-slate-200 text-slate-600 hover:border-crestline-gold/30"
                           }`}
                         >
                           {b}
@@ -259,7 +259,7 @@ export default function CrestlineContact() {
                       onChange={(e) => handleChange("message", e.target.value)}
                       placeholder="Tell us about your requirements..."
                       rows={5}
-                      className="w-full bg-crestline-bg border border-white/10 text-white placeholder:text-white/20 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-crestline-gold/50 resize-none"
+                      className="w-full bg-crestline-bg border border-slate-200 text-slate-900 placeholder:text-slate-400 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-crestline-gold/50 resize-none"
                     />
                     {errors.message && <p className="text-xs text-red-400 mt-1">{errors.message}</p>}
                   </div>
@@ -267,7 +267,7 @@ export default function CrestlineContact() {
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 font-semibold text-sm rounded-none h-12"
+                    className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm rounded-none h-12"
                   >
                     {loading ? <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Submitting...</> : "Submit Inquiry"}
                   </Button>

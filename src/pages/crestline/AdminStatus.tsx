@@ -11,15 +11,15 @@ export default function AdminStatus() {
   const { loading, isAdmin } = useIsAdmin();
 
   return (
-    <div className="min-h-screen bg-crestline-bg text-white font-sans">
+    <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
       <CrestlineNavbar />
 
       <section className="pt-32 pb-12 border-b border-crestline-gold/10 bg-crestline-surface">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Admin Status</h1>
+          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Admin Status</h1>
           <p className="text-crestline-muted">Helps verify which Supabase user is logged in.</p>
           <div className="mt-6">
-            <AdminStatsOverview />
+            <AdminStatsOverview keys={[]} />
           </div>
         </div>
       </section>
@@ -29,14 +29,14 @@ export default function AdminStatus() {
           {loading ? (
             <LoadingSpinner label="Loading..." />
           ) : !user ? (
-            <div className="border border-white/10 p-6 text-center rounded-none">
+            <div className="border border-slate-200 p-6 text-center rounded-none">
               <p className="text-crestline-muted mb-4">You are not logged in.</p>
               <Link to="/login" className="text-crestline-gold hover:underline">
                 Go to broker login
               </Link>
             </div>
           ) : (
-            <div className="border border-white/10 p-6">
+            <div className="border border-slate-200 p-6">
               <div className="space-y-3 text-sm">
                 <div>
                   <span className="text-crestline-muted">Signed in as:</span>{" "}
@@ -57,7 +57,7 @@ export default function AdminStatus() {
               <div className="mt-6">
                 <Link
                   to="/crestline/admin/listings"
-                  className="inline-block bg-crestline-gold text-crestline-bg px-6 py-3 hover:opacity-90 transition-opacity"
+                  className="inline-block bg-crestline-gold text-crestline-on-gold px-6 py-3 hover:opacity-90 transition-opacity"
                 >
                   Go to Listings Admin
                 </Link>

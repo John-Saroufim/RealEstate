@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSearchParams, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
+import { PropertyFiltersPanel, PropertyFiltersFields } from "@/components/crestline/PropertyFiltersPanel";
 import { supabase } from "@/integrations/supabase/client";
 import { PropertyCard } from "@/components/crestline/PropertyCard";
 
@@ -24,17 +24,16 @@ type Listing = {
   image_url: string | null;
 };
 
-const types = ["All", "Villa", "Penthouse", "Estate", "Townhouse"];
-const priceRanges = [
-  { label: "Any Price", min: 0, max: Infinity },
-  { label: "Under $3M", min: 0, max: 3000000 },
-  { label: "$3M – $5M", min: 3000000, max: 5000000 },
-  { label: "$5M – $8M", min: 5000000, max: 8000000 },
-  { label: "$8M+", min: 8000000, max: Infinity },
-];
+function parsePriceParam(raw: string | null): number | null {
+  if (raw == null || raw === "") return null;
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n < 0) return null;
+  return n;
+}
 
 export default function CrestlineProperties() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const qParam = searchParams.get("q") ?? "";
@@ -42,12 +41,8 @@ export default function CrestlineProperties() {
   const selectedStatus = searchParams.get("status") ?? "All";
   const sort = searchParams.get("sort") ?? "newest";
 
-  const selectedPrice = (() => {
-    const raw = searchParams.get("price");
-    const n = raw ? Number(raw) : 0;
-    if (!Number.isFinite(n)) return 0;
-    return Math.max(0, Math.min(priceRanges.length - 1, n));
-  })();
+  const priceMin = parsePriceParam(searchParams.get("min_price"));
+  const priceMax = parsePriceParam(searchParams.get("max_price"));
 
   const bedsMin = (() => {
     const raw = searchParams.get("beds");
@@ -71,7 +66,8 @@ export default function CrestlineProperties() {
     Boolean(qParam.trim()) ||
     selectedType !== "All" ||
     selectedStatus !== "All" ||
-    selectedPrice !== 0 ||
+    priceMin != null ||
+    priceMax != null ||
     bedsMin > 0 ||
     bathsMin > 0 ||
     sort !== "newest";
@@ -97,7 +93,6 @@ export default function CrestlineProperties() {
       setError(null);
 
       const q = qParam.trim();
-      const range = priceRanges[selectedPrice];
 
       let query = supabase.from("listings").select("*");
 
@@ -110,10 +105,13 @@ export default function CrestlineProperties() {
       if (bedsMin > 0) query = query.gte("beds", bedsMin);
       if (bathsMin > 0) query = query.gte("baths", bathsMin);
 
-      if (range) {
-        if (range.min > 0) query = query.gte("price", range.min);
-        if (Number.isFinite(range.max)) query = query.lt("price", range.max);
+      let minP = priceMin;
+      let maxP = priceMax;
+      if (minP != null && maxP != null && minP > maxP) {
+        [minP, maxP] = [maxP, minP];
       }
+      if (minP != null && minP > 0) query = query.gte("price", minP);
+      if (maxP != null && maxP > 0) query = query.lte("price", maxP);
 
       if (sort === "price_asc") query = query.order("price", { ascending: true });
       else if (sort === "price_desc") query = query.order("price", { ascending: false });
@@ -132,129 +130,10 @@ export default function CrestlineProperties() {
     };
 
     load();
-  }, [qParam, selectedType, selectedStatus, selectedPrice, bedsMin, bathsMin, sort]);
-
-  const statusOptions = ["All", "For Sale", "For Rent", "Sold", "Featured"] as const;
-  const sortOptions = [
-    { id: "newest", label: "Newest" },
-    { id: "price_asc", label: "Price: Low to High" },
-    { id: "price_desc", label: "Price: High to Low" },
-  ] as const;
-
-  const filterPanel = (
-    <>
-      <div>
-        <p className="text-xs text-crestline-muted mb-2 uppercase tracking-wider">Property Type</p>
-        <div className="flex flex-wrap gap-2">
-          {types.map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setParam("type", t === "All" ? null : t)}
-              className={`px-4 py-2 text-xs font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
-                selectedType === t
-                  ? "bg-crestline-gold text-crestline-bg border-crestline-gold"
-                  : "border-white/10 text-white/70 hover:border-crestline-gold/30"
-              }`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <p className="text-xs text-crestline-muted mb-2 uppercase tracking-wider">Price Range</p>
-        <div className="flex flex-wrap gap-2">
-          {priceRanges.map((r, i) => (
-            <button
-              key={r.label}
-              type="button"
-              onClick={() => setParam("price", i === 0 ? null : i)}
-              className={`px-4 py-2 text-xs font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
-                selectedPrice === i
-                  ? "bg-crestline-gold text-crestline-bg border-crestline-gold"
-                  : "border-white/10 text-white/70 hover:border-crestline-gold/30"
-              }`}
-            >
-              {r.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <p className="text-xs text-crestline-muted mb-2 uppercase tracking-wider">Beds & Baths</p>
-        <div className="flex flex-wrap gap-4">
-          <div className="min-w-[140px]">
-            <label className="block text-[11px] text-crestline-muted mb-1">Beds min</label>
-            <Input
-              type="number"
-              min={0}
-              value={bedsMin || ""}
-              onChange={(e) => setParam("beds", e.target.value === "" ? null : Number(e.target.value))}
-              className="bg-crestline-bg border-white/10 text-white placeholder:text-white/20 rounded-none h-10 focus-visible:ring-crestline-gold/50"
-              placeholder="Any"
-            />
-          </div>
-          <div className="min-w-[140px]">
-            <label className="block text-[11px] text-crestline-muted mb-1">Baths min</label>
-            <Input
-              type="number"
-              min={0}
-              value={bathsMin || ""}
-              onChange={(e) => setParam("baths", e.target.value === "" ? null : Number(e.target.value))}
-              className="bg-crestline-bg border-white/10 text-white placeholder:text-white/20 rounded-none h-10 focus-visible:ring-crestline-gold/50"
-              placeholder="Any"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <p className="text-xs text-crestline-muted mb-2 uppercase tracking-wider">Listing Status</p>
-        <div className="flex flex-wrap gap-2">
-          {statusOptions.map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => setParam("status", s === "All" ? null : s)}
-              className={`px-4 py-2 text-xs font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
-                selectedStatus === s
-                  ? "bg-crestline-gold text-crestline-bg border-crestline-gold"
-                  : "border-white/10 text-white/70 hover:border-crestline-gold/30"
-              }`}
-            >
-              {s}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <p className="text-xs text-crestline-muted mb-2 uppercase tracking-wider">Sort</p>
-        <div className="flex flex-wrap gap-2">
-          {sortOptions.map((s) => (
-            <button
-              key={s.id}
-              type="button"
-              onClick={() => setParam("sort", s.id === "newest" ? null : s.id)}
-              className={`px-4 py-2 text-xs font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
-                sort === s.id
-                  ? "bg-crestline-gold text-crestline-bg border-crestline-gold"
-                  : "border-white/10 text-white/70 hover:border-crestline-gold/30"
-              }`}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
-      </div>
-    </>
-  );
+  }, [qParam, selectedType, selectedStatus, priceMin, priceMax, bedsMin, bathsMin, sort]);
 
   return (
-    <div className="min-h-screen bg-crestline-bg text-white font-sans">
+    <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
       <CrestlineNavbar />
 
       {/* Header */}
@@ -262,65 +141,65 @@ export default function CrestlineProperties() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Portfolio</p>
           <div className="flex flex-col gap-4">
-            <h1 className="font-serif text-4xl sm:text-5xl font-bold text-white">Exclusive Properties</h1>
+            <h1 className="font-serif text-4xl sm:text-5xl font-bold text-slate-900">Exclusive Properties</h1>
           </div>
           <p className="text-crestline-muted max-w-xl">Browse our curated collection of exceptional residences across the most prestigious addresses.</p>
         </div>
       </section>
 
       {/* Search & Filters */}
-      <section className="py-12 border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-crestline-muted" />
-              <Input
-                placeholder="Search by name or location..."
-                value={qParam}
-                onChange={(e) => setParam("q", e.target.value)}
-                className="pl-10 bg-crestline-surface border-white/10 text-white placeholder:text-crestline-muted rounded-none focus-visible:ring-crestline-gold/50 h-12"
-              />
-            </div>
-            <Button
-              variant="outline"
-              onClick={() => setMobileFiltersOpen(true)}
-              className="border-white/10 text-white hover:bg-white/5 rounded-none h-12 px-6 lg:hidden"
-            >
-              <SlidersHorizontal className="h-4 w-4 mr-2" />
-              Filters
-            </Button>
-            {hasActiveFilters && (
-              <Button
-                variant="ghost"
-                onClick={clearFilters}
-                className="text-crestline-gold hover:bg-crestline-gold/10 rounded-none h-12"
-              >
-                <X className="h-4 w-4 mr-1" /> Clear
-              </Button>
-            )}
+      <section className="border-b border-slate-200/80 bg-crestline-bg py-10 md:py-12 lg:py-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <PropertyFiltersPanel
+              qParam={qParam}
+              selectedType={selectedType}
+              selectedStatus={selectedStatus}
+              sort={sort}
+              priceMin={priceMin}
+              priceMax={priceMax}
+              bedsMin={bedsMin}
+              bathsMin={bathsMin}
+              setParam={setParam}
+              clearFilters={clearFilters}
+              hasActiveFilters={hasActiveFilters}
+              onOpenMobileFilters={() => setMobileFiltersOpen(true)}
+            />
           </div>
 
-          <div className="hidden lg:block mt-6">{filterPanel}</div>
-
           <Dialog open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
-            <DialogContent className="bg-crestline-bg border border-white/10 text-white p-6 max-w-3xl">
-              <DialogHeader>
-                <DialogTitle className="font-serif text-2xl text-white">Filters</DialogTitle>
+            <DialogContent className="max-h-[min(90vh,880px)] max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-0 text-slate-900 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.18)] sm:max-w-xl">
+              <DialogHeader className="border-b border-slate-200/80 px-6 py-5 sm:px-8">
+                <DialogTitle className="font-serif text-2xl tracking-tight text-slate-900">Refine results</DialogTitle>
+                <p className="text-sm text-crestline-muted">Adjust filters — updates apply instantly</p>
               </DialogHeader>
-              <div className="mt-4">{filterPanel}</div>
-              <div className="mt-6 flex items-center justify-end gap-3">
+              <div className="px-6 py-6 sm:px-8 sm:py-8">
+                <PropertyFiltersFields
+                  selectedType={selectedType}
+                  selectedStatus={selectedStatus}
+                  sort={sort}
+                  priceMin={priceMin}
+                  priceMax={priceMax}
+                  bedsMin={bedsMin}
+                  bathsMin={bathsMin}
+                  setParam={setParam}
+                />
+              </div>
+              <div className="flex flex-col-reverse gap-3 border-t border-slate-200/80 bg-slate-50 px-6 py-5 sm:flex-row sm:justify-end sm:px-8">
                 <Button
+                  type="button"
                   variant="outline"
-                  className="border-white/20 text-white hover:bg-white/5 rounded-none"
+                  className="rounded-lg border-slate-300 bg-transparent text-slate-900 hover:bg-slate-100"
                   onClick={clearFilters}
                 >
-                  Clear
+                  Clear all
                 </Button>
                 <Button
-                  className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none"
+                  type="button"
+                  className="rounded-lg bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90"
                   onClick={() => setMobileFiltersOpen(false)}
                 >
-                  Apply
+                  Done
                 </Button>
               </div>
             </DialogContent>
@@ -329,31 +208,42 @@ export default function CrestlineProperties() {
       </section>
 
       {/* Grid */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {loading && <p className="text-sm text-crestline-muted mb-8">Loading properties...</p>}
-          {error && <p className="text-sm text-red-400 mb-8">{error}</p>}
+      <section className="py-12 lg:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {loading && (
+            <p className="mb-10 text-sm font-medium tracking-wide text-crestline-muted lg:mb-12">Loading residences…</p>
+          )}
+          {error && <p className="mb-10 text-sm text-red-400/95 lg:mb-12">{error}</p>}
           {!loading && !error && (
-            <p className="text-sm text-crestline-muted mb-8">
-              {properties.length} {properties.length === 1 ? "property" : "properties"} found
-            </p>
+            <div className="mb-10 border-b border-slate-200/80 pb-8 lg:mb-12 lg:pb-10">
+              <p className="font-serif text-3xl text-slate-900 sm:text-4xl">
+                <span className="tabular-nums text-crestline-gold">{properties.length}</span>
+                <span className="text-slate-800">
+                  {" "}
+                  {properties.length === 1 ? "residence" : "residences"}
+                </span>
+              </p>
+              <p className="mt-2 max-w-md text-sm leading-relaxed text-crestline-muted">
+                Matching your search and filters
+              </p>
+            </div>
           )}
           {loading ? (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div
                   key={i}
-                  className="bg-crestline-surface border border-white/5 overflow-hidden"
+                  className="bg-crestline-surface border border-slate-200 overflow-hidden"
                 >
                   <div className="relative overflow-hidden aspect-[4/3]">
-                    <div className="w-full h-full bg-white/5 animate-pulse" />
+                    <div className="w-full h-full bg-slate-50 animate-pulse" />
                   </div>
                   <div className="p-6 space-y-3">
-                    <div className="h-4 bg-white/5 animate-pulse w-2/3" />
-                    <div className="h-4 bg-white/5 animate-pulse w-5/6" />
-                    <div className="h-3 bg-white/5 animate-pulse w-3/5" />
-                    <div className="h-20 bg-white/5 animate-pulse" />
-                    <div className="h-10 bg-white/5 animate-pulse w-full" />
+                    <div className="h-4 bg-slate-50 animate-pulse w-2/3" />
+                    <div className="h-4 bg-slate-50 animate-pulse w-5/6" />
+                    <div className="h-3 bg-slate-50 animate-pulse w-3/5" />
+                    <div className="h-20 bg-slate-50 animate-pulse" />
+                    <div className="h-10 bg-slate-50 animate-pulse w-full" />
                   </div>
                 </div>
               ))}
@@ -370,6 +260,7 @@ export default function CrestlineProperties() {
                 >
                   <PropertyCard
                     to={`/crestline/properties/${p.id}`}
+                    locationState={{ from: `${location.pathname}${location.search}` }}
                     imageUrl={p.image_url}
                     title={p.title}
                     price={p.price}
@@ -384,11 +275,11 @@ export default function CrestlineProperties() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-20 border border-white/5">
+            <div className="text-center py-20 border border-slate-200">
               <Search className="h-10 w-10 text-crestline-muted mx-auto mb-4" />
-              <p className="text-white font-serif text-lg mb-2">No properties found</p>
+              <p className="text-slate-900 font-serif text-lg mb-2">No properties found</p>
               <p className="text-sm text-crestline-muted mb-6">Try adjusting your filters or search terms.</p>
-              <Button onClick={clearFilters} className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none">
+              <Button onClick={clearFilters} className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none">
                 Clear Filters
               </Button>
             </div>

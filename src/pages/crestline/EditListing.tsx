@@ -212,7 +212,7 @@ export default function EditListing() {
   };
 
   return (
-    <div className="min-h-screen bg-crestline-bg text-white font-sans">
+    <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
       <CrestlineNavbar />
 
       <section className="pt-32 pb-8 border-b border-crestline-gold/10 bg-crestline-surface">
@@ -221,13 +221,13 @@ export default function EditListing() {
             <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">
               Admin
             </p>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white">
+            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">
               {isEditing ? "Edit Listing" : "New Listing"}
             </h1>
           </div>
           <Button
             variant="outline"
-            className="border-white/30 text-white hover:bg-white/5 rounded-none text-sm"
+            className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none text-sm"
             onClick={() => navigate("/crestline/admin/listings")}
           >
             Back
@@ -253,7 +253,7 @@ export default function EditListing() {
                     value={form.title}
                     onChange={handleChange}
                     required
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
                 <div>
@@ -267,7 +267,7 @@ export default function EditListing() {
                     step="1000"
                     value={form.price}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
                 <div>
@@ -278,7 +278,7 @@ export default function EditListing() {
                     name="location"
                     value={form.location}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
                 <div>
@@ -289,7 +289,7 @@ export default function EditListing() {
                     name="type"
                     value={form.type}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
                 <div>
@@ -302,7 +302,7 @@ export default function EditListing() {
                     min="0"
                     value={form.beds}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
                 <div>
@@ -315,7 +315,7 @@ export default function EditListing() {
                     min="0"
                     value={form.baths}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
                 <div>
@@ -328,7 +328,7 @@ export default function EditListing() {
                     min="0"
                     value={form.sqft}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
                 <div>
@@ -339,7 +339,7 @@ export default function EditListing() {
                     name="status"
                     value={form.status}
                     onChange={handleChange}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
 
@@ -350,7 +350,7 @@ export default function EditListing() {
                   <select
                     value={form.agent_id}
                     onChange={(e) => setForm((prev) => ({ ...prev, agent_id: e.target.value }))}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none h-10 px-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none h-10 px-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50"
                   >
                     <option value="">Unassigned</option>
                     {agents.map((a) => (
@@ -372,7 +372,7 @@ export default function EditListing() {
                   value={form.description}
                   onChange={handleChange}
                   rows={4}
-                  className="bg-crestline-surface border-white/10 text-white rounded-none resize-none"
+                  className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none resize-none"
                 />
               </div>
 
@@ -386,7 +386,7 @@ export default function EditListing() {
                     <img
                       src={form.image_url}
                       alt={form.title}
-                      className="w-full max-w-sm border border-white/10"
+                      className="w-full max-w-sm border border-slate-200"
                     />
                   </div>
                 )}
@@ -395,7 +395,7 @@ export default function EditListing() {
                   multiple
                   accept="image/*"
                   onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
-                  className="bg-crestline-surface border-white/10 text-white rounded-none file:bg-crestline-gold file:text-crestline-bg file:border-0 file:px-3 file:py-1.5 file:text-xs"
+                  className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none file:bg-crestline-gold file:text-crestline-on-gold file:border-0 file:px-3 file:py-1.5 file:text-xs"
                 />
                 <p className="text-[11px] text-crestline-muted">
                   Upload one or more images. When you save, your listing gallery will be replaced with the new images you select.
@@ -406,7 +406,7 @@ export default function EditListing() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="border-white/30 text-white hover:bg-white/5 rounded-none"
+                  className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none"
                   onClick={() => navigate("/crestline/admin/listings")}
                 >
                   Cancel
@@ -414,7 +414,7 @@ export default function EditListing() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none"
+                  className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
                 >
                   {loading ? "Saving..." : isEditing ? "Save Changes" : "Create Listing"}
                 </Button>

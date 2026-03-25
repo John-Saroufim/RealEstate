@@ -36,7 +36,9 @@ import AdminInquiries from "./pages/crestline/AdminInquiries";
 import InquiryDetail from "./pages/crestline/InquiryDetail";
 import AdminAgents from "./pages/crestline/AdminAgents";
 import EditAgent from "./pages/crestline/EditAgent";
+import AdminReviews from "./pages/crestline/AdminReviews";
 import Logout from "./pages/Logout";
+import { CrestlineAiChatDock } from "@/components/crestline/CrestlineAiChatDock";
 
 const queryClient = new QueryClient();
 
@@ -160,6 +162,14 @@ function AnimatedRoutes() {
             }
           />
           <Route
+            path="/crestline/admin/reviews"
+            element={
+              <ProtectedAdminRoute>
+                <AdminReviews />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
             path="/crestline/admin/agents"
             element={
               <ProtectedAdminRoute>
@@ -199,6 +209,7 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop smooth />
         <AuthProvider>
+          <CrestlineAiChatDock />
           <AnimatedRoutes />
         </AuthProvider>
       </BrowserRouter>

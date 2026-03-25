@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Building2, Shield, TrendingUp, Users, Star, ChevronRight, ArrowRight, Phone, CheckCircle2, HelpCircle } from "lucide-react";
+import { Building2, Shield, TrendingUp, Users, ChevronRight, ArrowRight, Phone, CheckCircle2, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
@@ -11,6 +11,7 @@ import prop3 from "@/assets/crestline-prop3.jpg";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PropertyCard } from "@/components/crestline/PropertyCard";
+import { ReviewStars } from "@/components/crestline/ReviewStars";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 18 },
@@ -29,6 +30,15 @@ type Listing = {
   beds: number | null;
   baths: number | null;
   image_url: string | null;
+};
+
+type Review = {
+  id: string;
+  name: string;
+  rating: number;
+  message: string;
+  status: string;
+  created_at: string | null;
 };
 
 const staticFeatured = [
@@ -50,12 +60,6 @@ const services = [
   { title: "Investing", desc: "Identify high-yield opportunities with comprehensive market analysis and portfolio advisory." },
 ];
 
-const testimonials = [
-  { name: "Victoria Harrington", role: "Homeowner, Greenwich", text: "RealEstate made the entire process effortless. Their attention to detail and market knowledge secured us a property we didn't even know was available.", rating: 5 },
-  { name: "James & Catherine Wells", role: "Investors, Manhattan", text: "Exceptional service from start to finish. Their investment advisory helped us build a real estate portfolio that consistently outperforms the market.", rating: 5 },
-  { name: "Dr. Robert Eastman", role: "Homeowner, Palm Beach", text: "The level of discretion and professionalism is unmatched. RealEstate understood exactly what we were looking for and delivered beyond expectations.", rating: 5 },
-];
-
 const faqs = [
   { q: "What areas do you specialize in?", a: "We specialize in luxury properties across New York, Miami, Palm Beach, the Hamptons, and select international markets including London and Dubai." },
   { q: "Do you handle off-market properties?", a: "Yes. A significant portion of our transactions involve off-market or pre-market properties available exclusively through our private network." },
@@ -72,7 +76,11 @@ const stats = [
 ];
 
 export default function CrestlineHome() {
+  const location = useLocation();
   const [featured, setFeatured] = useState<Listing[] | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [reviewsError, setReviewsError] = useState<string | null>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -92,46 +100,73 @@ export default function CrestlineHome() {
     load();
   }, []);
 
+  useEffect(() => {
+    const load = async () => {
+      setReviewsLoading(true);
+      setReviewsError(null);
+      try {
+        const { data, error } = await (supabase as any)
+          .from("reviews")
+          .select("id,name,rating,message,status,created_at")
+          .eq("status", "approved")
+          .order("created_at", { ascending: false })
+          .limit(6);
+
+        if (error) throw error;
+        setReviews((data ?? []) as Review[]);
+      } catch {
+        setReviewsError("Failed to load reviews.");
+      } finally {
+        setReviewsLoading(false);
+      }
+    };
+
+    load();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-crestline-bg text-white font-sans">
+    <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
       <CrestlineNavbar />
 
       {/* Hero */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img src={heroImg} alt="Luxury villa" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-crestline-bg via-crestline-bg/70 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-crestline-bg via-transparent to-crestline-bg/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/55 to-slate-950/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/35" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-24 lg:pt-20">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-2xl"
+            className="max-w-2xl text-white"
           >
-            <p className="text-crestline-gold text-sm font-semibold tracking-[0.2em] uppercase mb-4">
+            <p className="text-sky-200 text-sm font-semibold tracking-[0.2em] uppercase mb-4">
               Luxury Real Estate Redefined
             </p>
             <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] mb-6 text-white">
               Discover
               <br />
-              <span className="text-crestline-gold">Extraordinary</span>
+              <span className="text-sky-200">Extraordinary</span>
               <br />
               Living.
             </h1>
-            <p className="text-lg text-white/70 mb-10 max-w-lg leading-relaxed">
+            <p className="text-lg text-white/80 mb-10 max-w-lg leading-relaxed">
               RealEstate curates the world's most exceptional properties for discerning buyers, investors, and families seeking uncompromising quality.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/crestline/properties">
-                <Button className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 font-semibold text-base px-8 py-3 rounded-none h-auto">
+                <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-base px-8 py-3 rounded-none h-auto">
                   View Properties
                   <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
               <Link to="/crestline/contact">
-                <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 font-semibold text-base px-8 py-3 rounded-none h-auto">
+                <Button
+                  variant="outline"
+                  className="border-white/30 text-white hover:bg-white/10 font-semibold text-base px-8 py-3 rounded-none h-auto"
+                >
                   Schedule Consultation
                 </Button>
               </Link>
@@ -159,7 +194,7 @@ export default function CrestlineHome() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Curated Selection</p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Featured Properties</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Featured Properties</h2>
             <p className="text-crestline-muted max-w-xl mx-auto">Handpicked residences that represent the finest in luxury living across our most sought-after markets.</p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -169,6 +204,7 @@ export default function CrestlineHome() {
                   <div className="h-full">
                     <PropertyCard
                       to={`/crestline/properties/${p.id}`}
+                      locationState={{ from: `${location.pathname}${location.search}` }}
                       imageUrl={p.image_url ?? prop1}
                       title={p.title}
                       price={p.price}
@@ -186,6 +222,7 @@ export default function CrestlineHome() {
                 <div className="h-full">
                   <PropertyCard
                     to={`/crestline/properties/${p.id}`}
+                    locationState={{ from: `${location.pathname}${location.search}` }}
                     imageUrl={p.img}
                     title={p.title}
                     price={p.price}
@@ -214,16 +251,16 @@ export default function CrestlineHome() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">The RealEstate Difference</p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Why Clients Choose Us</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Why Clients Choose Us</h2>
             <p className="text-crestline-muted max-w-xl mx-auto">A commitment to excellence that transforms every transaction into an exceptional experience.</p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {whyUs.map((item, i) => (
-              <motion.div key={item.title} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="bg-crestline-bg/50 border border-white/5 p-8 hover:border-crestline-gold/20 transition-all duration-300 group transform-gpu shadow-sm hover:shadow-md hover:-translate-y-0.5">
+              <motion.div key={item.title} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="bg-crestline-bg/50 border border-slate-200 p-8 hover:border-crestline-gold/20 transition-all duration-300 group transform-gpu shadow-sm hover:shadow-md hover:-translate-y-0.5">
                 <div className="h-12 w-12 border border-crestline-gold/20 flex items-center justify-center mb-5 group-hover:bg-crestline-gold/10 transition-colors">
                   <item.icon className="h-5 w-5 text-crestline-gold" />
                 </div>
-                <h3 className="font-serif font-semibold text-lg text-white mb-2">{item.title}</h3>
+                <h3 className="font-serif font-semibold text-lg text-slate-900 mb-2">{item.title}</h3>
                 <p className="text-sm text-crestline-muted leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
@@ -236,11 +273,11 @@ export default function CrestlineHome() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Services</p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Comprehensive Real Estate Solutions</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Comprehensive Real Estate Solutions</h2>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8">
             {services.map((s, i) => (
-              <motion.div key={s.title} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="border border-white/5 p-10 hover:border-crestline-gold/20 transition-all duration-300 text-center transform-gpu shadow-sm hover:shadow-md hover:-translate-y-0.5">
+              <motion.div key={s.title} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="border border-slate-200 p-10 hover:border-crestline-gold/20 transition-all duration-300 text-center transform-gpu shadow-sm hover:shadow-md hover:-translate-y-0.5">
                 <h3 className="font-serif text-2xl font-bold text-crestline-gold mb-4">{s.title}</h3>
                 <p className="text-sm text-crestline-muted leading-relaxed mb-6">{s.desc}</p>
                 <Link to="/crestline/contact">
@@ -258,25 +295,58 @@ export default function CrestlineHome() {
       <section className="py-20 sm:py-28 bg-crestline-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Testimonials</p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">What Our Clients Say</h2>
+            <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Client Reviews</p>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">What Our Clients Say</h2>
           </motion.div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((t, i) => (
-              <motion.div key={t.name} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="bg-crestline-bg/50 border border-white/5 p-8 transform-gpu shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(t.rating)].map((_, j) => (
-                    <Star key={j} className="h-4 w-4 text-crestline-gold fill-crestline-gold" />
-                  ))}
+          {reviewsLoading ? (
+            <div className="flex gap-6 overflow-x-auto md:grid md:grid-cols-3 md:gap-8 md:overflow-visible pb-2">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="min-w-[280px] md:min-w-0 md:col-span-1 bg-crestline-bg/50 border border-slate-200 p-8 shadow-sm"
+                >
+                  <div className="h-4 bg-slate-100 w-24 animate-pulse mb-4" />
+                  <div className="h-4 bg-slate-100 w-11/12 animate-pulse mb-3" />
+                  <div className="h-4 bg-slate-100 w-9/12 animate-pulse mb-3" />
+                  <div className="h-4 bg-slate-100 w-6/12 animate-pulse mb-8" />
+                  <div className="h-4 bg-slate-100 w-32 animate-pulse" />
                 </div>
-                <p className="text-white/80 text-sm leading-relaxed mb-6 italic">"{t.text}"</p>
-                <div>
-                  <p className="font-serif font-semibold text-white">{t.name}</p>
-                  <p className="text-xs text-crestline-muted">{t.role}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : reviewsError ? (
+            <p className="text-sm text-red-400 text-center">{reviewsError}</p>
+          ) : reviews.length === 0 ? (
+            <div className="border border-slate-200 p-10 text-center bg-crestline-bg/30">
+              <p className="font-serif text-xl font-bold text-slate-900 mb-2">No approved reviews yet</p>
+              <p className="text-sm text-crestline-muted">Check back soon—new reviews are added after admin approval.</p>
+            </div>
+          ) : (
+            <div className="flex gap-6 overflow-x-auto md:grid md:grid-cols-3 md:gap-8 md:overflow-visible pb-2">
+              {reviews.map((r, i) => (
+                <motion.div
+                  key={r.id}
+                  custom={i}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="min-w-[280px] md:min-w-0 md:col-span-1 bg-crestline-bg/50 border border-slate-200 p-8 transform-gpu shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group"
+                >
+                  <div className="flex items-center justify-start mb-4">
+                    <ReviewStars rating={Number(r.rating)} sizeClassName="h-4 w-4" />
+                  </div>
+
+                  <p className="text-slate-700 text-sm leading-relaxed mb-6 italic">
+                    "{(r.message ?? "").length > 140 ? `${r.message.slice(0, 137)}...` : r.message}"
+                  </p>
+
+                  <div>
+                    <p className="font-serif font-semibold text-slate-900">{r.name}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -285,12 +355,12 @@ export default function CrestlineHome() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">FAQ</p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white mb-4">Frequently Asked Questions</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
           </motion.div>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
-              <motion.details key={i} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="group border border-white/5 hover:border-crestline-gold/20 transition-colors">
-                <summary className="flex items-center gap-3 cursor-pointer p-6 text-white font-serif font-semibold text-sm list-none [&::-webkit-details-marker]:hidden">
+              <motion.details key={i} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="group border border-slate-200 hover:border-crestline-gold/20 transition-colors">
+                <summary className="flex items-center gap-3 cursor-pointer p-6 text-slate-900 font-serif font-semibold text-sm list-none [&::-webkit-details-marker]:hidden">
                   <HelpCircle className="h-4 w-4 text-crestline-gold shrink-0" />
                   <span className="flex-1">{faq.q}</span>
                   <ChevronRight className="h-4 w-4 text-crestline-muted transition-transform group-open:rotate-90" />
@@ -309,7 +379,7 @@ export default function CrestlineHome() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Begin Your Journey</p>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
               Ready to Find Your
               <br />
               <span className="text-crestline-gold">Dream Property?</span>
@@ -319,7 +389,7 @@ export default function CrestlineHome() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link to="/crestline/contact">
-                <Button className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 font-semibold text-base px-10 py-3 rounded-none h-auto">
+                <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-base px-10 py-3 rounded-none h-auto">
                   <Phone className="mr-2 h-4 w-4" />
                   Contact Us
                 </Button>

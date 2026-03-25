@@ -209,18 +209,18 @@ export default function EditAgent() {
   };
 
   return (
-    <div className="min-h-screen bg-crestline-bg text-white font-sans">
+    <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
       <CrestlineNavbar />
 
       <section className="pt-32 pb-8 border-b border-crestline-gold/10 bg-crestline-surface">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
           <div>
             <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white">{isEditing ? "Edit Agent" : "New Agent"}</h1>
+            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">{isEditing ? "Edit Agent" : "New Agent"}</h1>
           </div>
           <Button
             variant="outline"
-            className="border-white/30 text-white hover:bg-white/5 rounded-none text-sm"
+            className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none text-sm"
             onClick={() => navigate("/crestline/admin/agents")}
           >
             Back
@@ -242,7 +242,7 @@ export default function EditAgent() {
                   <Input
                     value={form.full_name}
                     onChange={(e) => setForm((p) => ({ ...p, full_name: e.target.value }))}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                     required
                   />
                 </div>
@@ -251,7 +251,7 @@ export default function EditAgent() {
                   <Input
                     value={form.title}
                     onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                     required
                   />
                 </div>
@@ -260,7 +260,7 @@ export default function EditAgent() {
                   <Input
                     value={form.phone}
                     onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
                 <div>
@@ -268,7 +268,7 @@ export default function EditAgent() {
                   <Input
                     value={form.email}
                     onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -277,7 +277,7 @@ export default function EditAgent() {
                     value={form.bio}
                     onChange={(e) => setForm((p) => ({ ...p, bio: e.target.value }))}
                     rows={4}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none resize-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none resize-none"
                   />
                 </div>
                 <div>
@@ -285,7 +285,7 @@ export default function EditAgent() {
                   <Input
                     value={form.city}
                     onChange={(e) => setForm((p) => ({ ...p, city: e.target.value }))}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
                 <div>
@@ -295,7 +295,7 @@ export default function EditAgent() {
                     onChange={(e) => setForm((p) => ({ ...p, years_experience: e.target.value }))}
                     type="number"
                     min={0}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -303,14 +303,14 @@ export default function EditAgent() {
                   <Input
                     value={form.specialtiesCsv}
                     onChange={(e) => setForm((p) => ({ ...p, specialtiesCsv: e.target.value }))}
-                    className="bg-crestline-surface border-white/10 text-white rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-between gap-4 border border-white/5 bg-crestline-surface p-4">
+              <div className="flex items-center justify-between gap-4 border border-slate-200 bg-crestline-surface p-4">
                 <div>
-                  <p className="text-sm font-semibold text-white">Agent Status</p>
+                  <p className="text-sm font-semibold text-slate-900">Agent Status</p>
                   <p className="text-xs text-crestline-muted">Inactive agents won’t be shown publicly.</p>
                 </div>
                 <label className="flex items-center gap-3 cursor-pointer select-none">
@@ -319,7 +319,7 @@ export default function EditAgent() {
                     checked={form.is_active}
                     onChange={(e) => setForm((p) => ({ ...p, is_active: e.target.checked }))}
                   />
-                  <Badge className="bg-crestline-gold text-crestline-bg" variant="secondary">
+                  <Badge className="bg-crestline-gold text-crestline-on-gold" variant="secondary">
                     {form.is_active ? "Active" : "Inactive"}
                   </Badge>
                 </label>
@@ -333,7 +333,7 @@ export default function EditAgent() {
                     <img
                       src={agents.profile_image_url}
                       alt={agents.full_name ?? "Agent"}
-                      className="w-full max-w-sm border border-white/10"
+                      className="w-full max-w-sm border border-slate-200"
                     />
                   </div>
                 ) : null}
@@ -341,7 +341,7 @@ export default function EditAgent() {
                   type="file"
                   accept="image/*"
                   onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                  className="bg-crestline-surface border-white/10 text-white rounded-none file:bg-crestline-gold file:text-crestline-bg file:border-0 file:px-3 file:py-1.5 file:text-xs"
+                  className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none file:bg-crestline-gold file:text-crestline-on-gold file:border-0 file:px-3 file:py-1.5 file:text-xs"
                 />
               </div>
 
@@ -349,7 +349,7 @@ export default function EditAgent() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="border-white/30 text-white hover:bg-white/5 rounded-none"
+                  className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none"
                   onClick={() => navigate("/crestline/admin/agents")}
                 >
                   Cancel
@@ -357,7 +357,7 @@ export default function EditAgent() {
                 <Button
                   type="submit"
                   disabled={!canSave}
-                  className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none"
+                  className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
                 >
                   {submitting ? "Saving..." : isEditing ? "Save Agent" : "Create Agent"}
                 </Button>

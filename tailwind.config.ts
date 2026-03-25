@@ -63,6 +63,8 @@ export default {
           surface: "hsl(var(--crestline-surface))",
           gold: "hsl(var(--crestline-gold))",
           muted: "hsl(var(--crestline-muted))",
+          ink: "hsl(var(--crestline-ink))",
+          "on-gold": "hsl(var(--crestline-on-gold))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

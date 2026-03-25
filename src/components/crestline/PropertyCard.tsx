@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 
 type PropertyCardProps = {
   to: string;
+  /** When set, detail page can return here (path + query) via router state. */
+  locationState?: { from: string };
   imageUrl?: string | null;
   title?: string | null;
   price?: string | number | null;
@@ -19,6 +21,7 @@ type PropertyCardProps = {
 
 export function PropertyCard({
   to,
+  locationState,
   imageUrl,
   title,
   price,
@@ -30,6 +33,8 @@ export function PropertyCard({
   sqft,
 }: PropertyCardProps) {
   const navigate = useNavigate();
+
+  const goToProperty = () => navigate(to, locationState ? { state: locationState } : undefined);
 
   const priceLabel = useMemo(() => {
     if (price === null || price === undefined) return "Price on request";
@@ -51,16 +56,16 @@ export function PropertyCard({
       role="link"
       tabIndex={0}
       aria-label={title ? `View property: ${title}` : "View property"}
-      onClick={() => navigate(to)}
+      onClick={goToProperty}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          navigate(to);
+          goToProperty();
         }
       }}
-      className="group h-full cursor-pointer select-none flex flex-col bg-crestline-surface border border-white/5 overflow-hidden shadow-sm hover:shadow-xl hover:border-crestline-gold/25 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+      className="group h-full cursor-pointer select-none flex flex-col bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-crestline-gold/35 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
     >
-      <div className="relative overflow-hidden aspect-[4/3] bg-white/5">
+      <div className="relative overflow-hidden aspect-[4/3] bg-slate-50">
         {imageUrl ? (
           <img
             src={imageUrl}
@@ -78,12 +83,12 @@ export function PropertyCard({
         {/* Hover overlay: subtle fade so the card feels “premium” */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-        <div className="absolute top-4 left-4 bg-crestline-bg/80 backdrop-blur-sm text-crestline-gold text-xs font-semibold px-3 py-1.5 tracking-wider uppercase">
+        <div className="absolute top-4 left-4 bg-slate-950/75 backdrop-blur-sm text-sky-100 text-xs font-semibold px-3 py-1.5 tracking-wider uppercase">
           {statusLabel}
         </div>
 
         {type ? (
-          <div className="absolute top-4 right-4 bg-crestline-bg/80 backdrop-blur-sm text-white text-xs px-3 py-1.5">
+          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-slate-900 text-xs px-3 py-1.5 border border-slate-200/80">
             {type}
           </div>
         ) : null}
@@ -94,7 +99,7 @@ export function PropertyCard({
           {priceLabel}
         </p>
         {title ? (
-          <h3 className="mt-2 font-serif text-lg sm:text-xl font-bold text-white leading-snug">
+          <h3 className="mt-2 font-serif text-lg sm:text-xl font-bold text-slate-900 leading-snug">
             {title}
           </h3>
         ) : null}
@@ -107,7 +112,7 @@ export function PropertyCard({
         ) : null}
 
         {/* Details row */}
-        <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-crestline-muted border-t border-white/5 pt-4">
+        <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-crestline-muted border-t border-slate-200 pt-4">
           {beds != null ? (
             <span className="flex items-center gap-2">
               <Bed className="h-4 w-4 text-crestline-gold" /> {beds} Beds
@@ -131,9 +136,9 @@ export function PropertyCard({
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              navigate(to);
+              goToProperty();
             }}
-            className="w-full bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none h-11 transition-colors duration-200"
+            className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none h-11 transition-colors duration-200"
           >
             View Property
           </Button>

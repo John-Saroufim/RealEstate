@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { MontelibanoHouseLogo } from "@/components/crestline/MontelibanoHouseLogo";
+import { LeaveReviewModal } from "@/components/crestline/LeaveReviewModal";
 
 export function CrestlineFooter() {
   return (
@@ -10,7 +11,7 @@ export function CrestlineFooter() {
           <div>
             <Link to="/crestline" className="flex items-center gap-2 mb-5">
               <MontelibanoHouseLogo className="h-6 w-6 text-crestline-gold" />
-              <span className="font-serif text-lg font-bold text-white tracking-wide">
+              <span className="font-serif text-lg font-bold text-slate-900 tracking-wide">
                 RealEstate
               </span>
             </Link>
@@ -20,7 +21,7 @@ export function CrestlineFooter() {
           </div>
 
           <div>
-            <h4 className="font-serif font-semibold text-white mb-4 text-sm tracking-wider uppercase">Quick Links</h4>
+            <h4 className="font-serif font-semibold text-slate-900 mb-4 text-sm tracking-wider uppercase">Quick Links</h4>
             <div className="space-y-3">
               {[
                 { label: "Properties", to: "/crestline/properties" },
@@ -39,7 +40,7 @@ export function CrestlineFooter() {
           </div>
 
           <div>
-            <h4 className="font-serif font-semibold text-white mb-4 text-sm tracking-wider uppercase">Services</h4>
+            <h4 className="font-serif font-semibold text-slate-900 mb-4 text-sm tracking-wider uppercase">Services</h4>
             <div className="space-y-3">
               {["Residential Sales", "Investment Advisory", "Property Management", "Luxury Rentals"].map((s) => (
                 <span key={s} className="block text-sm text-crestline-muted">{s}</span>
@@ -48,7 +49,7 @@ export function CrestlineFooter() {
           </div>
 
           <div>
-            <h4 className="font-serif font-semibold text-white mb-4 text-sm tracking-wider uppercase">Contact</h4>
+            <h4 className="font-serif font-semibold text-slate-900 mb-4 text-sm tracking-wider uppercase">Contact</h4>
             <div className="space-y-3">
               <div className="flex items-start gap-2 text-sm text-crestline-muted">
                 <MapPin className="h-4 w-4 text-crestline-gold mt-0.5 shrink-0" />
@@ -66,10 +67,13 @@ export function CrestlineFooter() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-crestline-muted">
-            © {new Date().getFullYear()} RealEstate. All rights reserved.
-          </p>
+        <div className="mt-12 pt-8 border-t border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
+            <p className="text-xs text-crestline-muted">
+              © {new Date().getFullYear()} RealEstate. All rights reserved.
+            </p>
+            <LeaveReviewModal />
+          </div>
           <div className="flex gap-6">
             {["Privacy Policy", "Terms of Service", "Sitemap"].map((item) => (
               <span key={item} className="text-xs text-crestline-muted hover:text-crestline-gold cursor-pointer transition-colors">

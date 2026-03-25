@@ -147,7 +147,7 @@ export default function InquiryDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-crestline-bg text-white font-sans">
+      <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
         <CrestlineNavbar />
         <section className="pt-32 pb-16">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -161,13 +161,13 @@ export default function InquiryDetail() {
 
   if (error || !inquiry) {
     return (
-      <div className="min-h-screen bg-crestline-bg text-white font-sans">
+      <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
         <CrestlineNavbar />
         <section className="pt-32 pb-16">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="border border-white/10 bg-crestline-surface p-8 text-center">
+            <div className="border border-slate-200 bg-crestline-surface p-8 text-center">
               <p className="text-crestline-muted mb-4">{error ?? "Inquiry not found."}</p>
-              <Button onClick={() => navigate("/crestline/admin/inquiries")} className="bg-crestline-gold text-crestline-bg hover:bg-crestline-gold/90 rounded-none">
+              <Button onClick={() => navigate("/crestline/admin/inquiries")} className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none">
                 Back to Inbox
               </Button>
             </div>
@@ -179,18 +179,18 @@ export default function InquiryDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-crestline-bg text-white font-sans">
+    <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
       <CrestlineNavbar />
       <section className="pt-32 pb-8 border-b border-crestline-gold/10 bg-crestline-surface">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
           <div>
             <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-white">Inquiry Detail</h1>
+            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">Inquiry Detail</h1>
           </div>
           <Button
             variant="outline"
             onClick={() => navigate("/crestline/admin/inquiries")}
-            className="border-white/20 text-white hover:bg-white/5 rounded-none"
+            className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
@@ -201,13 +201,13 @@ export default function InquiryDetail() {
       <section className="py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-6">
-            <Card className="bg-crestline-surface border border-white/5 rounded-none">
+            <Card className="bg-crestline-surface border border-slate-200 rounded-none">
               <CardContent className="p-6 space-y-4">
                 <div>
                   <div className="flex items-center gap-3">
                     <User className="h-5 w-5 text-crestline-gold" />
                     <div>
-                      <div className="font-serif text-xl font-bold text-white">{inquiry.full_name}</div>
+                      <div className="font-serif text-xl font-bold text-slate-900">{inquiry.full_name}</div>
                       <div className="text-xs text-crestline-muted">{formatWhen(inquiry.created_at)}</div>
                     </div>
                   </div>
@@ -227,12 +227,12 @@ export default function InquiryDetail() {
                   </div>
                 </div>
 
-                <div className="border border-white/5 bg-background/20 p-4">
+                <div className="border border-slate-200 bg-background/20 p-4">
                   <div className="flex items-center gap-3">
                     <Building2 className="h-4 w-4 text-crestline-gold" />
                     <div className="flex-1">
                       <div className="text-xs text-crestline-muted uppercase tracking-wider">Property</div>
-                      <div className="text-sm font-semibold text-white mt-1">
+                      <div className="text-sm font-semibold text-slate-900 mt-1">
                         {inquiry.property_title_snapshot ?? "—"}
                       </div>
                       {inquiry.property_id ? (
@@ -248,14 +248,14 @@ export default function InquiryDetail() {
                   </div>
                 </div>
 
-                <div className="border border-white/5 bg-background/20 p-4">
+                <div className="border border-slate-200 bg-background/20 p-4">
                   <div className="text-xs text-crestline-muted uppercase tracking-wider">Message</div>
-                  <div className="text-sm text-white/85 whitespace-pre-line mt-2">{inquiry.message}</div>
+                  <div className="text-sm text-slate-700 whitespace-pre-line mt-2">{inquiry.message}</div>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-crestline-surface border border-white/5 rounded-none">
+            <Card className="bg-crestline-surface border border-slate-200 rounded-none">
               <CardContent className="p-6 space-y-4">
                 <div>
                   <div className="text-xs text-crestline-muted uppercase tracking-wider mb-2">Actions</div>
@@ -263,7 +263,7 @@ export default function InquiryDetail() {
                   <div className="grid gap-3">
                     <Button
                       variant="outline"
-                      className="border-white/20 text-white hover:bg-white/5 rounded-none"
+                      className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none"
                       onClick={() => handleUpdate({ read: !dirtyRead })}
                     >
                       {dirtyRead ? <EyeOff className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
@@ -275,7 +275,7 @@ export default function InquiryDetail() {
                       <select
                         value={dirtyStatus}
                         onChange={(e) => handleUpdate({ status: e.target.value })}
-                        className="h-11 bg-crestline-bg border border-white/10 text-white rounded-none px-3 focus-visible:outline-none focus-visible:ring-crestline-gold/50"
+                        className="h-11 bg-crestline-bg border border-slate-200 text-slate-900 rounded-none px-3 focus-visible:outline-none focus-visible:ring-crestline-gold/50"
                       >
                         {statusOptions.map((s) => (
                           <option key={s} value={s} className="bg-crestline-bg">
@@ -285,7 +285,7 @@ export default function InquiryDetail() {
                       </select>
                     </div>
 
-                    <label className="flex items-center justify-between gap-3 border border-white/5 bg-background/20 p-3">
+                    <label className="flex items-center justify-between gap-3 border border-slate-200 bg-background/20 p-3">
                       <span className="text-sm text-crestline-muted">Archived</span>
                       <input
                         type="checkbox"
@@ -309,8 +309,8 @@ export default function InquiryDetail() {
                 <div>
                   <div className="text-xs text-crestline-muted uppercase tracking-wider mb-2">Agent</div>
                   {agent ? (
-                    <div className="border border-white/5 bg-background/20 p-4">
-                      <div className="font-serif text-lg font-bold text-white">{agent.full_name ?? "Agent"}</div>
+                    <div className="border border-slate-200 bg-background/20 p-4">
+                      <div className="font-serif text-lg font-bold text-slate-900">{agent.full_name ?? "Agent"}</div>
                       {agent.title ? <div className="text-xs text-crestline-gold uppercase tracking-wider mt-1">{agent.title}</div> : null}
                       {agent.phone ? (
                         <div className="flex items-center gap-2 text-sm text-crestline-muted mt-3">
@@ -321,7 +321,7 @@ export default function InquiryDetail() {
                       {agent.bio ? <div className="text-sm text-crestline-muted leading-relaxed mt-3">{agent.bio}</div> : null}
                     </div>
                   ) : (
-                    <div className="text-sm text-crestline-muted border border-white/5 bg-background/20 p-4">
+                    <div className="text-sm text-crestline-muted border border-slate-200 bg-background/20 p-4">
                       No agent linked yet.
                     </div>
                   )}

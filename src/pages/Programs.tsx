@@ -32,7 +32,7 @@ const programs = [
     days: "4-5 days/week",
     focus: "Fat Loss + Muscle Retention",
     level: "All Levels",
-    color: "from-orange-500/20 to-orange-900/10",
+    color: "from-blue-500/20 to-slate-900/10",
     desc: "Strength training combined with HIIT and cardio conditioning for maximum fat loss.",
     tags: ["HIIT", "Strength", "Conditioning"],
   },
