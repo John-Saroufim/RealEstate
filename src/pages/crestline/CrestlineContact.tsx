@@ -9,22 +9,6 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { MotionSection } from "@/components/MotionSection";
 
-const budgetOptions = [
-  "Under $2M",
-  "$2M – $5M",
-  "$5M – $10M",
-  "$10M+",
-];
-
-const interestOptions = [
-  "Penthouse",
-  "Villa",
-  "Estate",
-  "Townhouse",
-  "Investment Property",
-  "Not sure yet",
-];
-
 export default function CrestlineContact() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -33,8 +17,6 @@ export default function CrestlineContact() {
     name: "",
     email: "",
     phone: "",
-    interest: "",
-    budget: "",
     message: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -56,19 +38,11 @@ export default function CrestlineContact() {
     if (!validate()) return;
     setLoading(true);
     try {
-      const composedMessage = [
-        form.message.trim(),
-        form.interest ? `Interest: ${form.interest}` : null,
-        form.budget ? `Budget: ${form.budget}` : null,
-      ]
-        .filter(Boolean)
-        .join("\n\n");
-
       const payload = {
         full_name: form.name.trim(),
         email: form.email.trim(),
         phone: form.phone.trim() || null,
-        message: composedMessage,
+        message: form.message.trim(),
 
         property_id: null,
         property_title_snapshot: null,
@@ -92,8 +66,6 @@ export default function CrestlineContact() {
         name: "",
         email: "",
         phone: "",
-        interest: "",
-        budget: "",
         message: "",
       });
       setErrors({});
@@ -208,49 +180,14 @@ export default function CrestlineContact() {
                     </div>
                   </div>
 
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">Phone</label>
-                      <Input
-                        value={form.phone}
-                        onChange={(e) => handleChange("phone", e.target.value)}
-                        placeholder="+1 (555) 000-0000"
-                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">Property Interest</label>
-                      <select
-                        value={form.interest}
-                        onChange={(e) => handleChange("interest", e.target.value)}
-                        className="w-full h-12 bg-crestline-bg border border-slate-200 text-slate-900 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-crestline-gold/50"
-                      >
-                        <option value="" className="bg-crestline-bg">Select type...</option>
-                        {interestOptions.map((o) => (
-                          <option key={o} value={o} className="bg-crestline-bg">{o}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
                   <div>
-                    <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">Budget Range</label>
-                    <div className="flex flex-wrap gap-2">
-                      {budgetOptions.map((b) => (
-                        <button
-                          key={b}
-                          type="button"
-                          onClick={() => handleChange("budget", form.budget === b ? "" : b)}
-                          className={`px-4 py-2 text-xs font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
-                            form.budget === b
-                              ? "bg-crestline-gold text-crestline-on-gold border-crestline-gold"
-                              : "border-slate-200 text-slate-600 hover:border-crestline-gold/30"
-                          }`}
-                        >
-                          {b}
-                        </button>
-                      ))}
-                    </div>
+                    <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">Phone</label>
+                    <Input
+                      value={form.phone}
+                      onChange={(e) => handleChange("phone", e.target.value)}
+                      placeholder="+1 (555) 000-0000"
+                      className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
+                    />
                   </div>
 
                   <div>
