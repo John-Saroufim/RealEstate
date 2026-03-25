@@ -219,7 +219,7 @@ export default function CrestlineHome() {
       <CrestlineNavbar />
 
       {/* Hero */}
-      <section className="relative min-h-[calc(80vh+5rem)] flex items-center overflow-hidden pt-20">
+      <section className="relative min-h-[calc(80vh+6rem)] flex items-start overflow-hidden pt-24 pb-12 md:items-center">
         <div className="absolute inset-0">
           <img src={heroImg} alt="Luxury real estate" className="w-full h-full object-cover" />
           {/* Premium dark overlay */}
@@ -228,7 +228,7 @@ export default function CrestlineHome() {
         </div>
 
         <div className="relative w-full">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center min-h-[80vh]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-start justify-center min-h-[80vh] md:items-center">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
