@@ -354,38 +354,73 @@ export default function CrestlineHome() {
                         Price
                       </label>
                       {priceStats ? (
-                        <div className="h-12 rounded-xl border border-white/20 bg-transparent px-2.5 flex items-center gap-2">
-                          <input
-                            type="text"
-                            inputMode="numeric"
-                            autoComplete="off"
-                            value={heroPriceMinInput}
-                            onChange={(e) => {
-                              const nextRaw = e.target.value;
-                              const parsed = parsePriceInputNumber(nextRaw);
-                              if (parsed == null) {
-                                setHeroPriceMinInput("");
-                                return;
-                              }
-                              const upperBound = heroPriceMax ?? priceStats.max;
-                              const next = clampNumber(parsed, priceStats.min, upperBound);
-                              setHeroPriceMin(next);
-                              setHeroPriceMinInput(formatPriceNumber(next));
-                            }}
-                            onBlur={() => {
-                              const parsed = parsePriceInputNumber(heroPriceMinInput);
-                              const upperBound = heroPriceMax ?? priceStats.max;
-                              const next = parsed == null ? priceStats.min : clampNumber(parsed, priceStats.min, upperBound);
-                              setHeroPriceMin(next);
-                              setHeroPriceMinInput(formatPriceNumber(next));
-                            }}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") (e.target as HTMLInputElement).blur();
-                            }}
-                            className="h-8 w-[92px] rounded-md border border-white/20 bg-black/20 px-2 text-xs tabular-nums text-white outline-none focus:border-sky-200/70"
-                            aria-label="Minimum price"
-                          />
-                          <div className="flex-1 px-1.5">
+                        <div className="space-y-2">
+                          <div className="h-12 rounded-xl border border-white/20 bg-transparent px-2.5 flex items-center gap-2">
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              autoComplete="off"
+                              value={heroPriceMinInput}
+                              onChange={(e) => {
+                                const nextRaw = e.target.value;
+                                const parsed = parsePriceInputNumber(nextRaw);
+                                if (parsed == null) {
+                                  setHeroPriceMinInput("");
+                                  return;
+                                }
+                                const upperBound = heroPriceMax ?? priceStats.max;
+                                const next = clampNumber(parsed, priceStats.min, upperBound);
+                                setHeroPriceMin(next);
+                                setHeroPriceMinInput(formatPriceNumber(next));
+                              }}
+                              onBlur={() => {
+                                const parsed = parsePriceInputNumber(heroPriceMinInput);
+                                const upperBound = heroPriceMax ?? priceStats.max;
+                                const next = parsed == null ? priceStats.min : clampNumber(parsed, priceStats.min, upperBound);
+                                setHeroPriceMin(next);
+                                setHeroPriceMinInput(formatPriceNumber(next));
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+                              }}
+                              className="h-8 w-[92px] rounded-md border border-white/20 bg-black/20 px-2 text-xs tabular-nums text-white outline-none focus:border-sky-200/70"
+                              aria-label="Minimum price"
+                            />
+                            <div className="flex-1 text-center text-[10px] uppercase tracking-wider text-white/55">
+                              Price Range
+                            </div>
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              autoComplete="off"
+                              value={heroPriceMaxInput}
+                              onChange={(e) => {
+                                const nextRaw = e.target.value;
+                                const parsed = parsePriceInputNumber(nextRaw);
+                                if (parsed == null) {
+                                  setHeroPriceMaxInput("");
+                                  return;
+                                }
+                                const lowerBound = heroPriceMin ?? priceStats.min;
+                                const next = clampNumber(parsed, lowerBound, priceStats.max);
+                                setHeroPriceMax(next);
+                                setHeroPriceMaxInput(formatPriceNumber(next));
+                              }}
+                              onBlur={() => {
+                                const parsed = parsePriceInputNumber(heroPriceMaxInput);
+                                const lowerBound = heroPriceMin ?? priceStats.min;
+                                const next = parsed == null ? priceStats.max : clampNumber(parsed, lowerBound, priceStats.max);
+                                setHeroPriceMax(next);
+                                setHeroPriceMaxInput(formatPriceNumber(next));
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+                              }}
+                              className="h-8 w-[92px] rounded-md border border-white/20 bg-black/20 px-2 text-right text-xs tabular-nums text-white outline-none focus:border-sky-200/70"
+                              aria-label="Maximum price"
+                            />
+                          </div>
+                          <div className="px-1">
                             <Slider
                               min={priceStats.min}
                               max={priceStats.max}
@@ -403,36 +438,6 @@ export default function CrestlineHome() {
                               aria-label="Price range (min to max)"
                             />
                           </div>
-                          <input
-                            type="text"
-                            inputMode="numeric"
-                            autoComplete="off"
-                            value={heroPriceMaxInput}
-                            onChange={(e) => {
-                              const nextRaw = e.target.value;
-                              const parsed = parsePriceInputNumber(nextRaw);
-                              if (parsed == null) {
-                                setHeroPriceMaxInput("");
-                                return;
-                              }
-                              const lowerBound = heroPriceMin ?? priceStats.min;
-                              const next = clampNumber(parsed, lowerBound, priceStats.max);
-                              setHeroPriceMax(next);
-                              setHeroPriceMaxInput(formatPriceNumber(next));
-                            }}
-                            onBlur={() => {
-                              const parsed = parsePriceInputNumber(heroPriceMaxInput);
-                              const lowerBound = heroPriceMin ?? priceStats.min;
-                              const next = parsed == null ? priceStats.max : clampNumber(parsed, lowerBound, priceStats.max);
-                              setHeroPriceMax(next);
-                              setHeroPriceMaxInput(formatPriceNumber(next));
-                            }}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") (e.target as HTMLInputElement).blur();
-                            }}
-                            className="h-8 w-[92px] rounded-md border border-white/20 bg-black/20 px-2 text-right text-xs tabular-nums text-white outline-none focus:border-sky-200/70"
-                            aria-label="Maximum price"
-                          />
                         </div>
                       ) : (
                         <div className="w-full h-12 bg-transparent border border-white/20 text-white/60 rounded-xl px-3 flex items-center">
