@@ -359,6 +359,7 @@ export default function CrestlineHome() {
                             <Input
                               type="text"
                               inputMode="numeric"
+                              autoComplete="off"
                               value={heroPriceMinInput}
                               onChange={(e) => {
                                 const nextRaw = e.target.value;
@@ -376,13 +377,14 @@ export default function CrestlineHome() {
                                 setHeroPriceMin(next);
                                 setHeroPriceMinInput(formatPriceNumber(next));
                               }}
-                              className="h-8 px-0 bg-transparent border-0 text-white placeholder:text-white/50 rounded-none focus-visible:ring-0 focus-visible:outline-none tabular-nums"
+                              className="h-10 bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-xl focus-visible:ring-sky-200/50 tabular-nums"
                               aria-label="Minimum price"
                             />
                             <span className="text-white/45 text-center">to</span>
                             <Input
                               type="text"
                               inputMode="numeric"
+                              autoComplete="off"
                               value={heroPriceMaxInput}
                               onChange={(e) => {
                                 const nextRaw = e.target.value;
@@ -400,7 +402,7 @@ export default function CrestlineHome() {
                                 setHeroPriceMax(next);
                                 setHeroPriceMaxInput(formatPriceNumber(next));
                               }}
-                              className="h-8 px-0 bg-transparent border-0 text-white placeholder:text-white/50 rounded-none focus-visible:ring-0 focus-visible:outline-none tabular-nums text-right"
+                              className="h-10 bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-xl focus-visible:ring-sky-200/50 tabular-nums text-right"
                               aria-label="Maximum price"
                             />
                           </div>
