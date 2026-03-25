@@ -23,9 +23,9 @@ function Stat({
   value: number | null;
 }) {
   return (
-    <Card className="bg-crestline-surface border border-slate-200 rounded-none p-6">
+    <Card className="bg-crestline-surface border border-slate-200 rounded-xl p-6">
       <div className="flex items-start gap-4">
-        <div className="h-11 w-11 rounded-none border border-crestline-gold/20 bg-slate-100 flex items-center justify-center">
+        <div className="h-11 w-11 rounded-xl border border-crestline-gold/20 bg-slate-100 flex items-center justify-center">
           <Icon className="h-5 w-5 text-crestline-gold" />
         </div>
         <div className="min-w-0">

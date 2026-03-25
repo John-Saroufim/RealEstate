@@ -7,6 +7,7 @@ import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { MotionSection } from "@/components/MotionSection";
 
 const budgetOptions = [
   "Under $2M",
@@ -116,16 +117,16 @@ export default function CrestlineContact() {
       <CrestlineNavbar />
 
       {/* Header */}
-      <section className="pt-32 pb-12 bg-crestline-surface border-b border-crestline-gold/10">
+      <MotionSection className="pt-32 pb-12 bg-crestline-surface border-b border-crestline-gold/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Get In Touch</p>
           <h1 className="font-serif text-4xl sm:text-5xl font-bold text-slate-900 mb-4">Contact Us</h1>
           <p className="text-crestline-muted max-w-xl">Ready to explore your next investment or dream home? Our advisors are here to help.</p>
         </div>
-      </section>
+      </MotionSection>
 
       {/* Contact Content */}
-      <section className="py-16 sm:py-24">
+      <MotionSection className="py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-5 gap-12">
             {/* Info */}
@@ -190,7 +191,7 @@ export default function CrestlineContact() {
                         value={form.name}
                         onChange={(e) => handleChange("name", e.target.value)}
                         placeholder="John Smith"
-                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none h-12 focus-visible:ring-crestline-gold/50"
+                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
                       />
                       {errors.name && <p className="text-xs text-red-400 mt-1">{errors.name}</p>}
                     </div>
@@ -201,7 +202,7 @@ export default function CrestlineContact() {
                         value={form.email}
                         onChange={(e) => handleChange("email", e.target.value)}
                         placeholder="john@example.com"
-                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none h-12 focus-visible:ring-crestline-gold/50"
+                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
                       />
                       {errors.email && <p className="text-xs text-red-400 mt-1">{errors.email}</p>}
                     </div>
@@ -214,7 +215,7 @@ export default function CrestlineContact() {
                         value={form.phone}
                         onChange={(e) => handleChange("phone", e.target.value)}
                         placeholder="+1 (555) 000-0000"
-                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none h-12 focus-visible:ring-crestline-gold/50"
+                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
                       />
                     </div>
                     <div>
@@ -267,7 +268,7 @@ export default function CrestlineContact() {
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm rounded-none h-12"
+                    className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm rounded-xl h-12"
                   >
                     {loading ? <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Submitting...</> : "Submit Inquiry"}
                   </Button>
@@ -276,7 +277,7 @@ export default function CrestlineContact() {
             </div>
           </div>
         </div>
-      </section>
+      </MotionSection>
 
       <CrestlineFooter />
     </div>

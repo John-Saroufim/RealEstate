@@ -43,7 +43,7 @@ function StarRatingPicker({
               onMouseLeave={() => setHoverValue(null)}
               onClick={() => onChange(n)}
               className={cn(
-                "rounded-none p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-crestline-bg/0 transition-transform duration-200",
+                "rounded-xl p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-crestline-bg/0 transition-transform duration-200",
                 "hover:scale-[1.06]",
               )}
             >
@@ -161,7 +161,7 @@ export function LeaveReviewModal({
         <Button
           type="button"
           className={cn(
-            "bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none h-9 px-5 font-semibold transition-colors duration-200",
+            "bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl h-9 px-5 font-semibold transition-colors duration-200",
             triggerClassName,
           )}
         >
@@ -169,7 +169,7 @@ export function LeaveReviewModal({
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="bg-crestline-bg border border-slate-200 text-slate-900 p-6 max-w-2xl rounded-none">
+      <DialogContent className="bg-crestline-bg border border-slate-200 text-slate-900 p-6 max-w-2xl rounded-xl">
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl">Leave a Review</DialogTitle>
           <DialogDescription className="text-crestline-muted">
@@ -186,7 +186,7 @@ export function LeaveReviewModal({
             </p>
             <div className="mt-5 flex items-center justify-end gap-3">
               <DialogClose asChild>
-                <Button type="button" variant="outline" className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none">
+                <Button type="button" variant="outline" className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl">
                   Done
                 </Button>
               </DialogClose>
@@ -201,7 +201,7 @@ export function LeaveReviewModal({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your name"
-                  className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none"
+                  className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl"
                 />
                 {errors.name ? <p className="text-sm text-red-600">{errors.name}</p> : null}
               </div>
@@ -212,7 +212,7 @@ export function LeaveReviewModal({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none"
+                  className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl"
                 />
                 {errors.email ? <p className="text-sm text-red-600">{errors.email}</p> : null}
               </div>
@@ -226,7 +226,7 @@ export function LeaveReviewModal({
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Share your experience with RealEstate..."
-                className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none resize-none min-h-[130px]"
+                className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl resize-none min-h-[130px]"
               />
               {errors.message ? <p className="text-sm text-red-600">{errors.message}</p> : null}
             </div>
@@ -235,7 +235,7 @@ export function LeaveReviewModal({
 
             <div className="flex items-center justify-end gap-3 pt-2">
               <DialogClose asChild>
-                <Button type="button" variant="outline" className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none">
+                <Button type="button" variant="outline" className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl">
                   Cancel
                 </Button>
               </DialogClose>
@@ -243,7 +243,7 @@ export function LeaveReviewModal({
               <Button
                 type="submit"
                 disabled={submitting}
-                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none disabled:opacity-60 disabled:hover:bg-crestline-gold"
+                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl disabled:opacity-60 disabled:hover:bg-crestline-gold"
               >
                 {submitting ? <LoadingSpinner size={18} /> : "Submit Review"}
               </Button>

@@ -126,7 +126,7 @@ export function CrestlineAiChatDock() {
               aria-label="AI assistant"
               className={cn(
                 "fixed z-[60] flex flex-col overflow-hidden border border-slate-200 bg-crestline-bg shadow-2xl",
-                "inset-x-0 bottom-0 max-h-[min(85vh,640px)] rounded-t-2xl md:inset-auto md:bottom-6 md:right-6 md:left-auto md:w-[min(100vw-2rem,420px)] md:max-h-[min(72vh,560px)] md:rounded-none",
+                "inset-x-0 bottom-0 max-h-[min(85vh,640px)] rounded-t-2xl md:inset-auto md:bottom-6 md:right-6 md:left-auto md:w-[min(100vw-2rem,420px)] md:max-h-[min(72vh,560px)] md:rounded-xl",
               )}
               initial={reducedMotion ? undefined : { opacity: 0, y: 24, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -142,7 +142,7 @@ export function CrestlineAiChatDock() {
                   type="button"
                   size="icon"
                   variant="ghost"
-                  className="h-9 w-9 text-slate-900 hover:bg-slate-100 rounded-none"
+                  className="h-9 w-9 text-slate-900 hover:bg-slate-100 rounded-xl"
                   onClick={() => setOpen(false)}
                 >
                   <X className="h-4 w-4" />
@@ -179,7 +179,7 @@ export function CrestlineAiChatDock() {
                   placeholder="Type your question…"
                   rows={2}
                   disabled={loading}
-                  className="resize-none bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none text-sm min-h-[72px]"
+                  className="resize-none bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl text-sm min-h-[72px]"
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
@@ -192,7 +192,7 @@ export function CrestlineAiChatDock() {
                     type="button"
                     onClick={() => void send()}
                     disabled={loading || !input.trim()}
-                    className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none gap-2"
+                    className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl gap-2"
                   >
                     <Send className="h-4 w-4" />
                     Send

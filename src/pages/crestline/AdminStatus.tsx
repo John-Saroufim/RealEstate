@@ -29,7 +29,7 @@ export default function AdminStatus() {
           {loading ? (
             <LoadingSpinner label="Loading..." />
           ) : !user ? (
-            <div className="border border-slate-200 p-6 text-center rounded-none">
+            <div className="border border-slate-200 p-6 text-center rounded-xl">
               <p className="text-crestline-muted mb-4">You are not logged in.</p>
               <Link to="/login" className="text-crestline-gold hover:underline">
                 Go to broker login

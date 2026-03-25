@@ -102,7 +102,7 @@ export function PropertyCard({
           goToProperty();
         }
       }}
-      className="group h-full cursor-pointer select-none flex flex-col bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:border-crestline-gold/30 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+      className="group h-full cursor-pointer select-none flex flex-col bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg hover:border-crestline-gold/30 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
     >
       <div className="relative overflow-hidden aspect-[4/3] bg-slate-50">
         {imageUrl ? (
@@ -199,7 +199,7 @@ export function PropertyCard({
               e.stopPropagation();
               goToProperty();
             }}
-            className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none h-11 transition-colors duration-200"
+            className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl h-11 transition-colors duration-200"
           >
             View Property
           </Button>

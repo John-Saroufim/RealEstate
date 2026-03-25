@@ -110,7 +110,7 @@ export default function AdminListings() {
             <div className="flex flex-wrap gap-3">
               <Button
                 onClick={() => navigate("/crestline/admin/listings/new")}
-                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none flex items-center gap-2"
+                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl flex items-center gap-2"
               >
                 <Plus className="h-4 w-4" />
                 New Listing
@@ -118,7 +118,7 @@ export default function AdminListings() {
               <Button
                 variant="outline"
                 onClick={() => navigate("/crestline/admin/agents")}
-                className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none flex items-center gap-2"
+                className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl flex items-center gap-2"
               >
                 Manage Agents
               </Button>
@@ -144,7 +144,7 @@ export default function AdminListings() {
               <p className="text-sm text-crestline-muted mb-6">Add your first property to start managing galleries, agents, and inquiry submissions.</p>
               <Button
                 onClick={() => navigate("/crestline/admin/listings/new")}
-                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
+                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl"
               >
                 Create your first listing
               </Button>
@@ -239,7 +239,7 @@ export default function AdminListings() {
                     <div className="flex justify-between gap-2 pt-2">
                       <Button
                         variant="outline"
-                        className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none h-9 px-3 text-xs flex items-center gap-1.5"
+                        className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl h-9 px-3 text-xs flex items-center gap-1.5"
                         onClick={() => navigate(`/crestline/admin/listings/${p.id}`)}
                       >
                         <Pencil className="h-3.5 w-3.5" />
@@ -247,7 +247,7 @@ export default function AdminListings() {
                       </Button>
                       <Button
                         variant="outline"
-                        className="border-red-500/30 text-red-300 hover:bg-red-500/10 rounded-none h-9 px-3 text-xs flex items-center gap-1.5"
+                        className="border-red-500/30 text-red-300 hover:bg-red-500/10 rounded-xl h-9 px-3 text-xs flex items-center gap-1.5"
                         onClick={() => handleDelete(p.id)}
                       >
                         <Trash2 className="h-3.5 w-3.5" />

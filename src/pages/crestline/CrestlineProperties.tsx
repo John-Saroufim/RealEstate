@@ -9,6 +9,7 @@ import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { PropertyFiltersPanel, PropertyFiltersFields } from "@/components/crestline/PropertyFiltersPanel";
 import { supabase } from "@/integrations/supabase/client";
 import { PropertyCard } from "@/components/crestline/PropertyCard";
+import { MotionSection } from "@/components/MotionSection";
 
 type Listing = {
   id: string;
@@ -237,7 +238,7 @@ export default function CrestlineProperties() {
       <CrestlineNavbar />
 
       {/* Header */}
-      <section className="pt-32 pb-12 bg-crestline-surface border-b border-crestline-gold/10">
+      <MotionSection className="pt-32 pb-12 bg-crestline-surface border-b border-crestline-gold/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Portfolio</p>
           <div className="flex flex-col gap-4">
@@ -245,10 +246,10 @@ export default function CrestlineProperties() {
           </div>
           <p className="text-crestline-muted max-w-xl">Browse our curated collection of exceptional residences across the most prestigious addresses.</p>
         </div>
-      </section>
+      </MotionSection>
 
       {/* Search & Filters */}
-      <section className="border-b border-slate-200/80 bg-crestline-bg py-10 md:py-12 lg:py-14">
+      <MotionSection className="border-b border-slate-200/80 bg-crestline-bg py-10 md:py-12 lg:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <PropertyFiltersPanel
@@ -320,10 +321,10 @@ export default function CrestlineProperties() {
             </DialogContent>
           </Dialog>
         </div>
-      </section>
+      </MotionSection>
 
       {/* Grid */}
-      <section className="py-12 lg:py-16">
+      <MotionSection className="py-12 lg:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {loading && (
             <p className="mb-10 text-sm font-medium tracking-wide text-crestline-muted lg:mb-12">Loading residences…</p>
@@ -394,13 +395,13 @@ export default function CrestlineProperties() {
               <Search className="h-10 w-10 text-crestline-muted mx-auto mb-4" />
               <p className="text-slate-900 font-serif text-lg mb-2">No properties found</p>
               <p className="text-sm text-crestline-muted mb-6">Try adjusting your filters or search terms.</p>
-              <Button onClick={clearFilters} className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none">
+              <Button onClick={clearFilters} className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl">
                 Clear Filters
               </Button>
             </div>
           )}
         </div>
-      </section>
+      </MotionSection>
 
       <CrestlineFooter />
     </div>

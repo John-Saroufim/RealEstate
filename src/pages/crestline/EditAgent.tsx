@@ -220,7 +220,7 @@ export default function EditAgent() {
           </div>
           <Button
             variant="outline"
-            className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none text-sm"
+            className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl text-sm"
             onClick={() => navigate("/crestline/admin/agents")}
           >
             Back
@@ -242,7 +242,7 @@ export default function EditAgent() {
                   <Input
                     value={form.full_name}
                     onChange={(e) => setForm((p) => ({ ...p, full_name: e.target.value }))}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
                     required
                   />
                 </div>
@@ -251,7 +251,7 @@ export default function EditAgent() {
                   <Input
                     value={form.title}
                     onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
                     required
                   />
                 </div>
@@ -260,7 +260,7 @@ export default function EditAgent() {
                   <Input
                     value={form.phone}
                     onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
                   />
                 </div>
                 <div>
@@ -268,7 +268,7 @@ export default function EditAgent() {
                   <Input
                     value={form.email}
                     onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -277,7 +277,7 @@ export default function EditAgent() {
                     value={form.bio}
                     onChange={(e) => setForm((p) => ({ ...p, bio: e.target.value }))}
                     rows={4}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none resize-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl resize-none"
                   />
                 </div>
                 <div>
@@ -285,7 +285,7 @@ export default function EditAgent() {
                   <Input
                     value={form.city}
                     onChange={(e) => setForm((p) => ({ ...p, city: e.target.value }))}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
                   />
                 </div>
                 <div>
@@ -295,7 +295,7 @@ export default function EditAgent() {
                     onChange={(e) => setForm((p) => ({ ...p, years_experience: e.target.value }))}
                     type="number"
                     min={0}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
                   />
                 </div>
                 <div className="sm:col-span-2">
@@ -303,7 +303,7 @@ export default function EditAgent() {
                   <Input
                     value={form.specialtiesCsv}
                     onChange={(e) => setForm((p) => ({ ...p, specialtiesCsv: e.target.value }))}
-                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none"
+                    className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
                   />
                 </div>
               </div>
@@ -341,7 +341,7 @@ export default function EditAgent() {
                   type="file"
                   accept="image/*"
                   onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                  className="bg-crestline-surface border-slate-200 text-slate-900 rounded-none file:bg-crestline-gold file:text-crestline-on-gold file:border-0 file:px-3 file:py-1.5 file:text-xs"
+                  className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl file:bg-crestline-gold file:text-crestline-on-gold file:border-0 file:px-3 file:py-1.5 file:text-xs"
                 />
               </div>
 
@@ -349,7 +349,7 @@ export default function EditAgent() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none"
+                  className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl"
                   onClick={() => navigate("/crestline/admin/agents")}
                 >
                   Cancel
@@ -357,7 +357,7 @@ export default function EditAgent() {
                 <Button
                   type="submit"
                   disabled={!canSave}
-                  className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
+                  className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl"
                 >
                   {submitting ? "Saving..." : isEditing ? "Save Agent" : "Create Agent"}
                 </Button>

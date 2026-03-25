@@ -167,7 +167,7 @@ export default function InquiryDetail() {
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="border border-slate-200 bg-crestline-surface p-8 text-center">
               <p className="text-crestline-muted mb-4">{error ?? "Inquiry not found."}</p>
-              <Button onClick={() => navigate("/crestline/admin/inquiries")} className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none">
+              <Button onClick={() => navigate("/crestline/admin/inquiries")} className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl">
                 Back to Inbox
               </Button>
             </div>
@@ -190,7 +190,7 @@ export default function InquiryDetail() {
           <Button
             variant="outline"
             onClick={() => navigate("/crestline/admin/inquiries")}
-            className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none"
+            className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
@@ -201,7 +201,7 @@ export default function InquiryDetail() {
       <section className="py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-6">
-            <Card className="bg-crestline-surface border border-slate-200 rounded-none">
+            <Card className="bg-crestline-surface border border-slate-200 rounded-xl">
               <CardContent className="p-6 space-y-4">
                 <div>
                   <div className="flex items-center gap-3">
@@ -255,7 +255,7 @@ export default function InquiryDetail() {
               </CardContent>
             </Card>
 
-            <Card className="bg-crestline-surface border border-slate-200 rounded-none">
+            <Card className="bg-crestline-surface border border-slate-200 rounded-xl">
               <CardContent className="p-6 space-y-4">
                 <div>
                   <div className="text-xs text-crestline-muted uppercase tracking-wider mb-2">Actions</div>
@@ -263,7 +263,7 @@ export default function InquiryDetail() {
                   <div className="grid gap-3">
                     <Button
                       variant="outline"
-                      className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none"
+                      className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl"
                       onClick={() => handleUpdate({ read: !dirtyRead })}
                     >
                       {dirtyRead ? <EyeOff className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
@@ -275,7 +275,7 @@ export default function InquiryDetail() {
                       <select
                         value={dirtyStatus}
                         onChange={(e) => handleUpdate({ status: e.target.value })}
-                        className="h-11 bg-crestline-bg border border-slate-200 text-slate-900 rounded-none px-3 focus-visible:outline-none focus-visible:ring-crestline-gold/50"
+                        className="h-11 bg-crestline-bg border border-slate-200 text-slate-900 rounded-xl px-3 focus-visible:outline-none focus-visible:ring-crestline-gold/50"
                       >
                         {statusOptions.map((s) => (
                           <option key={s} value={s} className="bg-crestline-bg">
@@ -298,7 +298,7 @@ export default function InquiryDetail() {
                     <Button
                       variant="outline"
                       onClick={handleDelete}
-                      className="border-red-500/30 text-red-300 hover:bg-red-500/10 rounded-none"
+                      className="border-red-500/30 text-red-300 hover:bg-red-500/10 rounded-xl"
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
                       Delete

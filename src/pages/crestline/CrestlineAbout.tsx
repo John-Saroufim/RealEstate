@@ -139,7 +139,7 @@ export default function CrestlineAbout() {
           </div>
           <div className="text-center mt-12">
             <Link to="/crestline/contact">
-              <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-base px-10 py-3 rounded-none h-auto">
+              <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-base px-10 py-3 rounded-xl h-auto">
                 Get in Touch <ChevronRight className="ml-1 h-4 w-4" />
               </Button>
             </Link>

@@ -316,7 +316,7 @@ export default function CrestlinePropertyDetails() {
               type="button"
               variant="ghost"
               onClick={goBack}
-              className="group -ml-2 mb-8 gap-1 rounded-none px-2 text-crestline-muted hover:bg-transparent hover:text-crestline-gold"
+              className="group -ml-2 mb-8 gap-1 rounded-xl px-2 text-crestline-muted hover:bg-transparent hover:text-crestline-gold"
               aria-label="Go back to previous page"
             >
               <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
@@ -340,7 +340,7 @@ export default function CrestlinePropertyDetails() {
               type="button"
               variant="ghost"
               onClick={goBack}
-              className="group -ml-2 mb-8 gap-1 rounded-none px-2 text-crestline-muted hover:bg-transparent hover:text-crestline-gold"
+              className="group -ml-2 mb-8 gap-1 rounded-xl px-2 text-crestline-muted hover:bg-transparent hover:text-crestline-gold"
               aria-label="Go back to previous page"
             >
               <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
@@ -352,7 +352,7 @@ export default function CrestlinePropertyDetails() {
               <p className="text-crestline-muted mb-6">{error ?? "This property does not exist."}</p>
               <Button
                 onClick={() => navigate("/crestline/properties")}
-                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
+                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl"
               >
                 View all listings
               </Button>
@@ -365,7 +365,7 @@ export default function CrestlinePropertyDetails() {
                 type="button"
                 variant="ghost"
                 onClick={goBack}
-                className="group -ml-2 mb-8 gap-1 rounded-none px-2 text-crestline-muted hover:bg-transparent hover:text-crestline-gold"
+                className="group -ml-2 mb-8 gap-1 rounded-xl px-2 text-crestline-muted hover:bg-transparent hover:text-crestline-gold"
                 aria-label="Go back to previous page"
               >
                 <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
@@ -625,7 +625,7 @@ export default function CrestlinePropertyDetails() {
                             <img
                               src={agent.profile_image_url}
                               alt={agent.full_name ?? "Advisor"}
-                              className="w-16 h-16 rounded-none border border-slate-200 object-cover"
+                              className="w-16 h-16 rounded-xl border border-slate-200 object-cover"
                             />
                           ) : (
                             <div className="w-16 h-16 border border-slate-200 bg-slate-50" />
@@ -671,7 +671,7 @@ export default function CrestlinePropertyDetails() {
                           </p>
                           <Button
                             onClick={() => navigate("/crestline/properties")}
-                            className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
+                            className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl"
                           >
                             Back to Properties
                           </Button>
@@ -685,7 +685,7 @@ export default function CrestlinePropertyDetails() {
                             <Input
                               value={inquiry.full_name}
                               onChange={(e) => setInquiry((p) => ({ ...p, full_name: e.target.value }))}
-                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none h-12 focus-visible:ring-crestline-gold/50"
+                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
                               placeholder="John Smith"
                             />
                             {fieldErrors.full_name && (
@@ -701,7 +701,7 @@ export default function CrestlinePropertyDetails() {
                               type="email"
                               value={inquiry.email}
                               onChange={(e) => setInquiry((p) => ({ ...p, email: e.target.value }))}
-                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none h-12 focus-visible:ring-crestline-gold/50"
+                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
                               placeholder="john@example.com"
                             />
                             {fieldErrors.email && (
@@ -716,7 +716,7 @@ export default function CrestlinePropertyDetails() {
                             <Input
                               value={inquiry.phone}
                               onChange={(e) => setInquiry((p) => ({ ...p, phone: e.target.value }))}
-                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none h-12 focus-visible:ring-crestline-gold/50"
+                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
                               placeholder="+1 (555) 000-0000"
                             />
                           </div>
@@ -729,7 +729,7 @@ export default function CrestlinePropertyDetails() {
                               value={inquiry.message}
                               onChange={(e) => setInquiry((p) => ({ ...p, message: e.target.value }))}
                               rows={5}
-                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-none focus-visible:ring-crestline-gold/50 resize-none"
+                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl focus-visible:ring-crestline-gold/50 resize-none"
                             />
                             {fieldErrors.message && (
                               <p className="text-xs text-red-400 mt-1">{fieldErrors.message}</p>
@@ -739,7 +739,7 @@ export default function CrestlinePropertyDetails() {
                           <Button
                             type="submit"
                             disabled={submitting}
-                            className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none h-12 font-semibold text-sm"
+                            className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl h-12 font-semibold text-sm"
                           >
                             {submitting ? (
                               <>

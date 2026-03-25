@@ -152,7 +152,7 @@ export default function AdminReviews() {
 
       <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="bg-crestline-surface border border-slate-200 rounded-none">
+          <Card className="bg-crestline-surface border border-slate-200 rounded-xl">
             <CardContent className="p-6">
               <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
                 <div className="flex flex-wrap gap-2">
@@ -161,7 +161,7 @@ export default function AdminReviews() {
                       key={s.id}
                       type="button"
                       onClick={() => setStatusFilter(s.id)}
-                      className={`px-4 py-2 text-xs font-semibold border transition-colors rounded-none ${
+                      className={`px-4 py-2 text-xs font-semibold border transition-colors rounded-xl ${
                         statusFilter === s.id
                           ? "bg-crestline-gold text-crestline-on-gold border-crestline-gold"
                           : "border-slate-200 text-slate-600 hover:border-crestline-gold/30"
@@ -179,7 +179,7 @@ export default function AdminReviews() {
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       placeholder="Search reviews..."
-                      className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-none h-12 pl-9"
+                      className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-xl h-12 pl-9"
                     />
                   </div>
                 </div>
@@ -199,7 +199,7 @@ export default function AdminReviews() {
                   setSearch("");
                   setStatusFilter("pending");
                 }}
-                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
+                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl"
               >
                 Clear & Show Pending
               </Button>
@@ -242,7 +242,7 @@ export default function AdminReviews() {
 
                     <div>
                       <span
-                        className={`inline-flex items-center px-3 py-1 text-xs font-semibold border rounded-none ${statusBadgeClasses(
+                        className={`inline-flex items-center px-3 py-1 text-xs font-semibold border rounded-xl ${statusBadgeClasses(
                           String(r.status),
                         )}`}
                       >
@@ -256,7 +256,7 @@ export default function AdminReviews() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="rounded-none h-9 px-3 border border-emerald-600/45 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 hover:text-emerald-900"
+                        className="rounded-xl h-9 px-3 border border-emerald-600/45 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 hover:text-emerald-900"
                         onClick={() => updateStatus(r.id, "approved")}
                       >
                         <Check className="h-3.5 w-3.5 mr-1" /> Approve
@@ -264,7 +264,7 @@ export default function AdminReviews() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="rounded-none h-9 px-3 border border-red-600/45 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900"
+                        className="rounded-xl h-9 px-3 border border-red-600/45 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900"
                         onClick={() => updateStatus(r.id, "rejected")}
                       >
                         <X className="h-3.5 w-3.5 mr-1" /> Reject
@@ -272,7 +272,7 @@ export default function AdminReviews() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="rounded-none h-9 px-3 border border-red-600/35 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900"
+                        className="rounded-xl h-9 px-3 border border-red-600/35 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900"
                         onClick={() => handleDelete(r.id)}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -285,7 +285,7 @@ export default function AdminReviews() {
               {/* Mobile cards */}
               <div className="lg:hidden mt-6 grid gap-4">
                 {reviews.map((r) => (
-                  <Card key={r.id} className="border border-slate-200 bg-crestline-surface rounded-none">
+                    <Card key={r.id} className="border border-slate-200 bg-crestline-surface rounded-xl">
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
@@ -293,7 +293,7 @@ export default function AdminReviews() {
                           <div className="text-xs text-crestline-muted mt-1 break-words">{r.email}</div>
                         </div>
                         <span
-                          className={`inline-flex items-center px-3 py-1 text-xs font-semibold border rounded-none ${statusBadgeClasses(
+                        className={`inline-flex items-center px-3 py-1 text-xs font-semibold border rounded-xl ${statusBadgeClasses(
                             String(r.status),
                           )}`}
                         >
@@ -318,7 +318,7 @@ export default function AdminReviews() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="rounded-none h-9 px-3 border border-emerald-600/45 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 hover:text-emerald-900 flex items-center"
+                          className="rounded-xl h-9 px-3 border border-emerald-600/45 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 hover:text-emerald-900 flex items-center"
                           onClick={() => updateStatus(r.id, "approved")}
                         >
                           Approve
@@ -326,7 +326,7 @@ export default function AdminReviews() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="rounded-none h-9 px-3 border border-red-600/45 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900 flex items-center"
+                          className="rounded-xl h-9 px-3 border border-red-600/45 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900 flex items-center"
                           onClick={() => updateStatus(r.id, "rejected")}
                         >
                           Reject
@@ -334,7 +334,7 @@ export default function AdminReviews() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="rounded-none h-9 px-3 border border-red-600/35 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900 flex items-center"
+                          className="rounded-xl h-9 px-3 border border-red-600/35 bg-red-50 text-red-800 hover:bg-red-100 hover:text-red-900 flex items-center"
                           onClick={() => handleDelete(r.id)}
                         >
                           <Trash2 className="h-3.5 w-3.5" />

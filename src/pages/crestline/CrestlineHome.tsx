@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PropertyCard } from "@/components/crestline/PropertyCard";
 import { ReviewStars } from "@/components/crestline/ReviewStars";
+import { MotionSection } from "@/components/MotionSection";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 18 },
@@ -251,7 +252,7 @@ export default function CrestlineHome() {
                     e.preventDefault();
                     handleBrowseProperties();
                   }}
-                  className="bg-white/5 backdrop-blur rounded-none border border-white/10 px-5 py-5 sm:px-6 sm:py-6"
+                  className="bg-white/5 backdrop-blur rounded-xl border border-white/10 px-5 py-5 sm:px-6 sm:py-6"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="text-left">
@@ -265,7 +266,7 @@ export default function CrestlineHome() {
                           onChange={(e) => setHeroLocation(e.target.value)}
                           placeholder="e.g. Palm Beach, NY"
                           list="crestline-hero-locations"
-                          className="bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-none h-12 pl-10 focus-visible:ring-sky-200/50"
+                          className="bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-xl h-12 pl-10 focus-visible:ring-sky-200/50"
                         />
                       </div>
                     </div>
@@ -277,7 +278,7 @@ export default function CrestlineHome() {
                       <select
                         value={heroPriceRange}
                         onChange={(e) => setHeroPriceRange(e.target.value)}
-                        className="w-full h-12 bg-transparent border border-white/20 text-white rounded-none px-3 focus:outline-none focus:ring-2 focus:ring-sky-200/50"
+                        className="w-full h-12 bg-transparent border border-white/20 text-white rounded-xl px-3 focus:outline-none focus:ring-2 focus:ring-sky-200/50"
                       >
                         {priceRanges.map((p) => (
                           <option key={p.id} value={p.id} className="bg-slate-900">
@@ -295,7 +296,7 @@ export default function CrestlineHome() {
                         value={heroType}
                         onChange={(e) => setHeroType(e.target.value)}
                         disabled={heroTypesLoading}
-                        className="w-full h-12 bg-transparent border border-white/20 text-white rounded-none px-3 focus:outline-none focus:ring-2 focus:ring-sky-200/50 disabled:opacity-60"
+                        className="w-full h-12 bg-transparent border border-white/20 text-white rounded-xl px-3 focus:outline-none focus:ring-2 focus:ring-sky-200/50 disabled:opacity-60"
                       >
                         <option value="All" className="bg-slate-900">
                           All Types
@@ -319,7 +320,7 @@ export default function CrestlineHome() {
                   <Button
                     type="button"
                     onClick={handleBrowseProperties}
-                    className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold rounded-none px-8 py-3 h-auto text-base w-full sm:w-auto"
+                    className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold rounded-xl px-8 py-3 h-auto text-base w-full sm:w-auto"
                   >
                     Browse Properties
                     <ChevronRight className="ml-1 h-4 w-4" />
@@ -328,7 +329,7 @@ export default function CrestlineHome() {
                   <Link to="/crestline/contact">
                     <Button
                       variant="outline"
-                      className="bg-transparent border-white/40 text-white hover:bg-white/10 hover:text-white font-semibold rounded-none px-8 py-3 h-auto text-base w-full sm:w-auto"
+                      className="bg-transparent border-white/40 text-white hover:bg-white/10 hover:text-white font-semibold rounded-xl px-8 py-3 h-auto text-base w-full sm:w-auto"
                     >
                       Contact Us
                     </Button>
@@ -341,7 +342,7 @@ export default function CrestlineHome() {
       </section>
 
       {/* Stats */}
-      <section className="py-16 border-y border-crestline-gold/10 bg-crestline-surface">
+      <MotionSection className="py-16 border-y border-crestline-gold/10 bg-crestline-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((s, i) => (
@@ -352,10 +353,10 @@ export default function CrestlineHome() {
             ))}
           </div>
         </div>
-      </section>
+      </MotionSection>
 
       {/* Featured Properties */}
-      <section className="py-20 sm:py-28">
+      <MotionSection className="py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Curated Selection</p>
@@ -403,16 +404,16 @@ export default function CrestlineHome() {
           </div>
           <div className="text-center mt-12">
             <Link to="/crestline/properties">
-              <Button variant="outline" className="border-crestline-gold/30 text-crestline-gold hover:bg-crestline-gold/10 font-semibold rounded-none px-8 py-3 h-auto">
+              <Button variant="outline" className="border-crestline-gold/30 text-crestline-gold hover:bg-crestline-gold/10 font-semibold rounded-xl px-8 py-3 h-auto">
                 View All Properties <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </div>
         </div>
-      </section>
+      </MotionSection>
 
       {/* Why Choose Us */}
-      <section className="py-20 sm:py-28 bg-crestline-surface">
+      <MotionSection className="py-20 sm:py-28 bg-crestline-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">The RealEstate Difference</p>
@@ -431,10 +432,10 @@ export default function CrestlineHome() {
             ))}
           </div>
         </div>
-      </section>
+      </MotionSection>
 
       {/* Services */}
-      <section className="py-20 sm:py-28">
+      <MotionSection className="py-20 sm:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Services</p>
@@ -446,7 +447,7 @@ export default function CrestlineHome() {
                 <h3 className="font-serif text-2xl font-bold text-crestline-gold mb-4">{s.title}</h3>
                 <p className="text-sm text-crestline-muted leading-relaxed mb-6">{s.desc}</p>
                 <Link to="/crestline/contact">
-                  <Button variant="outline" className="border-crestline-gold/30 text-crestline-gold hover:bg-crestline-gold/10 rounded-none text-sm px-6">
+                  <Button variant="outline" className="border-crestline-gold/30 text-crestline-gold hover:bg-crestline-gold/10 rounded-xl text-sm px-6">
                     Learn More
                   </Button>
                 </Link>
@@ -454,10 +455,10 @@ export default function CrestlineHome() {
             ))}
           </div>
         </div>
-      </section>
+      </MotionSection>
 
       {/* Testimonials */}
-      <section className="py-20 sm:py-28 bg-crestline-surface">
+      <MotionSection className="py-20 sm:py-28 bg-crestline-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Client Reviews</p>
@@ -513,10 +514,10 @@ export default function CrestlineHome() {
             </div>
           )}
         </div>
-      </section>
+      </MotionSection>
 
       {/* FAQ */}
-      <section className="py-20 sm:py-28">
+      <MotionSection className="py-20 sm:py-28">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">FAQ</p>
@@ -537,10 +538,10 @@ export default function CrestlineHome() {
             ))}
           </div>
         </div>
-      </section>
+      </MotionSection>
 
       {/* CTA */}
-      <section className="py-20 sm:py-28 bg-crestline-surface">
+      <MotionSection className="py-20 sm:py-28 bg-crestline-surface">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Begin Your Journey</p>
@@ -554,20 +555,20 @@ export default function CrestlineHome() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link to="/crestline/contact">
-                <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-base px-10 py-3 rounded-none h-auto">
+                <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-base px-10 py-3 rounded-xl h-auto">
                   <Phone className="mr-2 h-4 w-4" />
                   Contact Us
                 </Button>
               </Link>
               <Link to="/crestline/properties">
-                <Button variant="outline" className="border-crestline-gold/30 text-crestline-gold hover:bg-crestline-gold/10 font-semibold text-base px-10 py-3 rounded-none h-auto">
+                <Button variant="outline" className="border-crestline-gold/30 text-crestline-gold hover:bg-crestline-gold/10 font-semibold text-base px-10 py-3 rounded-xl h-auto">
                   Browse Properties
                 </Button>
               </Link>
             </div>
           </motion.div>
         </div>
-      </section>
+      </MotionSection>
 
       <CrestlineFooter />
     </div>

@@ -101,7 +101,7 @@ export default function AdminAgents() {
             </div>
             <Button
               onClick={() => navigate("/crestline/admin/agents/new")}
-              className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
+              className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl"
             >
               New Agent
             </Button>
@@ -119,7 +119,7 @@ export default function AdminAgents() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search agents..."
-              className="bg-crestline-bg border-slate-200 text-slate-900 rounded-none h-12 lg:w-96"
+              className="bg-crestline-bg border-slate-200 text-slate-900 rounded-xl h-12 lg:w-96"
             />
             <div className="text-xs text-crestline-muted">{agents.length} agents</div>
           </div>
@@ -136,7 +136,7 @@ export default function AdminAgents() {
               <p className="text-sm text-crestline-muted mb-6">Create your first agent profile to start assigning advisors to listings.</p>
               <Button
                 onClick={() => navigate("/crestline/admin/agents/new")}
-                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
+                className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl"
               >
                 Create your first agent
               </Button>
@@ -146,7 +146,7 @@ export default function AdminAgents() {
           {!loading && !error && agents.length > 0 && (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {agents.map((a) => (
-                <Card key={a.id} className="bg-crestline-surface border border-slate-200 rounded-none overflow-hidden">
+                <Card key={a.id} className="bg-crestline-surface border border-slate-200 rounded-xl overflow-hidden">
                   <CardContent className="p-6 space-y-4">
                     <div className="flex items-start gap-4">
                       {a.profile_image_url ? (
@@ -176,7 +176,7 @@ export default function AdminAgents() {
                     <div className="flex justify-between gap-2 pt-2">
                       <Button
                         variant="outline"
-                        className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none h-9 px-3 text-xs flex items-center gap-1.5"
+                        className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl h-9 px-3 text-xs flex items-center gap-1.5"
                         onClick={() => navigate(`/crestline/admin/agents/${a.id}`)}
                       >
                         <Pencil className="h-3.5 w-3.5" />
@@ -185,14 +185,14 @@ export default function AdminAgents() {
                       <div className="flex gap-2">
                         <Button
                           variant="outline"
-                          className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-none h-9 px-3 text-xs"
+                          className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl h-9 px-3 text-xs"
                           onClick={() => handleToggleActive(a.id, !a.is_active)}
                         >
                           {a.is_active ? "Deactivate" : "Activate"}
                         </Button>
                         <Button
                           variant="outline"
-                          className="border-red-500/30 text-red-300 hover:bg-red-500/10 rounded-none h-9 px-3 text-xs"
+                          className="border-red-500/30 text-red-300 hover:bg-red-500/10 rounded-xl h-9 px-3 text-xs"
                           onClick={() => handleDelete(a.id)}
                         >
                           <Trash2 className="h-3.5 w-3.5" />

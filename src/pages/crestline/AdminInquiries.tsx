@@ -130,7 +130,7 @@ export default function AdminInquiries() {
 
       <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="bg-crestline-surface border border-slate-200 rounded-none">
+          <Card className="bg-crestline-surface border border-slate-200 rounded-xl">
             <CardContent className="p-6">
               <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
                 <div className="flex flex-wrap gap-2">
@@ -139,7 +139,7 @@ export default function AdminInquiries() {
                       key={s.id}
                       type="button"
                       onClick={() => setStatusFilter(s.id)}
-                      className={`px-4 py-2 text-xs font-semibold border transition-colors rounded-none ${
+                      className={`px-4 py-2 text-xs font-semibold border transition-colors rounded-xl ${
                         statusFilter === s.id
                           ? "bg-crestline-gold text-crestline-on-gold border-crestline-gold"
                           : "border-slate-200 text-slate-600 hover:border-crestline-gold/30"
@@ -155,7 +155,7 @@ export default function AdminInquiries() {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="Search inquiries..."
-                    className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-none h-12"
+                    className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-xl h-12"
                   />
                 </div>
               </div>
@@ -204,14 +204,14 @@ export default function AdminInquiries() {
                       </div>
                     </div>
                     <div className="text-sm">
-                      <span className="inline-flex items-center rounded-none px-3 py-1 text-xs font-semibold border border-slate-200 bg-crestline-surface">
+                      <span className="inline-flex items-center rounded-xl px-3 py-1 text-xs font-semibold border border-slate-200 bg-crestline-surface">
                         {inq.status ?? "new"}
                       </span>
                       <div className="mt-2">
                         <Button
                           size="sm"
                           variant="outline"
-                          className="rounded-none border-slate-300 h-8 px-2"
+                          className="rounded-xl border-slate-300 h-8 px-2"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleToggleRead(inq.id, !inq.read);
@@ -230,7 +230,7 @@ export default function AdminInquiries() {
               {/* Mobile cards */}
               <div className="lg:hidden grid gap-4">
                 {inquiries.map((inq) => (
-                  <Card key={inq.id} className="border border-slate-200 bg-crestline-surface rounded-none">
+                  <Card key={inq.id} className="border border-slate-200 bg-crestline-surface rounded-xl">
                     <CardContent className="p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div>
@@ -244,14 +244,14 @@ export default function AdminInquiries() {
                         </div>
                       </div>
                       <div className="mt-3 flex items-center justify-between gap-3">
-                        <span className="inline-flex items-center rounded-none px-3 py-1 text-xs font-semibold border border-slate-200 bg-crestline-bg">
+                        <span className="inline-flex items-center rounded-xl px-3 py-1 text-xs font-semibold border border-slate-200 bg-crestline-bg">
                           {inq.status ?? "new"}
                         </span>
                         <div className="flex items-center gap-2">
                           <Button
                             size="sm"
                             variant="outline"
-                            className="rounded-none border-slate-300 h-8 px-2"
+                            className="rounded-xl border-slate-300 h-8 px-2"
                             onClick={() => handleToggleRead(inq.id, !inq.read)}
                           >
                             {inq.read ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -259,7 +259,7 @@ export default function AdminInquiries() {
                           </Button>
                           <Button
                             size="sm"
-                            className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-none"
+                            className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl"
                             onClick={() => navigate(`/crestline/admin/inquiries/${inq.id}`)}
                           >
                             View

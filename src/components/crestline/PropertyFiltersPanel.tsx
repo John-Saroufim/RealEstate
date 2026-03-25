@@ -373,7 +373,7 @@ export function PropertyFiltersPanel({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-slate-200",
+        "relative overflow-hidden rounded-xl border border-slate-200",
         "bg-gradient-to-b from-white to-slate-50",
         "shadow-[0_24px_48px_-28px_rgba(15,23,42,0.12)]",
       )}
