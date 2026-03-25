@@ -242,6 +242,7 @@ type PropertyFiltersPanelProps = {
   sort: string;
   availableTypes: string[];
   locationSuggestions?: string[];
+  nameSuggestions?: string[];
   favoritesOnly: boolean;
   favoritesCount: number;
   onToggleFavoritesOnly: () => void;
@@ -266,6 +267,7 @@ export function PropertyFiltersPanel({
   sort,
   availableTypes,
   locationSuggestions,
+  nameSuggestions,
   favoritesOnly,
   favoritesCount,
   onToggleFavoritesOnly,
@@ -279,6 +281,14 @@ export function PropertyFiltersPanel({
   onOpenMobileFilters,
 }: PropertyFiltersPanelProps) {
   const [draftQ, setDraftQ] = useState(qParam);
+  const searchDatalistId = "crestline-properties-search-suggestions";
+
+  const combinedSearchSuggestions = useMemo(() => {
+    const locs = locationSuggestions ?? [];
+    const names = nameSuggestions ?? [];
+    // Keep it simple: union + stable ordering.
+    return Array.from(new Set([...names, ...locs])).filter((s) => s.trim().length > 0);
+  }, [locationSuggestions, nameSuggestions]);
 
   useEffect(() => {
     setDraftQ(qParam);
@@ -414,7 +424,7 @@ export function PropertyFiltersPanel({
                 placeholder="Search by name or location…"
                 value={draftQ}
                 onChange={(e) => setDraftQ(e.target.value)}
-                list={locationSuggestions && locationSuggestions.length > 0 ? "crestline-properties-search-locations" : undefined}
+                list={combinedSearchSuggestions.length > 0 ? searchDatalistId : undefined}
                 className={cn(searchInputClass, "w-full")}
                 onBlur={() => setParam("q", draftQ)}
               />
@@ -454,10 +464,10 @@ export function PropertyFiltersPanel({
           </div>
         </div>
 
-        {locationSuggestions && locationSuggestions.length > 0 ? (
-          <datalist id="crestline-properties-search-locations">
-            {locationSuggestions.map((loc) => (
-              <option key={loc} value={loc} />
+        {combinedSearchSuggestions.length > 0 ? (
+          <datalist id={searchDatalistId}>
+            {combinedSearchSuggestions.map((s) => (
+              <option key={s} value={s} />
             ))}
           </datalist>
         ) : null}

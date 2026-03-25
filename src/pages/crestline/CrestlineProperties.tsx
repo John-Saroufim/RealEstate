@@ -64,6 +64,7 @@ export default function CrestlineProperties() {
   const [error, setError] = useState<string | null>(null);
 
   const [locationSuggestions, setLocationSuggestions] = useState<string[]>([]);
+  const [nameSuggestions, setNameSuggestions] = useState<string[]>([]);
 
   // Property type filters are dynamic: pull distinct `listings.type` values from Supabase.
   const fallbackTypes = ["Villa", "Penthouse", "Estate", "Townhouse"];
@@ -226,6 +227,30 @@ export default function CrestlineProperties() {
     loadLocations();
   }, []);
 
+  useEffect(() => {
+    // Title autocomplete suggestions for the Search input.
+    const loadNames = async () => {
+      try {
+        const { data, error: nErr } = await supabase.from("listings").select("title").limit(8000);
+        if (nErr) throw nErr;
+
+        const uniq = Array.from(
+          new Set(
+            (data ?? [])
+              .map((r) => (r as any).title)
+              .filter((t): t is string => typeof t === "string" && t.trim().length > 0),
+          ),
+        ).sort((a, b) => a.localeCompare(b));
+
+        if (uniq.length > 0) setNameSuggestions(uniq);
+      } catch {
+        // Keep empty; user can still type freely.
+      }
+    };
+
+    loadNames();
+  }, []);
+
   const availableTypesForUI = (() => {
     if (selectedType === "All") return availableTypes;
     if (!selectedType) return availableTypes;
@@ -259,6 +284,7 @@ export default function CrestlineProperties() {
               sort={sort}
               availableTypes={availableTypesForUI}
               locationSuggestions={locationSuggestions}
+              nameSuggestions={nameSuggestions}
               priceMin={priceMin}
               priceMax={priceMax}
               bedsMin={bedsMin}
