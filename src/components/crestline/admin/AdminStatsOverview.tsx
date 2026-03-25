@@ -41,7 +41,7 @@ function Stat({
 
 const defaultKeys: AdminStatKey[] = ["listings", "inquiries", "agents"];
 
-export function AdminStatsOverview({ keys = defaultKeys }: { keys?: AdminStatKey[] }) {
+export function AdminStatsOverview({ keys = defaultKeys, refreshKey }: { keys?: AdminStatKey[]; refreshKey?: number }) {
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -79,7 +79,7 @@ export function AdminStatsOverview({ keys = defaultKeys }: { keys?: AdminStatKey
     return () => {
       alive = false;
     };
-  }, []);
+  }, [refreshKey]);
 
   const safeKeys = (keys ?? defaultKeys).filter(Boolean);
   if (safeKeys.length === 0) return null;

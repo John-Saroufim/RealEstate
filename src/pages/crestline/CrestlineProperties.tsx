@@ -116,8 +116,9 @@ export default function CrestlineProperties() {
 
   useEffect(() => {
     const load = async () => {
-      const shouldShowSkeleton = properties.length === 0;
-      setLoading(shouldShowSkeleton);
+      // Prevent stale counts/results while the new query is loading.
+      setLoading(true);
+      setProperties([]);
       setError(null);
 
       const q = qParam.trim().replace(/\s+/g, " ");
@@ -164,6 +165,9 @@ export default function CrestlineProperties() {
         setError("Failed to load properties.");
       } else {
         let next = (data ?? []) as Listing[];
+        // Remove seeded/demo data from the public properties experience.
+        // This keeps the UI from showing placeholder "DEMO Listing ..." rows.
+        next = next.filter((p) => !String(p.title ?? "").toLowerCase().startsWith("demo listing"));
         if (favoritesOnly) {
           const favIds = readFavoriteIds();
           next = next.filter((p) => favIds.has(p.id));
@@ -242,7 +246,8 @@ export default function CrestlineProperties() {
           ),
         ).sort((a, b) => a.localeCompare(b));
 
-        if (uniq.length > 0) setNameSuggestions(uniq);
+        const filtered = uniq.filter((t) => !t.toLowerCase().startsWith("demo listing"));
+        if (filtered.length > 0) setNameSuggestions(filtered);
       } catch {
         // Keep empty; user can still type freely.
       }

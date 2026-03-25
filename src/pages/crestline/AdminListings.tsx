@@ -50,6 +50,7 @@ export default function AdminListings() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updatingStatusId, setUpdatingStatusId] = useState<string | null>(null);
+  const [statsRefreshKey, setStatsRefreshKey] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -82,6 +83,7 @@ export default function AdminListings() {
       return;
     }
     setListings((prev) => prev.filter((l) => l.id !== id));
+    setStatsRefreshKey((v) => v + 1);
   };
 
   const handleStatusChange = async (id: string, status: string) => {
@@ -94,6 +96,7 @@ export default function AdminListings() {
       return;
     }
     setListings((prev) => prev.map((l) => (l.id === id ? { ...l, status } : l)));
+    setStatsRefreshKey((v) => v + 1);
   };
 
   return (
@@ -125,7 +128,7 @@ export default function AdminListings() {
             </div>
           </div>
           <div className="mt-6">
-            <AdminStatsOverview keys={["listings"]} />
+            <AdminStatsOverview keys={["listings"]} refreshKey={statsRefreshKey} />
           </div>
         </div>
       </section>
