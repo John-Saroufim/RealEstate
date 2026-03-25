@@ -62,6 +62,8 @@ export default function CrestlineProperties() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [locationSuggestions, setLocationSuggestions] = useState<string[]>([]);
+
   // Property type filters are dynamic: pull distinct `listings.type` values from Supabase.
   const fallbackTypes = ["Villa", "Penthouse", "Estate", "Townhouse"];
   const [availableTypes, setAvailableTypes] = useState<string[]>(fallbackTypes);
@@ -98,11 +100,16 @@ export default function CrestlineProperties() {
       setError(null);
 
       const q = qParam.trim();
+      const qEscapedForOr =
+        q.length > 0
+          ? // `supabase.or("a, b")` treats commas as OR separators, so escape commas to keep them literal.
+            q.replaceAll(",", "\\,")
+          : "";
 
       let query = supabase.from("listings").select("*");
 
       if (q) {
-        query = query.or(`title.ilike.%${q}%,location.ilike.%${q}%`);
+        query = query.or(`title.ilike.%${qEscapedForOr}%,location.ilike.%${qEscapedForOr}%`);
       }
 
       if (selectedType !== "All") query = query.eq("type", selectedType);
@@ -164,6 +171,30 @@ export default function CrestlineProperties() {
     loadTypes();
   }, []);
 
+  useEffect(() => {
+    // Location autocomplete suggestions for the Search input.
+    const loadLocations = async () => {
+      try {
+        const { data, error: lErr } = await supabase.from("listings").select("location").limit(8000);
+        if (lErr) throw lErr;
+
+        const uniq = Array.from(
+          new Set(
+            (data ?? [])
+              .map((r) => (r as any).location)
+              .filter((loc): loc is string => typeof loc === "string" && loc.trim().length > 0),
+          ),
+        ).sort((a, b) => a.localeCompare(b));
+
+        if (uniq.length > 0) setLocationSuggestions(uniq);
+      } catch {
+        // Keep empty; user can still type freely.
+      }
+    };
+
+    loadLocations();
+  }, []);
+
   const availableTypesForUI = (() => {
     if (selectedType === "All") return availableTypes;
     if (!selectedType) return availableTypes;
@@ -196,6 +227,7 @@ export default function CrestlineProperties() {
               selectedStatus={selectedStatus}
               sort={sort}
               availableTypes={availableTypesForUI}
+              locationSuggestions={locationSuggestions}
               priceMin={priceMin}
               priceMax={priceMax}
               bedsMin={bedsMin}

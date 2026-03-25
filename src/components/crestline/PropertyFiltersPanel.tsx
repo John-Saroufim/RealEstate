@@ -241,6 +241,7 @@ type PropertyFiltersPanelProps = {
   selectedStatus: string;
   sort: string;
   availableTypes: string[];
+  locationSuggestions?: string[];
   priceMin: number | null;
   priceMax: number | null;
   bedsMin: number;
@@ -261,6 +262,7 @@ export function PropertyFiltersPanel({
   selectedStatus,
   sort,
   availableTypes,
+  locationSuggestions,
   priceMin,
   priceMax,
   bedsMin,
@@ -390,6 +392,7 @@ export function PropertyFiltersPanel({
                 placeholder="Search by name or location…"
                 value={qParam}
                 onChange={(e) => setParam("q", e.target.value)}
+                list={locationSuggestions && locationSuggestions.length > 0 ? "crestline-properties-search-locations" : undefined}
                 className={cn(searchInputClass, "w-full")}
               />
             </div>
@@ -404,6 +407,14 @@ export function PropertyFiltersPanel({
             </Button>
           </div>
         </div>
+
+        {locationSuggestions && locationSuggestions.length > 0 ? (
+          <datalist id="crestline-properties-search-locations">
+            {locationSuggestions.map((loc) => (
+              <option key={loc} value={loc} />
+            ))}
+          </datalist>
+        ) : null}
 
         <div className="hidden lg:block">
           <PropertyFiltersFields {...fieldsProps} />
