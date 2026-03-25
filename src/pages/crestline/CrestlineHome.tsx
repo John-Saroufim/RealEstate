@@ -98,6 +98,8 @@ export default function CrestlineHome() {
   const [heroPriceRange, setHeroPriceRange] = useState(priceRanges[0].id);
   const [heroTypesLoading, setHeroTypesLoading] = useState(true);
   const [heroTypes, setHeroTypes] = useState<string[]>(["Villa", "Penthouse", "Estate", "Townhouse"]);
+  const [heroLocationsLoading, setHeroLocationsLoading] = useState(true);
+  const [heroLocations, setHeroLocations] = useState<string[]>([]);
 
   useEffect(() => {
     // Populate hero "type" dropdown from actual listing types.
@@ -122,6 +124,33 @@ export default function CrestlineHome() {
     };
 
     loadTypes();
+  }, []);
+
+  useEffect(() => {
+    // Populate hero location autocomplete from actual listing locations.
+    const loadLocations = async () => {
+      try {
+        setHeroLocationsLoading(true);
+        const { data, error } = await supabase.from("listings").select("location").limit(8000);
+        if (error) throw error;
+
+        const uniq = Array.from(
+          new Set(
+            (data ?? [])
+              .map((r) => (r as any).location)
+              .filter((loc): loc is string => typeof loc === "string" && loc.trim().length > 0),
+          ),
+        ).sort((a, b) => a.localeCompare(b));
+
+        setHeroLocations(uniq);
+      } catch {
+        // If anything fails, keep it empty and let users type manually.
+      } finally {
+        setHeroLocationsLoading(false);
+      }
+    };
+
+    loadLocations();
   }, []);
 
   const handleBrowseProperties = () => {
@@ -235,6 +264,7 @@ export default function CrestlineHome() {
                           value={heroLocation}
                           onChange={(e) => setHeroLocation(e.target.value)}
                           placeholder="e.g. Palm Beach, NY"
+                          list="crestline-hero-locations"
                           className="bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-none h-12 pl-10 focus-visible:ring-sky-200/50"
                         />
                       </div>
@@ -279,6 +309,10 @@ export default function CrestlineHome() {
                     </div>
                   </div>
                 </form>
+
+                <datalist id="crestline-hero-locations">
+                  {heroLocationsLoading ? null : heroLocations.map((loc) => <option key={loc} value={loc} />)}
+                </datalist>
 
                 {/* CTA buttons */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-7">
