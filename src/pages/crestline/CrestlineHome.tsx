@@ -24,16 +24,16 @@ function clampNumber(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n));
 }
 
-function parsePriceDigits(raw: string): number | null {
-  const digits = raw.replace(/\D/g, "");
-  if (!digits) return null;
-  const n = Number(digits);
-  if (!Number.isFinite(n)) return null;
+function parsePriceInputNumber(raw: string): number | null {
+  const s = raw.trim();
+  if (s === "") return null;
+  const n = Number(s);
+  if (!Number.isFinite(n) || n < 0) return null;
   return Math.round(n);
 }
 
 function formatPriceNumber(n: number) {
-  return Math.round(n).toLocaleString("en-US");
+  return String(Math.round(n));
 }
 
 const fadeUp = {
@@ -359,25 +359,30 @@ export default function CrestlineHome() {
                             <div className="space-y-1">
                               <p className="text-[10px] uppercase tracking-wider text-white/55">Min</p>
                               <input
-                                type="text"
-                                inputMode="numeric"
+                                type="number"
+                                min={priceStats.min}
+                                max={heroPriceMax ?? priceStats.max}
+                                step={priceStats.step}
                                 autoComplete="off"
                                 value={heroPriceMinInput}
                                 onChange={(e) => {
                                   const nextRaw = e.target.value;
                                   setHeroPriceMinInput(nextRaw);
-                                  const parsed = parsePriceDigits(nextRaw);
+                                  const parsed = parsePriceInputNumber(nextRaw);
                                   if (parsed == null) return;
                                   const upperBound = heroPriceMax ?? priceStats.max;
                                   const next = clampNumber(parsed, priceStats.min, upperBound);
                                   setHeroPriceMin(next);
                                 }}
                                 onBlur={() => {
-                                  const parsed = parsePriceDigits(heroPriceMinInput);
+                                  const parsed = parsePriceInputNumber(heroPriceMinInput);
                                   const upperBound = heroPriceMax ?? priceStats.max;
                                   const next = parsed == null ? priceStats.min : clampNumber(parsed, priceStats.min, upperBound);
                                   setHeroPriceMin(next);
                                   setHeroPriceMinInput(formatPriceNumber(next));
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") (e.target as HTMLInputElement).blur();
                                 }}
                                 className="relative z-10 h-9 w-full rounded-lg border border-white/25 bg-black/20 px-2 text-sm text-white outline-none ring-0 placeholder:text-white/45 focus:border-sky-200/70"
                                 aria-label="Minimum price"
@@ -386,25 +391,30 @@ export default function CrestlineHome() {
                             <div className="space-y-1">
                               <p className="text-[10px] uppercase tracking-wider text-white/55 text-right">Max</p>
                               <input
-                                type="text"
-                                inputMode="numeric"
+                                type="number"
+                                min={heroPriceMin ?? priceStats.min}
+                                max={priceStats.max}
+                                step={priceStats.step}
                                 autoComplete="off"
                                 value={heroPriceMaxInput}
                                 onChange={(e) => {
                                   const nextRaw = e.target.value;
                                   setHeroPriceMaxInput(nextRaw);
-                                  const parsed = parsePriceDigits(nextRaw);
+                                  const parsed = parsePriceInputNumber(nextRaw);
                                   if (parsed == null) return;
                                   const lowerBound = heroPriceMin ?? priceStats.min;
                                   const next = clampNumber(parsed, lowerBound, priceStats.max);
                                   setHeroPriceMax(next);
                                 }}
                                 onBlur={() => {
-                                  const parsed = parsePriceDigits(heroPriceMaxInput);
+                                  const parsed = parsePriceInputNumber(heroPriceMaxInput);
                                   const lowerBound = heroPriceMin ?? priceStats.min;
                                   const next = parsed == null ? priceStats.max : clampNumber(parsed, lowerBound, priceStats.max);
                                   setHeroPriceMax(next);
                                   setHeroPriceMaxInput(formatPriceNumber(next));
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") (e.target as HTMLInputElement).blur();
                                 }}
                                 className="relative z-10 h-9 w-full rounded-lg border border-white/25 bg-black/20 px-2 text-right text-sm text-white outline-none ring-0 placeholder:text-white/45 focus:border-sky-200/70"
                                 aria-label="Maximum price"
