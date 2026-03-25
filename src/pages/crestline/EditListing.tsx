@@ -276,7 +276,7 @@ export default function EditListing() {
                     name="price"
                     type="number"
                     min="0"
-                    step="1000"
+                    step="1"
                     value={form.price}
                     onChange={handleChange}
                     className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl"
