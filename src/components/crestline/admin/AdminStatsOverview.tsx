@@ -51,14 +51,19 @@ export function AdminStatsOverview({ keys = defaultKeys, refreshKey }: { keys?: 
     const load = async () => {
       setLoading(true);
       try {
-        const [listingsRes, inquiriesRes, agentsRes, reviewsRes] = await Promise.all([
+        const [listingsRes, demoListingsRes, inquiriesRes, agentsRes, reviewsRes] = await Promise.all([
           supabase.from("listings").select("*", { count: "exact", head: true }),
+          // Exclude demo titles so admin counts match the public properties experience.
+          // Uses a coarse ilike filter because PostgREST doesn't support regex.
+          supabase.from("listings").select("*", { count: "exact", head: true }).ilike("title", "demo%listing%"),
           supabase.from("inquiries").select("*", { count: "exact", head: true }).eq("archived", false),
           supabase.from("agents").select("*", { count: "exact", head: true }),
           supabase.from("reviews").select("*", { count: "exact", head: true }),
         ]);
 
-        const listings = listingsRes.count ?? 0;
+        const listingsTotal = listingsRes.count ?? 0;
+        const demoListings = demoListingsRes.count ?? 0;
+        const listings = Math.max(0, listingsTotal - demoListings);
         const inquiries = inquiriesRes.count ?? 0;
         const agents = agentsRes.count ?? 0;
         const reviews = reviewsRes.count ?? 0;

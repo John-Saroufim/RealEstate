@@ -32,6 +32,11 @@ type Listing = {
 
 const LISTING_STATUSES = ["For Sale", "For Rent", "Sold", "Featured"] as const;
 
+function isDemoListingTitle(title: string | null | undefined): boolean {
+  const s = String(title ?? "").trim();
+  return /^\s*demo\s*listing/i.test(s);
+}
+
 function listingStatusOptions(current: string | null): string[] {
   const base = [...LISTING_STATUSES];
   const s = current?.trim();
@@ -64,7 +69,8 @@ export default function AdminListings() {
       if (error) {
         setError("Failed to load listings.");
       } else {
-        setListings(data as Listing[]);
+        const next = (data ?? []) as Listing[];
+        setListings(next.filter((p) => !isDemoListingTitle(p.title)));
       }
       setLoading(false);
     };
