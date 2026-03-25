@@ -255,7 +255,7 @@ export default function AdminReviews() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="rounded-none h-9 px-3 border border-emerald-500/20 text-emerald-100 hover:bg-emerald-500/8"
+                        className="rounded-none h-9 px-3 border border-emerald-600/45 bg-emerald-500/8 text-emerald-800 hover:bg-emerald-500/14 hover:text-emerald-900"
                         onClick={() => updateStatus(r.id, "approved")}
                       >
                         <Check className="h-3.5 w-3.5 mr-1" /> Approve
@@ -263,7 +263,7 @@ export default function AdminReviews() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="rounded-none h-9 px-3 border border-red-500/20 text-red-200 hover:bg-red-500/8"
+                        className="rounded-none h-9 px-3 border border-red-600/45 bg-red-500/8 text-red-800 hover:bg-red-500/14 hover:text-red-900"
                         onClick={() => updateStatus(r.id, "rejected")}
                       >
                         <X className="h-3.5 w-3.5 mr-1" /> Reject
@@ -271,7 +271,7 @@ export default function AdminReviews() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="rounded-none h-9 px-3 border-red-500/25 text-red-200 hover:bg-red-500/10"
+                        className="rounded-none h-9 px-3 border border-red-600/45 bg-red-500/10 text-red-800 hover:bg-red-500/14 hover:text-red-900"
                         onClick={() => handleDelete(r.id)}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -317,7 +317,7 @@ export default function AdminReviews() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="rounded-none h-9 px-3 border border-emerald-500/20 text-emerald-100 hover:bg-emerald-500/8 flex items-center"
+                          className="rounded-none h-9 px-3 border border-emerald-600/45 bg-emerald-500/8 text-emerald-800 hover:bg-emerald-500/14 hover:text-emerald-900 flex items-center"
                           onClick={() => updateStatus(r.id, "approved")}
                         >
                           Approve
@@ -325,7 +325,7 @@ export default function AdminReviews() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="rounded-none h-9 px-3 border border-red-500/20 text-red-200 hover:bg-red-500/8 flex items-center"
+                          className="rounded-none h-9 px-3 border border-red-600/45 bg-red-500/8 text-red-800 hover:bg-red-500/14 hover:text-red-900 flex items-center"
                           onClick={() => updateStatus(r.id, "rejected")}
                         >
                           Reject
@@ -333,7 +333,7 @@ export default function AdminReviews() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="rounded-none h-9 px-3 border-red-500/25 text-red-200 hover:bg-red-500/10 flex items-center"
+                          className="rounded-none h-9 px-3 border border-red-600/45 bg-red-500/10 text-red-800 hover:bg-red-500/14 hover:text-red-900 flex items-center"
                           onClick={() => handleDelete(r.id)}
                         >
                           <Trash2 className="h-3.5 w-3.5" />

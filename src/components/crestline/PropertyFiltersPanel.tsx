@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-const types = ["All", "Villa", "Penthouse", "Estate", "Townhouse"] as const;
 const statusOptions = ["All", "For Sale", "For Rent", "Sold", "Featured"] as const;
 const propertySortOptions = [
   { id: "newest", label: "Newest" },
@@ -88,6 +87,7 @@ type FieldsProps = {
   selectedType: string;
   selectedStatus: string;
   sort: string;
+  availableTypes: string[];
   priceMin: number | null;
   priceMax: number | null;
   bedsMin: number;
@@ -100,6 +100,7 @@ export function PropertyFiltersFields({
   selectedType,
   selectedStatus,
   sort,
+  availableTypes,
   priceMin,
   priceMax,
   bedsMin,
@@ -108,13 +109,14 @@ export function PropertyFiltersFields({
 }: FieldsProps) {
   const minPriceFieldId = useId();
   const maxPriceFieldId = useId();
+  const typeOptions = ["All", ...availableTypes];
 
   return (
     <div className="space-y-10">
       <div>
         <FilterSectionLabel>Property type</FilterSectionLabel>
         <div className="flex flex-wrap gap-2.5">
-          {types.map((t) => (
+          {typeOptions.map((t) => (
             <button
               key={t}
               type="button"
@@ -238,6 +240,7 @@ type PropertyFiltersPanelProps = {
   selectedType: string;
   selectedStatus: string;
   sort: string;
+  availableTypes: string[];
   priceMin: number | null;
   priceMax: number | null;
   bedsMin: number;
@@ -257,6 +260,7 @@ export function PropertyFiltersPanel({
   selectedType,
   selectedStatus,
   sort,
+  availableTypes,
   priceMin,
   priceMax,
   bedsMin,
@@ -334,6 +338,7 @@ export function PropertyFiltersPanel({
     selectedType,
     selectedStatus,
     sort,
+    availableTypes,
     priceMin,
     priceMax,
     bedsMin,

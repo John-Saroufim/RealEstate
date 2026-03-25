@@ -62,6 +62,11 @@ export default function CrestlineProperties() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Property type filters are dynamic: pull distinct `listings.type` values from Supabase.
+  const fallbackTypes = ["Villa", "Penthouse", "Estate", "Townhouse"];
+  const [availableTypes, setAvailableTypes] = useState<string[]>(fallbackTypes);
+  const [typesLoading, setTypesLoading] = useState(true);
+
   const hasActiveFilters =
     Boolean(qParam.trim()) ||
     selectedType !== "All" ||
@@ -132,6 +137,40 @@ export default function CrestlineProperties() {
     load();
   }, [qParam, selectedType, selectedStatus, priceMin, priceMax, bedsMin, bathsMin, sort]);
 
+  useEffect(() => {
+    const loadTypes = async () => {
+      try {
+        setTypesLoading(true);
+        // We fetch types used by listings and dedupe client-side.
+        const { data, error: tErr } = await supabase.from("listings").select("type").limit(5000);
+        if (tErr) throw tErr;
+
+        const uniq = Array.from(
+          new Set(
+            (data ?? [])
+              .map((r) => (r as any).type)
+              .filter((t): t is string => typeof t === "string" && t.trim().length > 0),
+          ),
+        ).sort((a, b) => a.localeCompare(b));
+
+        if (uniq.length > 0) setAvailableTypes(uniq);
+      } catch {
+        // Keep fallback types if anything fails.
+      } finally {
+        setTypesLoading(false);
+      }
+    };
+
+    loadTypes();
+  }, []);
+
+  const availableTypesForUI = (() => {
+    if (selectedType === "All") return availableTypes;
+    if (!selectedType) return availableTypes;
+    if (availableTypes.includes(selectedType)) return availableTypes;
+    return [...availableTypes, selectedType];
+  })();
+
   return (
     <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
       <CrestlineNavbar />
@@ -156,6 +195,7 @@ export default function CrestlineProperties() {
               selectedType={selectedType}
               selectedStatus={selectedStatus}
               sort={sort}
+              availableTypes={availableTypesForUI}
               priceMin={priceMin}
               priceMax={priceMax}
               bedsMin={bedsMin}
@@ -178,6 +218,7 @@ export default function CrestlineProperties() {
                   selectedType={selectedType}
                   selectedStatus={selectedStatus}
                   sort={sort}
+                  availableTypes={availableTypesForUI}
                   priceMin={priceMin}
                   priceMax={priceMax}
                   bedsMin={bedsMin}
