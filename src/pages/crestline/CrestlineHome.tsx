@@ -335,7 +335,7 @@ export default function CrestlineHome() {
                       </label>
                       {priceStats ? (
                         <>
-                          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 mb-2">
+                          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 mb-1.5">
                             <Input
                               type="number"
                               min={priceStats.min}
@@ -349,7 +349,7 @@ export default function CrestlineHome() {
                                 const next = clampNumber(Math.round(raw), priceStats.min, upperBound);
                                 setHeroPriceMin(next);
                               }}
-                              className="h-10 bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-xl focus-visible:ring-sky-200/50 tabular-nums"
+                              className="h-8 px-0 bg-transparent border-0 text-white placeholder:text-white/50 rounded-none focus-visible:ring-0 focus-visible:outline-none tabular-nums"
                               aria-label="Minimum price"
                             />
                             <span className="text-white/45 text-center">to</span>
@@ -366,11 +366,11 @@ export default function CrestlineHome() {
                                 const next = clampNumber(Math.round(raw), lowerBound, priceStats.max);
                                 setHeroPriceMax(next);
                               }}
-                              className="h-10 bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-xl focus-visible:ring-sky-200/50 tabular-nums"
+                              className="h-8 px-0 bg-transparent border-0 text-white placeholder:text-white/50 rounded-none focus-visible:ring-0 focus-visible:outline-none tabular-nums text-right"
                               aria-label="Maximum price"
                             />
                           </div>
-                          <div className="flex h-10 items-center">
+                          <div className="flex h-8 items-center">
                             <Slider
                               min={priceStats.min}
                               max={priceStats.max}
@@ -382,11 +382,11 @@ export default function CrestlineHome() {
                                 setHeroPriceMin(minV);
                                 setHeroPriceMax(maxV);
                               }}
-                              className="w-full"
+                              className="w-full -translate-y-1"
                               aria-label="Price range (min to max)"
                             />
                           </div>
-                          <p className="mt-1 text-[11px] text-white/65 tabular-nums">
+                          <p className="text-[11px] text-white/65 tabular-nums">
                             {formatUsd(heroPriceMin ?? priceStats.min)} - {formatUsd(heroPriceMax ?? priceStats.max)}
                           </p>
                         </>
