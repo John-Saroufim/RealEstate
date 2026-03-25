@@ -219,7 +219,7 @@ export default function CrestlineHome() {
       <CrestlineNavbar />
 
       {/* Hero */}
-      <section className="relative min-h-[80vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[calc(80vh+5rem)] flex items-center overflow-hidden pt-20">
         <div className="absolute inset-0">
           <img src={heroImg} alt="Luxury real estate" className="w-full h-full object-cover" />
           {/* Premium dark overlay */}

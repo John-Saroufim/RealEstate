@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Building2, Eye, EyeOff, Loader2, Shield } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -73,12 +73,6 @@ export default function Login() {
       <div className="pt-28 pb-16 px-4 flex items-center justify-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
           <div className="text-center mb-8">
-            <Link to="/crestline" className="inline-flex items-center gap-2 mb-6 justify-center">
-              <Shield className="h-8 w-8 text-crestline-gold" />
-              <span className="font-serif text-2xl font-bold">
-                RealEstate
-              </span>
-            </Link>
             <h1 className="font-serif text-3xl font-bold">Login</h1>
             <p className="text-crestline-muted text-sm mt-2">
               Sign in to add and edit listings. Non-admins will return to the public site.
