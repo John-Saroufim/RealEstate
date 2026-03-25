@@ -11,7 +11,20 @@ export function useIsAdmin() {
       if (!user) return;
       setIsAdmin(null);
 
-      // Preferred: determine admin by configured email(s).
+      // Prefer: DB-level truth via `public.is_admin()`.
+      // This keeps authorization consistent even if someone bypasses the frontend.
+      try {
+        const { data, error } = await supabase.rpc("is_admin");
+        if (!error && typeof data === "boolean") {
+          setIsAdmin(data);
+          return;
+        }
+      } catch {
+        // Fall back to client-side checks (keeps existing dev flow if the SQL migration
+        // hasn't been applied to the DB yet).
+      }
+
+      // Fallback: determine admin by configured email(s).
       // Set in `.env.local` as: VITE_ADMIN_EMAILS="a@b.com,c@d.com"
       const adminEmailsRaw =
         (import.meta as any).env?.VITE_ADMIN_EMAILS ?? (import.meta as any).env?.VITE_ADMIN_EMAIL ?? "";
@@ -25,7 +38,7 @@ export function useIsAdmin() {
         return;
       }
 
-      // Fallback: determine admin by `public.user_roles` (role-based setup).
+      // Fallback 2: determine admin by `public.user_roles` (role-based setup).
       const { data, error } = await supabase
         .from("user_roles")
         .select("role")

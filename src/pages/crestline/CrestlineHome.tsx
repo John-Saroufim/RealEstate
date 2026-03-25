@@ -1,7 +1,8 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Building2, Shield, TrendingUp, Users, ChevronRight, ArrowRight, Phone, CheckCircle2, HelpCircle } from "lucide-react";
+import { Building2, Shield, TrendingUp, Users, ChevronRight, ArrowRight, Phone, CheckCircle2, HelpCircle, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import heroImg from "@/assets/crestline-hero.jpg";
@@ -77,10 +78,69 @@ const stats = [
 
 export default function CrestlineHome() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [featured, setFeatured] = useState<Listing[] | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewsLoading, setReviewsLoading] = useState(true);
   const [reviewsError, setReviewsError] = useState<string | null>(null);
+
+  // Hero search state
+  const priceRanges = [
+    { id: "any", label: "Any" },
+    { id: "under_2", label: "Under $2M", min: null as number | null, max: 2000000 },
+    { id: "2_5", label: "$2M – $5M", min: 2000000, max: 5000000 },
+    { id: "5_10", label: "$5M – $10M", min: 5000000, max: 10000000 },
+    { id: "10_plus", label: "$10M+", min: 10000000, max: null as number | null },
+  ];
+
+  const [heroLocation, setHeroLocation] = useState("");
+  const [heroType, setHeroType] = useState<string>("All");
+  const [heroPriceRange, setHeroPriceRange] = useState(priceRanges[0].id);
+  const [heroTypesLoading, setHeroTypesLoading] = useState(true);
+  const [heroTypes, setHeroTypes] = useState<string[]>(["Villa", "Penthouse", "Estate", "Townhouse"]);
+
+  useEffect(() => {
+    // Populate hero "type" dropdown from actual listing types.
+    const loadTypes = async () => {
+      try {
+        setHeroTypesLoading(true);
+        const { data, error: tErr } = await supabase.from("listings").select("type").limit(5000);
+        if (tErr) throw tErr;
+        const uniq = Array.from(
+          new Set(
+            (data ?? [])
+              .map((r) => (r as any).type)
+              .filter((t): t is string => typeof t === "string" && t.trim().length > 0),
+          ),
+        ).sort((a, b) => a.localeCompare(b));
+        if (uniq.length > 0) setHeroTypes(uniq);
+      } catch {
+        // Keep existing fallback types.
+      } finally {
+        setHeroTypesLoading(false);
+      }
+    };
+
+    loadTypes();
+  }, []);
+
+  const handleBrowseProperties = () => {
+    const params = new URLSearchParams();
+
+    const q = heroLocation.trim();
+    if (q) params.set("q", q);
+
+    if (heroType && heroType !== "All") params.set("type", heroType);
+
+    const selectedPrice = priceRanges.find((p) => p.id === heroPriceRange) ?? priceRanges[0];
+    if (selectedPrice.id !== "any") {
+      if (selectedPrice.min != null) params.set("min_price", String(selectedPrice.min));
+      if (selectedPrice.max != null) params.set("max_price", String(selectedPrice.max));
+    }
+
+    const queryString = params.toString();
+    navigate(queryString ? `/crestline/properties?${queryString}` : "/crestline/properties");
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -129,49 +189,120 @@ export default function CrestlineHome() {
       <CrestlineNavbar />
 
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
+      <section className="relative min-h-[80vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImg} alt="Luxury villa" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/55 to-slate-950/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/35" />
+          <img src={heroImg} alt="Luxury real estate" className="w-full h-full object-cover" />
+          {/* Premium dark overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-950/60 to-slate-950/35" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/30 to-slate-950/5" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-24 lg:pt-20">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-2xl text-white"
-          >
-            <p className="text-sky-200 text-sm font-semibold tracking-[0.2em] uppercase mb-4">
-              Luxury Real Estate Redefined
-            </p>
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] mb-6 text-white">
-              Discover
-              <br />
-              <span className="text-sky-200">Extraordinary</span>
-              <br />
-              Living.
-            </h1>
-            <p className="text-lg text-white/80 mb-10 max-w-lg leading-relaxed">
-              RealEstate curates the world's most exceptional properties for discerning buyers, investors, and families seeking uncompromising quality.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/crestline/properties">
-                <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-base px-8 py-3 rounded-none h-auto">
-                  View Properties
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </Button>
-              </Link>
-              <Link to="/crestline/contact">
-                <Button
-                  variant="outline"
-                  className="bg-transparent border-white/40 text-white hover:bg-white/10 hover:text-white font-semibold text-base px-8 py-3 rounded-none h-auto"
+
+        <div className="relative w-full">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center min-h-[80vh]">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full text-white"
+            >
+              <div className="max-w-3xl mx-auto text-center">
+                <p className="text-sky-200 text-sm font-semibold tracking-[0.2em] uppercase mb-5">
+                  RealEstate | Luxury Brokerage
+                </p>
+                <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-6 text-white">
+                  Find Your Dream Home
+                </h1>
+                <p className="text-lg text-white/80 mb-8 leading-relaxed">
+                  Discover exceptional properties with curated access, discreet guidance, and concierge-level support from experienced brokers.
+                </p>
+
+                {/* Search Bar */}
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleBrowseProperties();
+                  }}
+                  className="bg-white/5 backdrop-blur rounded-none border border-white/10 px-5 py-5 sm:px-6 sm:py-6"
                 >
-                  Schedule Consultation
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="text-left">
+                      <label className="block text-xs text-white/70 uppercase tracking-wider mb-2">
+                        Location
+                      </label>
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60" />
+                        <Input
+                          value={heroLocation}
+                          onChange={(e) => setHeroLocation(e.target.value)}
+                          placeholder="e.g. Palm Beach, NY"
+                          className="bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-none h-12 pl-10 focus-visible:ring-sky-200/50"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="text-left">
+                      <label className="block text-xs text-white/70 uppercase tracking-wider mb-2">
+                        Price
+                      </label>
+                      <select
+                        value={heroPriceRange}
+                        onChange={(e) => setHeroPriceRange(e.target.value)}
+                        className="w-full h-12 bg-transparent border border-white/20 text-white rounded-none px-3 focus:outline-none focus:ring-2 focus:ring-sky-200/50"
+                      >
+                        {priceRanges.map((p) => (
+                          <option key={p.id} value={p.id} className="bg-slate-900">
+                            {p.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="text-left">
+                      <label className="block text-xs text-white/70 uppercase tracking-wider mb-2">
+                        Type
+                      </label>
+                      <select
+                        value={heroType}
+                        onChange={(e) => setHeroType(e.target.value)}
+                        disabled={heroTypesLoading}
+                        className="w-full h-12 bg-transparent border border-white/20 text-white rounded-none px-3 focus:outline-none focus:ring-2 focus:ring-sky-200/50 disabled:opacity-60"
+                      >
+                        <option value="All" className="bg-slate-900">
+                          All Types
+                        </option>
+                        {heroTypes.map((t) => (
+                          <option key={t} value={t} className="bg-slate-900">
+                            {t}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </form>
+
+                {/* CTA buttons */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-7">
+                  <Button
+                    type="button"
+                    onClick={handleBrowseProperties}
+                    className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold rounded-none px-8 py-3 h-auto text-base w-full sm:w-auto"
+                  >
+                    Browse Properties
+                    <ChevronRight className="ml-1 h-4 w-4" />
+                  </Button>
+
+                  <Link to="/crestline/contact">
+                    <Button
+                      variant="outline"
+                      className="bg-transparent border-white/40 text-white hover:bg-white/10 hover:text-white font-semibold rounded-none px-8 py-3 h-auto text-base w-full sm:w-auto"
+                    >
+                      Contact Us
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 

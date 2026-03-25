@@ -1,73 +1,63 @@
-# Welcome to your Lovable project
+# RealEstate | Luxury Brokerage
 
-## Project info
+## Overview
+Premium real-estate listing platform with:
+- Public property browsing (filters + property details)
+- Admin console for agents, listings, inquiries, and review approvals
+- AI assistant chat powered by a Supabase Edge Function (Groq/OpenAI)
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Tech Stack
+- Frontend: React + TypeScript + Vite
+- Styling: Tailwind CSS + shadcn-ui (shadcn/ui components)
+- Backend: Supabase (Auth, Postgres, RLS, Storage)
+- AI: Supabase Edge Functions (Deno) + Groq/OpenAI
+- Hosting: Vercel (SPA rewrite enabled)
 
-## How can I edit this code?
+## Local Development
+1. Install dependencies: `npm i`
+2. Create `.env.local` (copy from your existing template) with:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_PUBLISHABLE_KEY`
+   - `VITE_ADMIN_EMAILS` (comma-separated; used to bootstrap admin UI access)
+3. Run: `npm run dev`
 
-There are several ways of editing your application.
+Build check:
+- `npm run build`
 
-**Use Lovable**
+## Supabase Setup (RLS + Admin)
+Admin authorization is enforced in the database via RLS (not only in the frontend).
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+Run the SQL files in `supabase/migrations/` using the Supabase SQL Editor:
+- `20260315154736_2c623f42-d9c9-480b-93d1-a9d892890b8c.sql`
+- `20260319000001_crestline_listings.sql`
+- `20260325000100_admin_rls_and_admin_role.sql`
 
-Changes made via Lovable will be committed automatically to this repo.
+Key concepts:
+- `public.user_roles` stores role-based access (e.g. `role='admin'`)
+- `public.admin_email_whitelist` bootstraps admin access by email
+- `public.is_admin()` is used by RLS policies to protect admin-managed data
 
-**Use your preferred IDE**
+## Seed Demo Data (Optional)
+To generate realistic demo content for UI testing:
+- `supabase/seed_reviews.sql` (creates `public.reviews` + review RLS policies)
+- `supabase/seed_demo_realistic_data_v2.sql` (inserts listings, images, inquiries, reviews)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## AI Chat (Supabase Edge Function)
+AI chat endpoint implementation:
+- `supabase/functions/chat/index.ts`
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Set secrets in your Supabase project for the model provider you want:
+- `GROQ_API_KEY` and/or `OPENAI_API_KEY`
 
-Follow these steps:
+Deploy the function:
+- `supabase functions deploy chat` (or deploy from the Supabase dashboard)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Vercel Deployment
+This is a single-page app; `vercel.json` includes a rewrite so deep links load `index.html`.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Checklist:
+- Connect your GitHub repo to Vercel
+- Set required environment variables in Vercel (matching `.env.local`)
+- Build command: `npm run build`
+- Deploy branch: `main`
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)

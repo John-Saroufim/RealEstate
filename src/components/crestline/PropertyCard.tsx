@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState, type MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bed, Bath, MapPin, Ruler } from "lucide-react";
+import { Bed, Bath, MapPin, Ruler, Heart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -36,6 +36,45 @@ export function PropertyCard({
 
   const goToProperty = () => navigate(to, locationState ? { state: locationState } : undefined);
 
+  const propertyId = useMemo(() => {
+    const parts = to.split("/").filter(Boolean);
+    return parts[parts.length - 1] ?? to;
+  }, [to]);
+
+  const favoritesKey = "crestline_favorites_v1";
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem(favoritesKey);
+      const ids = raw ? (JSON.parse(raw) as unknown) : [];
+      if (Array.isArray(ids)) setIsFavorite(ids.includes(propertyId));
+    } catch {
+      // Ignore storage issues (still allow UI to work).
+    }
+  }, [propertyId]);
+
+  const toggleFavorite = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    setIsFavorite((prev) => {
+      const next = !prev;
+      if (typeof window === "undefined") return next;
+      try {
+        const raw = window.localStorage.getItem(favoritesKey);
+        const ids = raw ? (JSON.parse(raw) as unknown) : [];
+        const current = Array.isArray(ids) ? ids : [];
+        const nextIds = next ? Array.from(new Set([...current, propertyId])) : current.filter((id) => id !== propertyId);
+        window.localStorage.setItem(favoritesKey, JSON.stringify(nextIds));
+      } catch {
+        // Ignore storage issues.
+      }
+      return next;
+    });
+  };
+
   const priceLabel = useMemo(() => {
     if (price === null || price === undefined) return "Price on request";
     if (typeof price === "number") {
@@ -63,7 +102,7 @@ export function PropertyCard({
           goToProperty();
         }
       }}
-      className="group h-full cursor-pointer select-none flex flex-col bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-crestline-gold/35 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+      className="group h-full cursor-pointer select-none flex flex-col bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:border-crestline-gold/30 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
     >
       <div className="relative overflow-hidden aspect-[4/3] bg-slate-50">
         {imageUrl ? (
@@ -72,7 +111,7 @@ export function PropertyCard({
             alt={title ?? "Property"}
             loading="lazy"
             decoding="async"
-            className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-[1.04]"
+            className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-[1.06]"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-xs text-crestline-muted">
@@ -80,26 +119,48 @@ export function PropertyCard({
           </div>
         )}
 
-        {/* Hover overlay: subtle fade so the card feels “premium” */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        {/* Always-on gradient overlay for premium legibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/25 to-transparent pointer-events-none" />
 
-        <div className="absolute top-4 left-4 bg-slate-950/75 backdrop-blur-sm text-sky-100 text-xs font-semibold px-3 py-1.5 tracking-wider uppercase">
+        {/* Hover lift overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-crestline-gold/15 to-sky-200/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+        <div className="absolute top-4 left-4 bg-slate-950/60 backdrop-blur-sm text-sky-100 text-xs font-semibold px-3 py-1.5 tracking-wider uppercase border border-white/10">
           {statusLabel}
         </div>
 
         {type ? (
-          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-slate-900 text-xs px-3 py-1.5 border border-slate-200/80">
+          <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm text-slate-50 text-xs px-3 py-1.5 border border-white/15">
             {type}
           </div>
         ) : null}
+
+        {/* Favorite / heart */}
+        <button
+          type="button"
+          onClick={toggleFavorite}
+          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+          className={[
+            "absolute bottom-4 right-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full",
+            "border backdrop-blur-sm transition-colors duration-300",
+            isFavorite
+              ? "bg-crestline-gold/90 border-crestline-gold text-crestline-on-gold"
+              : "bg-white/10 border-white/15 text-white hover:bg-white/15",
+          ].join(" ")}
+        >
+          <Heart
+            className={isFavorite ? "h-5 w-5 fill-current" : "h-5 w-5"}
+            strokeWidth={isFavorite ? 0 : 2}
+          />
+        </button>
       </div>
 
       <div className="p-6 flex flex-col flex-1">
-        <p className="text-crestline-gold font-serif text-xl sm:text-2xl font-bold leading-tight">
+        <p className="text-crestline-gold font-serif text-2xl font-bold leading-tight">
           {priceLabel}
         </p>
         {title ? (
-          <h3 className="mt-2 font-serif text-lg sm:text-xl font-bold text-slate-900 leading-snug">
+          <h3 className="mt-2 font-serif text-xl font-bold text-slate-900 leading-snug">
             {title}
           </h3>
         ) : null}
