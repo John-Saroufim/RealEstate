@@ -1,5 +1,6 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
@@ -35,6 +36,13 @@ type ListingForm = {
   agent_id: string;
 };
 
+type SelectedMedia = {
+  id: string;
+  file: File;
+  previewUrl: string;
+  kind: "image" | "video";
+};
+
 const emptyForm: ListingForm = {
   title: "",
   price: "",
@@ -56,7 +64,8 @@ export default function EditListing() {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(isEditing);
   const [error, setError] = useState<string | null>(null);
-  const [files, setFiles] = useState<File[]>([]);
+  const [selectedMedia, setSelectedMedia] = useState<SelectedMedia[]>([]);
+  const selectedMediaRef = useRef<SelectedMedia[]>([]);
   const [agents, setAgents] = useState<Array<{ id: string; full_name: string | null; title: string | null }>>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -114,6 +123,47 @@ export default function EditListing() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  useEffect(() => {
+    selectedMediaRef.current = selectedMedia;
+  }, [selectedMedia]);
+
+  useEffect(() => {
+    return () => {
+      // Cleanup generated object URLs to avoid memory leaks.
+      selectedMediaRef.current.forEach((m) => URL.revokeObjectURL(m.previewUrl));
+    };
+  }, []);
+
+  const handleAddMedia = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const kind = file.type.startsWith("video/") ? "video" : file.type.startsWith("image/") ? "image" : null;
+    if (!kind) {
+      setError("Only image or video files are allowed.");
+      e.target.value = "";
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    setSelectedMedia((prev) => [...prev, { id, file, previewUrl, kind }]);
+    setError(null);
+    e.target.value = "";
+  };
+
+  const handleRemoveMedia = (id: string) => {
+    setSelectedMedia((prev) => {
+      const target = prev.find((m) => m.id === id);
+      if (target) URL.revokeObjectURL(target.previewUrl);
+      return prev.filter((m) => m.id !== id);
+    });
+  };
+
+  const clearCurrentCoverImage = () => {
+    setForm((prev) => ({ ...prev, image_url: "" }));
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!form.title?.trim()) {
@@ -124,9 +174,10 @@ export default function EditListing() {
     setError(null);
 
     try {
-      const uploadedImages = files.length
+      const uploadedMedia = selectedMedia.length
         ? await Promise.all(
-            files.map(async (file, idx) => {
+            selectedMedia.map(async (media, idx) => {
+              const file = media.file;
               const ext = file.name.split(".").pop() || "jpg";
               const fileName = `${Date.now()}-${idx}-${Math.random().toString(36).slice(2)}.${ext}`;
               const filePath = `listings/${fileName}`;
@@ -136,16 +187,17 @@ export default function EditListing() {
                 .upload(filePath, file, { upsert: false });
 
               if (uploadError) {
-                throw new Error("Failed to upload image.");
+                throw new Error("Failed to upload media.");
               }
 
               const { data } = supabase.storage.from("listing-images").getPublicUrl(filePath);
-              return { publicUrl: data.publicUrl, filePath };
+              return { publicUrl: data.publicUrl, filePath, kind: media.kind };
             }),
           )
         : [];
 
-      const mainImageUrl = uploadedImages[0]?.publicUrl ?? (form.image_url ? form.image_url : null);
+      const uploadedCoverImage = uploadedMedia.find((m) => m.kind === "image")?.publicUrl ?? null;
+      const mainImageUrl = uploadedCoverImage ?? (form.image_url ? form.image_url : null);
 
       const payload = {
         title: form.title.trim() || "Untitled",
@@ -165,9 +217,9 @@ export default function EditListing() {
         const { error } = await (supabase as any).from("listings").update(payload).eq("id", id);
         if (error) throw error;
 
-        // Best-effort gallery support: replace listing_images when new images are uploaded.
-        if (uploadedImages.length > 0) {
-          const imageRows = uploadedImages.map((img, sort_order) => ({
+        // Best-effort gallery support: replace listing_images when new media are uploaded.
+        if (uploadedMedia.length > 0) {
+          const imageRows = uploadedMedia.map((img, sort_order) => ({
             listing_id: id,
             image_url: img.publicUrl,
             image_path: img.filePath,
@@ -190,8 +242,8 @@ export default function EditListing() {
         const { data: inserted, error } = await (supabase as any).from("listings").insert(payload).select("id").single();
         if (error) throw error;
 
-        if (uploadedImages.length > 0 && inserted?.id) {
-          const imageRows = uploadedImages.map((img, sort_order) => ({
+        if (uploadedMedia.length > 0 && inserted?.id) {
+          const imageRows = uploadedMedia.map((img, sort_order) => ({
             listing_id: inserted.id,
             image_url: img.publicUrl,
             image_path: img.filePath,
@@ -209,6 +261,10 @@ export default function EditListing() {
       toast({
         title: "Saved",
         description: isEditing ? "Listing updated." : "Listing created.",
+      });
+      setSelectedMedia((prev) => {
+        prev.forEach((m) => URL.revokeObjectURL(m.previewUrl));
+        return [];
       });
       navigate("/crestline/admin/listings");
     } catch (err: any) {
@@ -399,27 +455,60 @@ export default function EditListing() {
 
               <div className="space-y-2">
                 <label className="block text-xs text-crestline-muted uppercase tracking-wider">
-                  Property Image
+                  Property Media
                 </label>
                 {form.image_url && (
                   <div className="mb-2">
-                    <p className="text-[11px] text-crestline-muted mb-1">Current image:</p>
-                    <img
-                      src={form.image_url}
-                      alt={form.title}
-                      className="w-full max-w-sm border border-slate-200"
-                    />
+                    <p className="text-[11px] text-crestline-muted mb-1">Current cover image:</p>
+                    <div className="relative w-full max-w-sm">
+                      <img
+                        src={form.image_url}
+                        alt={form.title}
+                        className="w-full border border-slate-200"
+                      />
+                      <button
+                        type="button"
+                        onClick={clearCurrentCoverImage}
+                        className="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-900/75 text-white hover:bg-slate-900"
+                        aria-label="Remove current cover image"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
                 )}
                 <Input
                   type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={(e) => setFiles(Array.from(e.target.files ?? []))}
+                  accept="image/*,video/*"
+                  onChange={handleAddMedia}
                   className="bg-crestline-surface border-slate-200 text-slate-900 rounded-xl file:bg-crestline-gold file:text-crestline-on-gold file:border-0 file:px-3 file:py-1.5 file:text-xs"
                 />
+                {selectedMedia.length > 0 ? (
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {selectedMedia.map((m) => (
+                      <div key={m.id} className="relative overflow-hidden rounded-xl border border-slate-200 bg-white">
+                        {m.kind === "video" ? (
+                          <video src={m.previewUrl} className="h-40 w-full object-cover" controls />
+                        ) : (
+                          <img src={m.previewUrl} alt={m.file.name} className="h-40 w-full object-cover" />
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveMedia(m.id)}
+                          className="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-900/75 text-white hover:bg-slate-900"
+                          aria-label="Remove selected media"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                        <div className="px-3 py-2 text-[11px] text-crestline-muted">
+                          {m.kind === "video" ? "Video" : "Image"} - {m.file.name}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
                 <p className="text-[11px] text-crestline-muted">
-                  Upload one or more images. When you save, your listing gallery will be replaced with the new images you select.
+                  Add one image or video at a time. Each selected item appears below and can be removed with the X before saving.
                 </p>
               </div>
 

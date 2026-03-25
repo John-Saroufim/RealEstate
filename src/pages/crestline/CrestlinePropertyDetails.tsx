@@ -64,7 +64,13 @@ type GalleryImage = {
   id: string;
   url: string;
   alt: string;
+  mediaType: "image" | "video";
 };
+
+function detectMediaTypeFromUrl(url: string): "image" | "video" {
+  const clean = url.split("?")[0].toLowerCase();
+  return /\.(mp4|webm|ogg|mov|m4v)$/i.test(clean) ? "video" : "image";
+}
 
 function formatPrice(price: number | null | undefined) {
   if (price == null) return "Price on request";
@@ -161,14 +167,14 @@ export default function CrestlinePropertyDetails() {
         if (!imgErr && Array.isArray(imgData) && imgData.length > 0) {
           images = (imgData as any[]).map((img) => {
             const url = img.image_url ?? img.image_path ?? "";
-            return { id: String(img.id), url, alt: loaded.title ?? "Property image" };
+            return { id: String(img.id), url, alt: loaded.title ?? "Property image", mediaType: detectMediaTypeFromUrl(url) };
           });
         } else if (loaded.image_url) {
-          images = [{ id: "primary", url: loaded.image_url, alt: loaded.title ?? "Property image" }];
+          images = [{ id: "primary", url: loaded.image_url, alt: loaded.title ?? "Property image", mediaType: detectMediaTypeFromUrl(loaded.image_url) }];
         }
 
         if (images.length === 0 && loaded.image_url) {
-          images = [{ id: "primary", url: loaded.image_url, alt: loaded.title ?? "Property image" }];
+          images = [{ id: "primary", url: loaded.image_url, alt: loaded.title ?? "Property image", mediaType: detectMediaTypeFromUrl(loaded.image_url) }];
         }
 
         setGallery(images);
@@ -404,14 +410,23 @@ export default function CrestlinePropertyDetails() {
                                 key={img.id}
                                 className="min-w-full shrink-0 snap-center"
                               >
-                                <img
-                                  src={img.url}
-                                  alt={img.alt}
-                                  loading="eager"
-                                  decoding="async"
-                                  draggable={false}
-                                  className="w-full h-[320px] sm:h-[380px] md:h-[420px] lg:h-[460px] object-cover select-none"
-                                />
+                                {img.mediaType === "video" ? (
+                                  <video
+                                    src={img.url}
+                                    controls
+                                    playsInline
+                                    className="w-full h-[320px] sm:h-[380px] md:h-[420px] lg:h-[460px] object-cover"
+                                  />
+                                ) : (
+                                  <img
+                                    src={img.url}
+                                    alt={img.alt}
+                                    loading="eager"
+                                    decoding="async"
+                                    draggable={false}
+                                    className="w-full h-[320px] sm:h-[380px] md:h-[420px] lg:h-[460px] object-cover select-none"
+                                  />
+                                )}
                               </div>
                             ))}
                           </div>
@@ -467,13 +482,19 @@ export default function CrestlinePropertyDetails() {
                                 idx === activeImageIndex ? "border-crestline-gold" : "border-slate-200 hover:border-crestline-gold/30",
                               ].join(" ")}
                             >
-                              <img
-                                src={img.url}
-                                alt={img.alt}
-                                loading="lazy"
-                                decoding="async"
-                                className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity duration-300"
-                              />
+                              {img.mediaType === "video" ? (
+                                <div className="w-full h-full bg-slate-100 flex items-center justify-center text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+                                  Video
+                                </div>
+                              ) : (
+                                <img
+                                  src={img.url}
+                                  alt={img.alt}
+                                  loading="lazy"
+                                  decoding="async"
+                                  className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity duration-300"
+                                />
+                              )}
                             </button>
                           ))}
                         </div>
