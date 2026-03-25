@@ -351,7 +351,7 @@ export default function CrestlineHome() {
 
                     <div className="text-left">
                       <label className="block text-xs text-white/70 uppercase tracking-wider mb-2">
-                        Price
+                        Price Range
                       </label>
                       {priceStats ? (
                         <div className="space-y-2">
@@ -386,9 +386,7 @@ export default function CrestlineHome() {
                               className="h-8 w-[92px] rounded-md border border-white/20 bg-black/20 px-2 text-xs tabular-nums text-white outline-none focus:border-sky-200/70"
                               aria-label="Minimum price"
                             />
-                            <div className="flex-1 text-center text-[10px] uppercase tracking-wider text-white/55">
-                              Price Range
-                            </div>
+                            <div className="flex-1" />
                             <input
                               type="text"
                               inputMode="numeric"
