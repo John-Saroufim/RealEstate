@@ -287,7 +287,9 @@ export function PropertyFiltersPanel({
     const locs = locationSuggestions ?? [];
     const names = nameSuggestions ?? [];
     // Keep it simple: union + stable ordering.
-    return Array.from(new Set([...names, ...locs])).filter((s) => s.trim().length > 0);
+    return Array.from(new Set([...names, ...locs]))
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0 && !s.toLowerCase().startsWith("demo listing"));
   }, [locationSuggestions, nameSuggestions]);
 
   useEffect(() => {

@@ -35,6 +35,7 @@ export default function CrestlineProperties() {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [reloadNonce, setReloadNonce] = useState(0);
 
   const qParam = searchParams.get("q") ?? "";
   const selectedType = searchParams.get("type") ?? "All";
@@ -167,7 +168,7 @@ export default function CrestlineProperties() {
         let next = (data ?? []) as Listing[];
         // Remove seeded/demo data from the public properties experience.
         // This keeps the UI from showing placeholder "DEMO Listing ..." rows.
-        next = next.filter((p) => !String(p.title ?? "").toLowerCase().startsWith("demo listing"));
+        next = next.filter((p) => !String(p.title ?? "").trim().toLowerCase().startsWith("demo listing"));
         if (favoritesOnly) {
           const favIds = readFavoriteIds();
           next = next.filter((p) => favIds.has(p.id));
@@ -178,7 +179,32 @@ export default function CrestlineProperties() {
     };
 
     load();
-  }, [qParam, selectedType, selectedStatus, priceMin, priceMax, bedsMin, bathsMin, sort, favoritesOnly]);
+  }, [qParam, selectedType, selectedStatus, priceMin, priceMax, bedsMin, bathsMin, sort, favoritesOnly, reloadNonce]);
+
+  useEffect(() => {
+    // When users create/edit listings (admin) and then come back here, the route may not
+    // remount. Refetch when returning to the tab/window for always-current results.
+    let last = 0;
+    const trigger = () => {
+      const now = Date.now();
+      if (now - last < 2000) return; // throttle
+      last = now;
+      setReloadNonce((n) => n + 1);
+    };
+
+    const onFocus = () => trigger();
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") trigger();
+    };
+
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, []);
 
   useEffect(() => {
     const loadTypes = async () => {
@@ -246,7 +272,7 @@ export default function CrestlineProperties() {
           ),
         ).sort((a, b) => a.localeCompare(b));
 
-        const filtered = uniq.filter((t) => !t.toLowerCase().startsWith("demo listing"));
+        const filtered = uniq.filter((t) => !t.trim().toLowerCase().startsWith("demo listing"));
         if (filtered.length > 0) setNameSuggestions(filtered);
       } catch {
         // Keep empty; user can still type freely.
