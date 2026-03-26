@@ -108,8 +108,51 @@ export default function AdminReviews() {
     try {
       const { error: upErr } = await (supabase as any).from("reviews").update({ status: nextStatus }).eq("id", id);
       if (upErr) throw upErr;
-      setReviews((prev) => prev.map((r) => (r.id === id ? { ...r, status: nextStatus } : r)));
-      toast({ title: `Updated`, description: `Review set to ${nextStatus}.` });
+
+      let replacedOldest = false;
+      let demotedIds: string[] = [];
+
+      if (nextStatus === "approved") {
+        // Keep a strict cap of 6 approved reviews for the Home page feed.
+        // New approvals take priority; oldest approved entries are demoted.
+        const { data: approvedRows, error: approvedErr } = await (supabase as any)
+          .from("reviews")
+          .select("id,created_at")
+          .eq("status", "approved")
+          .order("created_at", { ascending: false })
+          .limit(100);
+
+        if (approvedErr) throw approvedErr;
+
+        const approved = Array.isArray(approvedRows) ? approvedRows : [];
+        const overflow = approved.slice(6);
+        demotedIds = overflow.map((r: any) => String(r.id));
+
+        if (demotedIds.length > 0) {
+          const { error: demoteErr } = await (supabase as any)
+            .from("reviews")
+            .update({ status: "rejected" })
+            .in("id", demotedIds);
+          if (demoteErr) throw demoteErr;
+          replacedOldest = true;
+        }
+      }
+
+      setReviews((prev) =>
+        prev.map((r) => {
+          if (r.id === id) return { ...r, status: nextStatus };
+          if (demotedIds.includes(r.id)) return { ...r, status: "rejected" };
+          return r;
+        }),
+      );
+
+      toast({
+        title: "Updated",
+        description:
+          nextStatus === "approved" && replacedOldest
+            ? "Review approved. Oldest approved review was replaced."
+            : `Review set to ${nextStatus}.`,
+      });
     } catch (e: any) {
       toast({ title: "Update failed", description: e?.message ?? "Please try again." });
     }
