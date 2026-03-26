@@ -54,7 +54,7 @@ export default function Signup() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="font-serif text-2xl font-bold">Create account</h1>
-          <p className="text-crestline-muted text-sm mt-1">You can add listings after you’re set up.</p>
+          <p className="text-crestline-muted text-sm mt-1">Create your account to save favorites and stay updated on properties you love.</p>
         </div>
 
         <form
