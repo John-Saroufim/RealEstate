@@ -75,7 +75,7 @@ export default function Login() {
           <div className="text-center mb-8">
             <h1 className="font-serif text-3xl font-bold">Login</h1>
             <p className="text-crestline-muted text-sm mt-2">
-              Sign in to add and edit listings. Non-admins will return to the public site.
+              Welcome back. Sign in to view saved homes, track inquiries, and continue your property search.
             </p>
           </div>
 
