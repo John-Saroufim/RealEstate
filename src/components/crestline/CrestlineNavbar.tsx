@@ -27,9 +27,10 @@ export function CrestlineNavbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const { user, loading: authLoading } = useAuth();
-  const { isAdmin, loading: adminLoading } = useIsAdmin();
+  const { isAdmin, checking: adminChecking } = useIsAdmin();
   const authReady = !authLoading;
-  const adminReady = !adminLoading;
+  const isAdminRoute = location.pathname.startsWith("/crestline/admin");
+  const showAdminLinks = authReady && user && (isAdmin === true || (adminChecking && isAdminRoute));
 
   const [scrolled, setScrolled] = useState(false);
 
@@ -102,7 +103,7 @@ export function CrestlineNavbar() {
                 </Link>
               ))}
 
-              {authReady && adminReady && user && isAdmin && adminLinks.map((link) => (
+              {showAdminLinks && adminLinks.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
@@ -234,7 +235,7 @@ export function CrestlineNavbar() {
                   </Link>
                 ))}
 
-                {authReady && adminReady && user && isAdmin && adminLinks.map((link) => (
+                {showAdminLinks && adminLinks.map((link) => (
                   <Link
                     key={link.to}
                     to={link.to}

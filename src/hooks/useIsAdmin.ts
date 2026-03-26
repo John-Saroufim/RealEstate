@@ -3,12 +3,18 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 
 export function useIsAdmin() {
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [checking, setChecking] = useState(false);
 
   useEffect(() => {
     const check = async () => {
-      if (!user) return;
+      if (!user) {
+        setIsAdmin(null);
+        setChecking(false);
+        return;
+      }
+      setChecking(true);
       setIsAdmin(null);
 
       // Prefer: DB-level truth via `public.is_admin()`.
@@ -17,6 +23,7 @@ export function useIsAdmin() {
         const { data, error } = await supabase.rpc("is_admin");
         if (!error && typeof data === "boolean") {
           setIsAdmin(data);
+          setChecking(false);
           return;
         }
       } catch {
@@ -35,6 +42,7 @@ export function useIsAdmin() {
 
       if (adminEmails.length > 0 && user.email) {
         setIsAdmin(adminEmails.includes(user.email.toLowerCase()));
+        setChecking(false);
         return;
       }
 
@@ -48,15 +56,17 @@ export function useIsAdmin() {
 
       if (error) {
         setIsAdmin(false);
+        setChecking(false);
         return;
       }
 
       setIsAdmin(Boolean(data));
+      setChecking(false);
     };
 
     check();
   }, [user]);
 
-  return { user, loading, isAdmin };
+  return { user, loading: authLoading, isAdmin, checking };
 }
 
