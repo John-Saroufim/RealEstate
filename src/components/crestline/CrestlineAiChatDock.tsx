@@ -204,6 +204,24 @@ export function CrestlineAiChatDock() {
         )}
       </AnimatePresence>
 
+      <AnimatePresence>
+        {!open && (
+          <motion.div
+            initial={reducedMotion ? undefined : { opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reducedMotion ? undefined : { opacity: 0, y: 8, scale: 0.98 }}
+            transition={{ duration: 0.2 }}
+            className="fixed z-[55] right-[calc(max(1rem,env(safe-area-inset-right))+4rem)] bottom-[calc(max(1rem,env(safe-area-inset-bottom))+0.5rem)] hidden sm:flex items-center"
+            aria-hidden
+          >
+            <div className="relative rounded-xl border border-crestline-gold/30 bg-crestline-bg/95 px-3 py-2 text-xs font-medium text-slate-800 shadow-lg backdrop-blur">
+              Ask me anything
+              <span className="pointer-events-none absolute -right-1 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rotate-45 border-r border-b border-crestline-gold/30 bg-crestline-bg/95" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <motion.button
         type="button"
         aria-label="Open AI assistant"
