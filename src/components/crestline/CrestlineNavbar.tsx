@@ -26,8 +26,10 @@ const tailLinks = [
 export function CrestlineNavbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: adminLoading } = useIsAdmin();
+  const authReady = !authLoading;
+  const adminReady = !adminLoading;
 
   const [scrolled, setScrolled] = useState(false);
 
@@ -100,7 +102,7 @@ export function CrestlineNavbar() {
                 </Link>
               ))}
 
-              {!adminLoading && user && isAdmin && adminLinks.map((link) => (
+              {authReady && adminReady && user && isAdmin && adminLinks.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
@@ -142,7 +144,15 @@ export function CrestlineNavbar() {
               </Button>
             </Link>
 
-            {user ? (
+            {!authReady ? (
+              <Button
+                variant="outline"
+                disabled
+                className="border-slate-300 text-slate-500 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
+              >
+                Account
+              </Button>
+            ) : user ? (
               <Link to="/logout">
                 <Button
                   variant="outline"
@@ -224,7 +234,7 @@ export function CrestlineNavbar() {
                   </Link>
                 ))}
 
-                {!adminLoading && user && isAdmin && adminLinks.map((link) => (
+                {authReady && adminReady && user && isAdmin && adminLinks.map((link) => (
                   <Link
                     key={link.to}
                     to={link.to}
@@ -264,7 +274,14 @@ export function CrestlineNavbar() {
                   </Button>
                 </Link>
 
-                {user ? (
+                {!authReady ? (
+                  <Button
+                    disabled
+                    className="w-full bg-slate-50 border-slate-200 text-slate-500 font-semibold text-sm rounded-xl mt-2 h-11 transition-colors duration-200"
+                  >
+                    Account
+                  </Button>
+                ) : user ? (
                   <Link to="/logout" onClick={() => setOpen(false)}>
                     <Button className="w-full bg-slate-50 border-slate-200 text-slate-900 hover:bg-slate-100 font-semibold text-sm rounded-xl mt-2 h-11 transition-colors duration-200">
                       Log out
