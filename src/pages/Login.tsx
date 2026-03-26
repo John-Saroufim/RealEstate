@@ -79,7 +79,11 @@ export default function Login() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="bg-crestline-surface border border-slate-200 p-6 space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-6 shadow-[0_20px_50px_-28px_rgba(15,23,42,0.35)] space-y-4"
+          >
+            <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-crestline-gold/40 to-transparent" />
             <div className="space-y-2">
               <Label htmlFor="email" className="text-crestline-muted">
                 Email
@@ -90,7 +94,7 @@ export default function Login() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-crestline-bg/20 border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-xl"
+                className="bg-white border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-xl shadow-sm focus-visible:ring-crestline-gold/45"
               />
             </div>
 
@@ -110,7 +114,7 @@ export default function Login() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="bg-crestline-bg/20 border-slate-200 text-slate-900 placeholder:text-crestline-muted pr-10 rounded-xl"
+                  className="bg-white border-slate-200 text-slate-900 placeholder:text-crestline-muted pr-10 rounded-xl shadow-sm focus-visible:ring-crestline-gold/45"
                 />
                 <button
                   type="button"
