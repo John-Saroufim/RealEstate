@@ -352,3 +352,141 @@
     outline-offset: 0.4em;
   }
 }
+
+/* Text fields — bottom underline focus (from Uiverse.io by WhiteNervosa); accent blue */
+.uiverse-input-wrap {
+  position: relative;
+  width: 100%;
+  display: block;
+  min-width: 0;
+  --uiverse-input-accent: hsl(217 91% 60%);
+}
+
+.uiverse-input-wrap::before,
+.uiverse-input-wrap::after {
+  content: "";
+  left: 0;
+  right: 0;
+  position: absolute;
+  pointer-events: none;
+  bottom: -1px;
+  z-index: 4;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.uiverse-input-wrap::before {
+  transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.uiverse-input-wrap:focus-within::before {
+  border-bottom-color: var(--uiverse-input-accent);
+}
+
+.uiverse-input-wrap::after {
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  will-change: transform;
+  border-bottom: 2px solid var(--uiverse-input-accent);
+}
+
+.uiverse-input-wrap:focus-within::after {
+  transform: scaleX(1);
+}
+
+.uiverse-input-wrap :is(input, textarea)::placeholder {
+  transition: opacity 250ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+}
+
+.uiverse-input-wrap:focus-within :is(input, textarea)::placeholder {
+  opacity: 0;
+}
+
+/* Property favorite — dotted panel + heart (from Uiverse.io by SalladShooter) */
+.property-fav-like-wrapper {
+  --property-fav-radius: 0.35em;
+  --property-fav-dot-bg: #212121;
+  --property-fav-dot-color: #313131;
+  --property-fav-dot-size: 1px;
+  --property-fav-dot-space: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  font: inherit;
+  margin: 0;
+  background:
+    linear-gradient(
+        90deg,
+        var(--property-fav-dot-bg) calc(var(--property-fav-dot-space) - var(--property-fav-dot-size)),
+        transparent 1%
+      )
+      center / var(--property-fav-dot-space) var(--property-fav-dot-space),
+    linear-gradient(
+        var(--property-fav-dot-bg) calc(var(--property-fav-dot-space) - var(--property-fav-dot-size)),
+        transparent 1%
+      )
+      center / var(--property-fav-dot-space) var(--property-fav-dot-space),
+    var(--property-fav-dot-color);
+  border: 0.1em solid #313131;
+  padding: 0.5em;
+  border-radius: var(--property-fav-radius);
+  box-shadow: 0 0 1em 0.5em rgba(0, 0, 0, 0.1);
+}
+
+.property-fav-like-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  cursor: pointer;
+  margin-top: -0.25em;
+  margin-bottom: -0.25em;
+}
+
+.property-fav-like-icon {
+  width: 1.5em;
+  height: 1.5em;
+  flex-shrink: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.property-fav-like-icon-active {
+  display: none;
+}
+
+.property-fav-like-wrapper--favorited .property-fav-like-icon-active {
+  display: inline-block;
+  animation: property-fav-wiggle 0.5s ease-in-out;
+}
+
+.property-fav-like-wrapper--favorited .property-fav-like-icon-inactive {
+  display: none;
+}
+
+.property-fav-like-text {
+  padding: 0.35em 0.15em;
+  color: #ffffff;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+@keyframes property-fav-wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Bed, Bath, MapPin, Ruler, Heart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type PropertyCardProps = {
   to: string;
@@ -135,23 +136,19 @@ export function PropertyCard({
           </div>
         ) : null}
 
-        {/* Favorite / heart */}
+        {/* Favorite — Uiverse dotted “like” control */}
         <button
           type="button"
           onClick={toggleFavorite}
           aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
-          className={[
-            "absolute bottom-4 right-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full",
-            "border backdrop-blur-sm transition-colors duration-300",
-            isFavorite
-              ? "bg-crestline-gold/90 border-crestline-gold text-crestline-on-gold"
-              : "bg-white/10 border-white/15 text-white hover:bg-white/15",
-          ].join(" ")}
+          aria-pressed={isFavorite}
+          className={cn("property-fav-like-wrapper absolute bottom-4 right-4 z-10 max-w-[min(100%,11rem)]", isFavorite && "property-fav-like-wrapper--favorited")}
         >
-          <Heart
-            className={isFavorite ? "h-5 w-5 fill-current" : "h-5 w-5"}
-            strokeWidth={isFavorite ? 0 : 2}
-          />
+          <span className="property-fav-like-inner">
+            <Heart className="property-fav-like-icon property-fav-like-icon-inactive text-white" fill="none" stroke="currentColor" strokeWidth={2} />
+            <Heart className="property-fav-like-icon property-fav-like-icon-active text-[#f52121]" fill="currentColor" stroke="none" strokeWidth={0} />
+            <span className="property-fav-like-text">Favorite</span>
+          </span>
         </button>
       </div>
 
