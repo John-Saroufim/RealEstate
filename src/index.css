@@ -136,11 +136,10 @@
 }
 
 /* Logout expand button — adapted from Uiverse.io by vinodjangid07 */
-/* Height matches Schedule Viewing (h-9 = 36px); expanded width ~ same as that CTA */
-/* Slot width = max hover width so expansion does not squeeze nav links */
+/* Slot = expanded width; circle hugs right edge; hover uses symmetric horizontal padding */
 .logout-expand-btn-slot {
-  width: 170px;
-  min-width: 170px;
+  width: 118px;
+  min-width: 118px;
   flex-shrink: 0;
   display: flex;
   justify-content: flex-end;
@@ -148,17 +147,24 @@
 }
 
 .logout-expand-btn {
-  display: flex;
+  box-sizing: border-box;
+  display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   width: 36px;
   height: 36px;
+  padding: 0;
+  gap: 0;
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  position: relative;
   overflow: hidden;
-  transition-duration: 0.3s;
+  transition:
+    width 0.3s ease,
+    border-radius 0.3s ease,
+    padding 0.3s ease,
+    gap 0.3s ease,
+    box-shadow 0.2s ease;
   box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.15);
   background-color: hsl(221 56% 38%);
 }
@@ -169,8 +175,7 @@
 }
 
 .logout-expand-btn__sign {
-  width: 100%;
-  transition-duration: 0.3s;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -183,35 +188,30 @@
 }
 
 .logout-expand-btn__text {
-  position: absolute;
-  right: 0%;
-  width: 0%;
+  max-width: 0;
   opacity: 0;
+  overflow: hidden;
   color: white;
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.25rem;
-  transition-duration: 0.3s;
   white-space: nowrap;
+  transition:
+    max-width 0.3s ease,
+    opacity 0.25s ease;
 }
 
 .logout-expand-btn:hover {
-  width: 170px;
+  width: 118px;
   border-radius: 0.75rem;
-  transition-duration: 0.3s;
-}
-
-.logout-expand-btn:hover .logout-expand-btn__sign {
-  width: 30%;
-  transition-duration: 0.3s;
-  padding-left: 1rem;
+  padding: 0 12px;
+  gap: 0.5rem;
+  justify-content: center;
 }
 
 .logout-expand-btn:hover .logout-expand-btn__text {
+  max-width: 4.5rem;
   opacity: 1;
-  width: 70%;
-  transition-duration: 0.3s;
-  padding-right: 1.25rem;
 }
 
 .logout-expand-btn:active {

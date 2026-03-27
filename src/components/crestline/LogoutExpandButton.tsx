@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 /** Expand-on-hover logout control (Uiverse-style). Wrap reserves max width so nav does not reflow. */
 export function LogoutExpandButton({ onNavigate }: { onNavigate?: () => void }) {
   return (
-    <div className="logout-expand-btn-slot ml-5">
+    <div className="logout-expand-btn-slot">
       <Link
         to="/logout"
         className="logout-expand-btn no-underline"

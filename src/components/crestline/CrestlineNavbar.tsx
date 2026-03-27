@@ -76,7 +76,7 @@ export function CrestlineNavbar() {
       ].join(" ")}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 w-full">
+        <div className="flex items-center justify-between gap-4 min-w-0 h-20 w-full">
           <Link to="/crestline" className="flex items-center gap-2.5 shrink-0">
             <MontelibanoHouseLogo className="h-7 w-7 text-crestline-gold" />
             <span className="font-serif text-2xl font-bold text-slate-900 tracking-wide leading-none">
@@ -84,9 +84,9 @@ export function CrestlineNavbar() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 ml-12 lg:ml-16 flex-1 justify-end">
+          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-8 lg:ml-12">
             {/* Nav links: core → admin (if applicable) → About → Contact */}
-            <div className="flex items-center gap-8 min-w-0">
+            <div className="flex items-center gap-8 min-w-0 pr-3">
               {coreLinks.map((link) => (
                 <Link
                   key={link.to}
@@ -138,36 +138,36 @@ export function CrestlineNavbar() {
                 </Link>
               ))}
             </div>
+          </div>
 
-            {/* Action buttons — grouped; logout sits further right with ml on its slot */}
-            <div className="flex items-center shrink-0">
-              <Link to="/crestline/contact">
-                <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm px-6 rounded-xl h-9 transition-colors duration-200">
-                  Schedule Viewing
-                </Button>
-              </Link>
+          {/* Flush right: only page horizontal padding separates from viewport edge */}
+          <div className="hidden md:flex items-center shrink-0 gap-2">
+            <Link to="/crestline/contact">
+              <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm px-6 rounded-xl h-9 transition-colors duration-200">
+                Schedule Viewing
+              </Button>
+            </Link>
 
-              {!authReady ? (
+            {!authReady ? (
+              <Button
+                variant="outline"
+                disabled
+                className="border-slate-300 text-slate-500 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
+              >
+                Account
+              </Button>
+            ) : user ? (
+              <LogoutExpandButton />
+            ) : (
+              <Link to="/login">
                 <Button
                   variant="outline"
-                  disabled
-                  className="border-slate-300 text-slate-500 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200 ml-4"
+                  className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
                 >
-                  Account
+                  Login
                 </Button>
-              ) : user ? (
-                <LogoutExpandButton />
-              ) : (
-                <Link to="/login" className="ml-4">
-                  <Button
-                    variant="outline"
-                    className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
-                  >
-                    Login
-                  </Button>
-                </Link>
-              )}
-            </div>
+              </Link>
+            )}
           </div>
 
           <button
