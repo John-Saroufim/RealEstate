@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { MontelibanoHouseLogo } from "@/components/crestline/MontelibanoHouseLogo";
+import { LogoutExpandButton } from "@/components/crestline/LogoutExpandButton";
 
 const coreLinks = [
   { label: "Home", to: "/crestline" },
@@ -154,14 +155,7 @@ export function CrestlineNavbar() {
                 Account
               </Button>
             ) : user ? (
-              <Link to="/logout">
-                <Button
-                  variant="outline"
-                  className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
-                >
-                  Log out
-                </Button>
-              </Link>
+              <LogoutExpandButton />
             ) : (
               <Link to="/login">
                 <Button
@@ -283,11 +277,9 @@ export function CrestlineNavbar() {
                     Account
                   </Button>
                 ) : user ? (
-                  <Link to="/logout" onClick={() => setOpen(false)}>
-                    <Button className="w-full bg-slate-50 border-slate-200 text-slate-900 hover:bg-slate-100 font-semibold text-sm rounded-xl mt-2 h-11 transition-colors duration-200">
-                      Log out
-                    </Button>
-                  </Link>
+                  <div className="flex justify-center pt-2">
+                    <LogoutExpandButton onNavigate={() => setOpen(false)} />
+                  </div>
                 ) : (
                   <Link to="/login" onClick={() => setOpen(false)}>
                     <Button className="w-full bg-slate-50 border-slate-200 text-slate-900 hover:bg-slate-100 font-semibold text-sm rounded-xl mt-2 h-11 transition-colors duration-200">
