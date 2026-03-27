@@ -243,16 +243,6 @@
   transition: 1s;
 }
 
-.browse-properties-uiverse-btn--lg {
-  --bp-main-size: 1.0625rem;
-}
-
-@media (min-width: 640px) {
-  .browse-properties-uiverse-btn--lg {
-    --bp-main-size: 1.1875rem;
-  }
-}
-
 .browse-properties-uiverse-btn:active {
   transform: scale(0.95);
 }

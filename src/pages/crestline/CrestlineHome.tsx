@@ -476,8 +476,7 @@ export default function CrestlineHome() {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-7">
                   <BrowsePropertiesUiverseButton
                     onClick={handleBrowseProperties}
-                    size="lg"
-                    className="w-full justify-center sm:w-auto min-h-[2.85rem] py-2"
+                    className="w-full justify-center sm:w-auto h-auto min-h-0 !text-base font-semibold !py-3 !pl-8 !pr-2 sm:!pr-3"
                   />
 
                   <Link to="/crestline/contact">
@@ -714,7 +713,7 @@ export default function CrestlineHome() {
                   Contact Us
                 </Button>
               </Link>
-              <BrowsePropertiesUiverseButton className="min-h-[2.85rem] justify-center py-2 px-1" />
+              <BrowsePropertiesUiverseButton className="justify-center h-auto min-h-0 !text-base font-semibold !py-3 !pl-10 !pr-2 sm:!pr-3" />
             </div>
           </motion.div>
         </div>
