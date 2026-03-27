@@ -84,9 +84,9 @@ export function CrestlineNavbar() {
             </span>
           </Link>
 
-          {/* Reserve space so links never sit under viewport-pinned CTAs */}
-          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-8 lg:ml-12 md:pr-[min(22rem,36vw)]">
-            {/* Nav links: core → admin (if applicable) → About → Contact */}
+          {/* Reserve space for viewport-pinned logout/login only */}
+          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-8 lg:ml-12 md:pr-[min(9rem,24vw)]">
+            {/* Nav links: core → admin (if applicable) → About → Contact → Schedule Viewing */}
             <div className="flex items-center gap-8 min-w-0">
               {coreLinks.map((link) => (
                 <Link
@@ -138,6 +138,12 @@ export function CrestlineNavbar() {
                   {link.label}
                 </Link>
               ))}
+
+              <Link to="/crestline/contact" className="shrink-0">
+                <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm px-6 rounded-xl h-9 transition-colors duration-200">
+                  Schedule Viewing
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -152,15 +158,9 @@ export function CrestlineNavbar() {
         </div>
       </div>
 
-      {/* Viewport-right CTAs: ~1cm inset from screen edge (logout rightmost) */}
-      <div className="pointer-events-none absolute right-[1cm] top-1/2 z-10 hidden -translate-y-1/2 md:flex md:items-center md:gap-2">
-        <div className="pointer-events-auto flex items-center gap-2">
-          <Link to="/crestline/contact">
-            <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm px-6 rounded-xl h-9 transition-colors duration-200">
-              Schedule Viewing
-            </Button>
-          </Link>
-
+      {/* Viewport-right: logout / login only (~1cm from edge) */}
+      <div className="pointer-events-none absolute right-[1cm] top-1/2 z-10 hidden -translate-y-1/2 md:flex md:items-center">
+        <div className="pointer-events-auto flex items-center">
           {!authReady ? (
             <Button
               variant="outline"
@@ -252,27 +252,29 @@ export function CrestlineNavbar() {
                 ))}
 
                 {tailLinks.map((link) => (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    onClick={() => setOpen(false)}
-                    className={[
-                      "block text-[16px] font-medium tracking-wide leading-6 px-2 py-2.5 rounded-xl",
-                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
-                      location.pathname === link.to
-                        ? "text-crestline-gold"
-                        : "text-slate-600 hover:text-slate-900",
-                    ].join(" ")}
-                  >
-                    {link.label}
-                  </Link>
+                  <div key={link.to}>
+                    <Link
+                      to={link.to}
+                      onClick={() => setOpen(false)}
+                      className={[
+                        "block text-[16px] font-medium tracking-wide leading-6 px-2 py-2.5 rounded-xl",
+                        "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+                        location.pathname === link.to
+                          ? "text-crestline-gold"
+                          : "text-slate-600 hover:text-slate-900",
+                      ].join(" ")}
+                    >
+                      {link.label}
+                    </Link>
+                    {link.to === "/crestline/contact" && (
+                      <Link to="/crestline/contact" onClick={() => setOpen(false)} className="block mt-2">
+                        <Button className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm rounded-xl h-11 transition-colors duration-200">
+                          Schedule Viewing
+                        </Button>
+                      </Link>
+                    )}
+                  </div>
                 ))}
-
-                <Link to="/crestline/contact" onClick={() => setOpen(false)}>
-                  <Button className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm rounded-xl mt-2 h-11 transition-colors duration-200">
-                    Schedule Viewing
-                  </Button>
-                </Link>
 
                 {!authReady ? (
                   <Button
