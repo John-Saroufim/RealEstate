@@ -86,14 +86,14 @@ export function CrestlineNavbar() {
 
           <div className="hidden md:flex items-center gap-6 ml-12 lg:ml-16 flex-1 justify-end">
             {/* Nav links: core → admin (if applicable) → About → Contact */}
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-8 min-w-0">
               {coreLinks.map((link) => (
                 <Link
                   key={link.to}
                   to={link.to}
                   aria-current={location.pathname === link.to ? "page" : undefined}
                   className={[
-                    "relative",
+                    "relative whitespace-nowrap shrink-0",
                     "text-[16px] font-medium tracking-wide leading-6",
                     "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
@@ -110,7 +110,7 @@ export function CrestlineNavbar() {
                   to={link.to}
                   aria-current={location.pathname.startsWith(link.to) ? "page" : undefined}
                   className={[
-                    "relative",
+                    "relative whitespace-nowrap shrink-0",
                     "text-[16px] font-medium tracking-wide leading-6",
                     "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
@@ -127,7 +127,7 @@ export function CrestlineNavbar() {
                   to={link.to}
                   aria-current={location.pathname === link.to ? "page" : undefined}
                   className={[
-                    "relative",
+                    "relative whitespace-nowrap shrink-0",
                     "text-[16px] font-medium tracking-wide leading-6",
                     "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
