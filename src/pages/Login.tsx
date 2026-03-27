@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { adminRequiresEmailVerification, isAdminAccount } from "@/lib/authEmail";
+import { formatAuthEmailError } from "@/lib/authErrors";
 import { PENDING_ADMIN_OTP_EMAIL_KEY, sendAdminLoginOtp } from "@/lib/adminLoginOtp";
 import { toast } from "sonner";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
@@ -94,7 +95,7 @@ export default function Login() {
       if (otpErr) {
         loginSubmitInProgressRef.current = false;
         setLoading(false);
-        toast.error(otpErr.message);
+        toast.error(formatAuthEmailError(otpErr.message));
         return;
       }
       sessionStorage.setItem(PENDING_ADMIN_OTP_EMAIL_KEY, u.email);

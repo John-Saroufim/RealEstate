@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
+import { formatAuthEmailError } from "@/lib/authErrors";
 import {
   PENDING_ADMIN_OTP_EMAIL_KEY,
   sendAdminLoginOtp,
@@ -64,7 +65,7 @@ export default function AdminLoginOtp() {
     const { error } = await verifyAdminLoginOtp(email, trimmed);
     setSubmitting(false);
     if (error) {
-      toast.error(error.message);
+      toast.error(formatAuthEmailError(error.message));
       return;
     }
     sessionStorage.removeItem(PENDING_ADMIN_OTP_EMAIL_KEY);
@@ -77,7 +78,7 @@ export default function AdminLoginOtp() {
     const { error } = await sendAdminLoginOtp(email);
     setResending(false);
     if (error) {
-      toast.error(error.message);
+      toast.error(formatAuthEmailError(error.message));
       return;
     }
     toast.success("Email sent again.");

@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { toast } from "sonner";
+import { formatAuthEmailError } from "@/lib/authErrors";
 import { isAdminAccount, isEmailVerified } from "@/lib/authEmail";
 
 export default function VerifyEmail() {
@@ -58,7 +59,9 @@ export default function VerifyEmail() {
       toast.success("Confirmation email sent. Check your inbox.");
       setResendCooldown(30);
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : "Could not resend email.");
+      toast.error(
+        formatAuthEmailError(e instanceof Error ? e.message : "Could not resend email."),
+      );
     } finally {
       setResending(false);
     }
