@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -221,10 +221,10 @@
 /* Browse Properties CTA — from Uiverse.io by Li-Deheng */
 .browse-properties-uiverse-btn {
   --bp-main-size: 1rem;
-  --bp-color-text: #ffffff;
-  --bp-color-background: #ff135a;
-  --bp-color-background-hover: #ff1472;
-  --bp-color-outline: #ff145a40;
+  --bp-color-text: hsl(var(--crestline-on-gold));
+  --bp-color-background: hsl(var(--crestline-gold));
+  --bp-color-background-hover: hsl(221 56% 46%);
+  --bp-color-outline: hsl(221 56% 38% / 0.28);
   --bp-color-shadow: #00000040;
   cursor: pointer;
   display: inline-flex;
@@ -234,7 +234,7 @@
   border: none;
   border-radius: calc(var(--bp-main-size) * 100);
   padding: 0.33em 0 0.33em 0.66em;
-  font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  font-family: inherit;
   font-weight: 600;
   font-size: var(--bp-main-size);
   color: var(--bp-color-text);
