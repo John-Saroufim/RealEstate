@@ -84,9 +84,10 @@ export function CrestlineNavbar() {
             </span>
           </Link>
 
-          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-8 lg:ml-12">
+          {/* Reserve space so links never sit under viewport-pinned CTAs */}
+          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-8 lg:ml-12 md:pr-[min(22rem,36vw)]">
             {/* Nav links: core → admin (if applicable) → About → Contact */}
-            <div className="flex items-center gap-8 min-w-0 pr-3">
+            <div className="flex items-center gap-8 min-w-0">
               {coreLinks.map((link) => (
                 <Link
                   key={link.to}
@@ -140,36 +141,6 @@ export function CrestlineNavbar() {
             </div>
           </div>
 
-          {/* Flush right: only page horizontal padding separates from viewport edge */}
-          <div className="hidden md:flex items-center shrink-0 gap-2">
-            <Link to="/crestline/contact">
-              <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm px-6 rounded-xl h-9 transition-colors duration-200">
-                Schedule Viewing
-              </Button>
-            </Link>
-
-            {!authReady ? (
-              <Button
-                variant="outline"
-                disabled
-                className="border-slate-300 text-slate-500 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
-              >
-                Account
-              </Button>
-            ) : user ? (
-              <LogoutExpandButton />
-            ) : (
-              <Link to="/login">
-                <Button
-                  variant="outline"
-                  className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
-                >
-                  Login
-                </Button>
-              </Link>
-            )}
-          </div>
-
           <button
             className="md:hidden text-slate-900"
             onClick={() => setOpen(!open)}
@@ -178,6 +149,38 @@ export function CrestlineNavbar() {
           >
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
+        </div>
+      </div>
+
+      {/* Viewport-right CTAs: ~1cm inset from screen edge (logout rightmost) */}
+      <div className="pointer-events-none absolute right-[1cm] top-1/2 z-10 hidden -translate-y-1/2 md:flex md:items-center md:gap-2">
+        <div className="pointer-events-auto flex items-center gap-2">
+          <Link to="/crestline/contact">
+            <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm px-6 rounded-xl h-9 transition-colors duration-200">
+              Schedule Viewing
+            </Button>
+          </Link>
+
+          {!authReady ? (
+            <Button
+              variant="outline"
+              disabled
+              className="border-slate-300 text-slate-500 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
+            >
+              Account
+            </Button>
+          ) : user ? (
+            <LogoutExpandButton />
+          ) : (
+            <Link to="/login">
+              <Button
+                variant="outline"
+                className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
+              >
+                Login
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
 
