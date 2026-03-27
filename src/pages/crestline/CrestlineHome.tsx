@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
+import { BrowsePropertiesUiverseButton } from "@/components/crestline/BrowsePropertiesUiverseButton";
 import heroImg from "@/assets/crestline-hero.jpg";
 import prop1 from "@/assets/crestline-prop1.jpg";
 import prop2 from "@/assets/crestline-prop2.jpg";
@@ -473,14 +474,11 @@ export default function CrestlineHome() {
 
                 {/* CTA buttons */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-7">
-                  <Button
-                    type="button"
+                  <BrowsePropertiesUiverseButton
                     onClick={handleBrowseProperties}
-                    className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold rounded-xl px-8 py-3 h-auto text-base w-full sm:w-auto"
-                  >
-                    Browse Properties
-                    <ChevronRight className="ml-1 h-4 w-4" />
-                  </Button>
+                    size="lg"
+                    className="w-full justify-center sm:w-auto min-h-[2.85rem] py-2"
+                  />
 
                   <Link to="/crestline/contact">
                     <Button
@@ -716,11 +714,7 @@ export default function CrestlineHome() {
                   Contact Us
                 </Button>
               </Link>
-              <Link to="/crestline/properties">
-                <Button variant="outline" className="border-crestline-gold/30 text-crestline-gold hover:bg-crestline-gold/10 font-semibold text-base px-10 py-3 rounded-xl h-auto">
-                  Browse Properties
-                </Button>
-              </Link>
+              <BrowsePropertiesUiverseButton className="min-h-[2.85rem] justify-center py-2 px-1" />
             </div>
           </motion.div>
         </div>
