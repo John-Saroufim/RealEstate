@@ -136,10 +136,11 @@
 }
 
 /* Logout expand button — adapted from Uiverse.io by vinodjangid07 */
-/* Slot width must match hover max so expansion does not squeeze nav links */
+/* Height matches Schedule Viewing (h-9 = 36px); expanded width ~ same as that CTA */
+/* Slot width = max hover width so expansion does not squeeze nav links */
 .logout-expand-btn-slot {
-  width: 102px;
-  min-width: 102px;
+  width: 170px;
+  min-width: 170px;
   flex-shrink: 0;
   display: flex;
   justify-content: flex-end;
@@ -150,8 +151,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -177,8 +178,8 @@
 }
 
 .logout-expand-btn__sign svg {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
 }
 
 .logout-expand-btn__text {
@@ -187,29 +188,30 @@
   width: 0%;
   opacity: 0;
   color: white;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 600;
+  line-height: 1.25rem;
   transition-duration: 0.3s;
   white-space: nowrap;
 }
 
 .logout-expand-btn:hover {
-  width: 102px;
-  border-radius: 40px;
+  width: 170px;
+  border-radius: 0.75rem;
   transition-duration: 0.3s;
 }
 
 .logout-expand-btn:hover .logout-expand-btn__sign {
   width: 30%;
   transition-duration: 0.3s;
-  padding-left: 14px;
+  padding-left: 1rem;
 }
 
 .logout-expand-btn:hover .logout-expand-btn__text {
   opacity: 1;
   width: 70%;
   transition-duration: 0.3s;
-  padding-right: 8px;
+  padding-right: 1.25rem;
 }
 
 .logout-expand-btn:active {

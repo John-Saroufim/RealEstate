@@ -139,33 +139,35 @@ export function CrestlineNavbar() {
               ))}
             </div>
 
-            {/* Action buttons */}
-            <Link to="/crestline/contact">
-              <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm px-6 rounded-xl h-9 transition-colors duration-200">
-                Schedule Viewing
-              </Button>
-            </Link>
-
-            {!authReady ? (
-              <Button
-                variant="outline"
-                disabled
-                className="border-slate-300 text-slate-500 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
-              >
-                Account
-              </Button>
-            ) : user ? (
-              <LogoutExpandButton />
-            ) : (
-              <Link to="/login">
-                <Button
-                  variant="outline"
-                  className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
-                >
-                  Login
+            {/* Action buttons — grouped; logout sits further right with ml on its slot */}
+            <div className="flex items-center shrink-0">
+              <Link to="/crestline/contact">
+                <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm px-6 rounded-xl h-9 transition-colors duration-200">
+                  Schedule Viewing
                 </Button>
               </Link>
-            )}
+
+              {!authReady ? (
+                <Button
+                  variant="outline"
+                  disabled
+                  className="border-slate-300 text-slate-500 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200 ml-4"
+                >
+                  Account
+                </Button>
+              ) : user ? (
+                <LogoutExpandButton />
+              ) : (
+                <Link to="/login" className="ml-4">
+                  <Button
+                    variant="outline"
+                    className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
+                  >
+                    Login
+                  </Button>
+                </Link>
+              )}
+            </div>
           </div>
 
           <button
