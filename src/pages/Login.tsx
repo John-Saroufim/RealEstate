@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { adminRequiresEmailVerification } from "@/lib/authEmail";
+import { adminRequiresEmailVerification, isAdminAccount } from "@/lib/authEmail";
+import { PENDING_ADMIN_OTP_EMAIL_KEY, sendAdminLoginOtp } from "@/lib/adminLoginOtp";
 import { toast } from "sonner";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
@@ -57,27 +58,46 @@ export default function Login() {
     }
     setLoading(true);
     const { error } = await signIn(email, password);
-    setLoading(false);
     if (error) {
+      setLoading(false);
       toast.error(error.message);
-    } else {
-      const { data: { session } } = await supabase.auth.getSession();
-      const u = session?.user;
-      if (u && (await adminRequiresEmailVerification(u))) {
-        navigate("/verify-email", { replace: true });
+      return;
+    }
+    const { data: { user: u }, error: userErr } = await supabase.auth.getUser();
+    if (userErr || !u?.email) {
+      setLoading(false);
+      toast.error("Could not verify your account.");
+      return;
+    }
+    if (await adminRequiresEmailVerification(u)) {
+      setLoading(false);
+      navigate("/verify-email", { replace: true });
+      return;
+    }
+    if (await isAdminAccount(u)) {
+      await supabase.auth.signOut();
+      const { error: otpErr } = await sendAdminLoginOtp(u.email);
+      if (otpErr) {
+        setLoading(false);
+        toast.error(otpErr.message);
         return;
       }
-      // After signing in, route based on admin email.
-      // If admin emails aren't configured, route guards will redirect non-admins automatically.
-      if (adminEmails.length > 0) {
-        if (adminEmails.includes(email.toLowerCase())) {
-          navigate("/crestline/admin/listings");
-        } else {
-          navigate("/crestline");
-        }
-      } else {
+      sessionStorage.setItem(PENDING_ADMIN_OTP_EMAIL_KEY, u.email);
+      setLoading(false);
+      navigate("/login/admin-email-code", { replace: true });
+      return;
+    }
+    setLoading(false);
+    // After signing in, route based on admin email.
+    // If admin emails aren't configured, route guards will redirect non-admins automatically.
+    if (adminEmails.length > 0) {
+      if (adminEmails.includes(email.toLowerCase())) {
         navigate("/crestline/admin/listings");
+      } else {
+        navigate("/crestline");
       }
+    } else {
+      navigate("/crestline/admin/listings");
     }
   };
 

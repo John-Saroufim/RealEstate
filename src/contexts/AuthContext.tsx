@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { PENDING_ADMIN_OTP_EMAIL_KEY } from "@/lib/adminLoginOtp";
 
 interface AuthContextType {
   user: User | null;
@@ -20,16 +21,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const applySession = async (session: Session | null) => {
+      if (!session) {
+        setSession(null);
+        setUser(null);
+        setLoading(false);
+        return;
+      }
       setSession(session);
-      setUser(session?.user ?? null);
+      // Prefer server user (includes accurate email_confirmed_at); getSession() can be stale locally.
+      const { data: { user: freshUser } } = await supabase.auth.getUser();
+      setUser(freshUser ?? session.user);
       setLoading(false);
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      void applySession(session);
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
+      void applySession(session);
     });
 
     return () => subscription.unsubscribe();
@@ -53,6 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
+    sessionStorage.removeItem(PENDING_ADMIN_OTP_EMAIL_KEY);
     await supabase.auth.signOut();
   };
 
