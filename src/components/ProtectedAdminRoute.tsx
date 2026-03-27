@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { isEmailVerified } from "@/lib/authEmail";
 
 export function ProtectedAdminRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -29,6 +29,10 @@ export function ProtectedAdminRoute({ children }: { children: React.ReactNode })
 
   if (!isAdmin) {
     return <Navigate to="/crestline" replace />;
+  }
+
+  if (user && !isEmailVerified(user)) {
+    return <Navigate to="/verify-email" replace />;
   }
 
   return <>{children}</>;

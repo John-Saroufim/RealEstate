@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { adminRequiresEmailVerification } from "@/lib/authEmail";
 import { toast } from "sonner";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
@@ -28,17 +30,23 @@ export default function Login() {
     if (authLoading) return;
     if (!user) return;
 
-    // If admin emails are configured, route immediately.
-    // Otherwise, route guards decide whether user can access admin pages.
-    if (adminEmails.length > 0) {
-      if (user.email && adminEmails.includes(user.email.toLowerCase())) {
-        navigate("/crestline/admin/listings", { replace: true });
-      } else {
-        navigate("/crestline", { replace: true });
+    (async () => {
+      if (await adminRequiresEmailVerification(user)) {
+        navigate("/verify-email", { replace: true });
+        return;
       }
-    } else {
-      navigate("/crestline/admin/listings", { replace: true });
-    }
+      // If admin emails are configured, route immediately.
+      // Otherwise, route guards decide whether user can access admin pages.
+      if (adminEmails.length > 0) {
+        if (user.email && adminEmails.includes(user.email.toLowerCase())) {
+          navigate("/crestline/admin/listings", { replace: true });
+        } else {
+          navigate("/crestline", { replace: true });
+        }
+      } else {
+        navigate("/crestline/admin/listings", { replace: true });
+      }
+    })();
   }, [authLoading, user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -53,6 +61,12 @@ export default function Login() {
     if (error) {
       toast.error(error.message);
     } else {
+      const { data: { session } } = await supabase.auth.getSession();
+      const u = session?.user;
+      if (u && (await adminRequiresEmailVerification(u))) {
+        navigate("/verify-email", { replace: true });
+        return;
+      }
       // After signing in, route based on admin email.
       // If admin emails aren't configured, route guards will redirect non-admins automatically.
       if (adminEmails.length > 0) {
