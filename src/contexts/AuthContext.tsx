@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
-import { PENDING_ADMIN_OTP_EMAIL_KEY } from "@/lib/adminLoginOtp";
 
 interface AuthContextType {
   user: User | null;
@@ -64,7 +63,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
-    sessionStorage.removeItem(PENDING_ADMIN_OTP_EMAIL_KEY);
     await supabase.auth.signOut();
   };
 

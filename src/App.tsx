@@ -10,8 +10,6 @@ import { ProtectedAdminRoute } from "@/components/ProtectedAdminRoute";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
-import VerifyEmail from "./pages/VerifyEmail";
-import AdminLoginOtp from "./pages/AdminLoginOtp";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
@@ -50,8 +48,6 @@ function AnimatedRoutes() {
         <Routes location={location}>
           <Route path="/" element={<Navigate to="/crestline" replace />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
-          <Route path="/login/admin-email-code" element={<AdminLoginOtp />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
