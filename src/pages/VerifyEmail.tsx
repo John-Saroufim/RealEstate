@@ -14,6 +14,15 @@ export default function VerifyEmail() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [resending, setResending] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const id = window.setInterval(() => {
+      setResendCooldown((s) => (s <= 1 ? 0 : s - 1));
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [resendCooldown]);
 
   useEffect(() => {
     if (authLoading) return;
@@ -37,7 +46,7 @@ export default function VerifyEmail() {
   }, [authLoading, user, navigate]);
 
   const handleResend = async () => {
-    if (!user?.email) return;
+    if (!user?.email || resendCooldown > 0) return;
     setResending(true);
     try {
       const { error } = await supabase.auth.resend({
@@ -47,6 +56,7 @@ export default function VerifyEmail() {
       });
       if (error) throw error;
       toast.success("Confirmation email sent. Check your inbox.");
+      setResendCooldown(30);
     } catch (e: unknown) {
       toast.error(e instanceof Error ? e.message : "Could not resend email.");
     } finally {
@@ -83,11 +93,11 @@ export default function VerifyEmail() {
             <Button
               type="button"
               onClick={() => void handleResend()}
-              disabled={resending}
+              disabled={resending || resendCooldown > 0}
               className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl font-semibold"
             >
               {resending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-              Resend confirmation email
+              {resendCooldown > 0 ? `Resend confirmation email (${resendCooldown}s)` : "Resend confirmation email"}
             </Button>
             <p className="text-center text-xs text-crestline-muted">
               After confirming,{" "}

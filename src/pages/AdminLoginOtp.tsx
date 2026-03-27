@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Loader2, Shield } from "lucide-react";
@@ -22,6 +22,8 @@ export default function AdminLoginOtp() {
   const [code, setCode] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [resending, setResending] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const initialCooldownApplied = useRef(false);
 
   useEffect(() => {
     if (authLoading) return;
@@ -36,6 +38,20 @@ export default function AdminLoginOtp() {
     }
     setEmail(pending);
   }, [authLoading, user, navigate]);
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const id = window.setInterval(() => {
+      setResendCooldown((s) => (s <= 1 ? 0 : s - 1));
+    }, 1000);
+    return () => window.clearInterval(id);
+  }, [resendCooldown]);
+
+  useEffect(() => {
+    if (!email || initialCooldownApplied.current) return;
+    initialCooldownApplied.current = true;
+    setResendCooldown(30);
+  }, [email]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +72,7 @@ export default function AdminLoginOtp() {
   };
 
   const handleResend = async () => {
-    if (!email) return;
+    if (!email || resendCooldown > 0) return;
     setResending(true);
     const { error } = await sendAdminLoginOtp(email);
     setResending(false);
@@ -65,6 +81,7 @@ export default function AdminLoginOtp() {
       return;
     }
     toast.success("Email sent again.");
+    setResendCooldown(30);
   };
 
   if (authLoading || !email) {
@@ -123,12 +140,12 @@ export default function AdminLoginOtp() {
             <Button
               type="button"
               variant="outline"
-              disabled={resending}
+              disabled={resending || resendCooldown > 0}
               onClick={() => void handleResend()}
               className="w-full rounded-xl border-slate-200"
             >
               {resending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-              Resend email
+              {resendCooldown > 0 ? `Resend email (${resendCooldown}s)` : "Resend email"}
             </Button>
           </form>
 

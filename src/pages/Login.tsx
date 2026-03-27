@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
@@ -27,9 +27,20 @@ export default function Login() {
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
 
+  /** While submit handler runs after password sign-in, skip auto-redirect (avoids flashing admin before OTP). */
+  const loginSubmitInProgressRef = useRef(false);
+
+  const finishSubmitNavigation = () => {
+    queueMicrotask(() => {
+      loginSubmitInProgressRef.current = false;
+      setLoading(false);
+    });
+  };
+
   useEffect(() => {
     if (authLoading) return;
     if (!user) return;
+    if (loginSubmitInProgressRef.current) return;
 
     (async () => {
       if (await adminRequiresEmailVerification(user)) {
@@ -57,48 +68,52 @@ export default function Login() {
       return;
     }
     setLoading(true);
+    loginSubmitInProgressRef.current = true;
     const { error } = await signIn(email, password);
     if (error) {
+      loginSubmitInProgressRef.current = false;
       setLoading(false);
       toast.error(error.message);
       return;
     }
     const { data: { user: u }, error: userErr } = await supabase.auth.getUser();
     if (userErr || !u?.email) {
+      loginSubmitInProgressRef.current = false;
       setLoading(false);
       toast.error("Could not verify your account.");
       return;
     }
     if (await adminRequiresEmailVerification(u)) {
-      setLoading(false);
       navigate("/verify-email", { replace: true });
+      finishSubmitNavigation();
       return;
     }
     if (await isAdminAccount(u)) {
       await supabase.auth.signOut();
       const { error: otpErr } = await sendAdminLoginOtp(u.email);
       if (otpErr) {
+        loginSubmitInProgressRef.current = false;
         setLoading(false);
         toast.error(otpErr.message);
         return;
       }
       sessionStorage.setItem(PENDING_ADMIN_OTP_EMAIL_KEY, u.email);
-      setLoading(false);
       navigate("/login/admin-email-code", { replace: true });
+      finishSubmitNavigation();
       return;
     }
-    setLoading(false);
     // After signing in, route based on admin email.
     // If admin emails aren't configured, route guards will redirect non-admins automatically.
     if (adminEmails.length > 0) {
       if (adminEmails.includes(email.toLowerCase())) {
-        navigate("/crestline/admin/listings");
+        navigate("/crestline/admin/listings", { replace: true });
       } else {
-        navigate("/crestline");
+        navigate("/crestline", { replace: true });
       }
     } else {
-      navigate("/crestline/admin/listings");
+      navigate("/crestline/admin/listings", { replace: true });
     }
+    finishSubmitNavigation();
   };
 
   return (
