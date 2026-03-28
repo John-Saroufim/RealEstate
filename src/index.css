@@ -868,6 +868,22 @@
   border-radius: 9999px;
 }
 
+/* Guest header: Schedule Viewing slightly larger than text-lg / text-xl nav links; sits flush after Contact */
+.contact-ripple-btn--nav-guest {
+  min-height: 42px;
+  height: auto;
+  padding: 0 1rem;
+  font-size: 1.1875rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+@media (min-width: 768px) {
+  .contact-ripple-btn--nav-guest {
+    font-size: 1.3125rem;
+  }
+}
+
 .contact-ripple-btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;

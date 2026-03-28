@@ -55,6 +55,9 @@ export function CrestlineNavbar() {
     [navLinkSizeClass],
   );
 
+  const isGuest = authReady && !user;
+  const desktopNavLinkGap = isGuest ? "gap-5 md:gap-7 lg:gap-8" : "gap-3 md:gap-4 lg:gap-5";
+
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -96,6 +99,75 @@ export function CrestlineNavbar() {
     return "text-slate-600 hover:text-blue-800 dark:text-slate-400 dark:hover:text-blue-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-blue-600 after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300";
   }, []);
 
+  const scheduleNavBtnClass =
+    "contact-ripple-btn--nav shrink-0 focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg";
+  const scheduleNavBtnGuestClass =
+    "contact-ripple-btn--nav contact-ripple-btn--nav-guest shrink-0 rounded-l-none rounded-r-full border-l border-crestline-gold/30 pl-3 -ml-px focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg dark:border-crestline-gold/25";
+
+  const desktopLinkList = (
+    <>
+      {coreLinks.map((link) => (
+        <Link
+          key={link.to}
+          to={link.to}
+          aria-current={location.pathname === link.to ? "page" : undefined}
+          className={[
+            "relative whitespace-nowrap shrink-0",
+            navLinkSizeClass,
+            navLinkMotion,
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
+            location.pathname === link.to ? activeClassGold : inactiveAfterClassGold,
+          ].join(" ")}
+        >
+          {link.label}
+        </Link>
+      ))}
+
+      {showAdminLinks &&
+        adminLinks.map((link) => (
+          <Link
+            key={link.to}
+            to={link.to}
+            aria-current={location.pathname.startsWith(link.to) ? "page" : undefined}
+            className={[
+              "relative whitespace-nowrap shrink-0",
+              navLinkSizeClass,
+              navLinkMotion,
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
+              location.pathname.startsWith(link.to) ? activeClassGold : inactiveAfterClassGold,
+            ].join(" ")}
+          >
+            {link.label}
+          </Link>
+        ))}
+
+      {tailLinks.map((link) => {
+        const active = location.pathname === link.to;
+        const gold = link.linkAccent === "gold";
+        const tailActive = gold ? activeClassGold : activeClassBlue;
+        const tailInactive = gold ? inactiveAfterClassGold : inactiveAfterClassBlue;
+        return (
+          <Link
+            key={link.to}
+            to={link.to}
+            aria-current={active ? "page" : undefined}
+            className={[
+              "relative whitespace-nowrap shrink-0",
+              navLinkSizeClass,
+              navLinkMotion,
+              gold
+                ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                : "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
+              active ? tailActive : tailInactive,
+            ].join(" ")}
+          >
+            {link.label}
+          </Link>
+        );
+      })}
+    </>
+  );
+
   return (
     <nav
       className={[
@@ -118,108 +190,72 @@ export function CrestlineNavbar() {
           </Link>
 
           {/*
-            Desktop: logo left; nav links + actions grouped on the right (justify-end).
+            Desktop: logo left; nav + actions on the right. Guests: wider link gaps, Schedule flush after Contact.
           */}
           <div className="hidden md:flex flex-1 min-w-0 justify-end items-center gap-3 lg:gap-4">
-            <div className="min-w-0 max-w-full overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-              <div className="flex w-max min-w-0 items-center justify-end gap-3 md:gap-4 lg:gap-5">
-                {coreLinks.map((link) => (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    aria-current={location.pathname === link.to ? "page" : undefined}
+            {isGuest ? (
+              <div className="flex min-w-0 flex-1 items-center justify-end gap-0">
+                <div className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                  <div
                     className={[
-                      "relative whitespace-nowrap shrink-0",
-                      navLinkSizeClass,
-                      navLinkMotion,
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
-                      location.pathname === link.to ? activeClassGold : inactiveAfterClassGold,
+                      "flex w-max min-w-0 items-center justify-end",
+                      desktopNavLinkGap,
                     ].join(" ")}
                   >
-                    {link.label}
-                  </Link>
-                ))}
-
-                {showAdminLinks &&
-                  adminLinks.map((link) => (
-                    <Link
-                      key={link.to}
-                      to={link.to}
-                      aria-current={location.pathname.startsWith(link.to) ? "page" : undefined}
-                      className={[
-                        "relative whitespace-nowrap shrink-0",
-                        navLinkSizeClass,
-                        navLinkMotion,
-                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
-                        location.pathname.startsWith(link.to) ? activeClassGold : inactiveAfterClassGold,
-                      ].join(" ")}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-
-                {tailLinks.map((link) => {
-                  const active = location.pathname === link.to;
-                  const gold = link.linkAccent === "gold";
-                  const tailActive = gold ? activeClassGold : activeClassBlue;
-                  const tailInactive = gold ? inactiveAfterClassGold : inactiveAfterClassBlue;
-                  return (
-                    <Link
-                      key={link.to}
-                      to={link.to}
-                      aria-current={active ? "page" : undefined}
-                      className={[
-                        "relative whitespace-nowrap shrink-0",
-                        navLinkSizeClass,
-                        navLinkMotion,
-                        gold
-                          ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
-                          : "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
-                        active ? tailActive : tailInactive,
-                      ].join(" ")}
-                    >
-                      {link.label}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="flex shrink-0 items-center gap-2">
-                <ContactPropertiesRippleButton
-                  to="/crestline/contact"
-                  className="contact-ripple-btn--nav shrink-0 focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
-                >
+                    {desktopLinkList}
+                  </div>
+                </div>
+                <ContactPropertiesRippleButton to="/crestline/contact" className={scheduleNavBtnGuestClass}>
                   Schedule Viewing
                 </ContactPropertiesRippleButton>
-
-                <div className="flex shrink-0 items-center border-l border-crestline-gold/15 pl-2">
-                  <NightModeSwitch id="crestline-night-mode" />
-                </div>
-
-                <div className="flex items-center border-l border-crestline-gold/15 pl-3 lg:pl-4">
-                  {!authReady ? (
-                    <Button
-                      variant="outline"
-                      disabled
-                      className="border-slate-300 text-slate-500 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
-                    >
-                      Account
-                    </Button>
-                  ) : user ? (
-                    <LogoutExpandButton />
-                  ) : (
-                    <Link to="/login">
-                      <Button
-                        variant="outline"
-                        className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
-                      >
-                        Login
-                      </Button>
-                    </Link>
-                  )}
+              </div>
+            ) : (
+              <div className="min-w-0 max-w-full flex-1 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                <div
+                  className={[
+                    "flex w-max min-w-0 items-center justify-end",
+                    desktopNavLinkGap,
+                  ].join(" ")}
+                >
+                  {desktopLinkList}
                 </div>
               </div>
+            )}
+
+            <div className="flex shrink-0 items-center gap-2">
+              {!isGuest && (
+                <ContactPropertiesRippleButton to="/crestline/contact" className={scheduleNavBtnClass}>
+                  Schedule Viewing
+                </ContactPropertiesRippleButton>
+              )}
+
+              <div className="flex shrink-0 items-center border-l border-crestline-gold/15 pl-2">
+                <NightModeSwitch id="crestline-night-mode" />
+              </div>
+
+              <div className="flex items-center border-l border-crestline-gold/15 pl-3 lg:pl-4">
+                {!authReady ? (
+                  <Button
+                    variant="outline"
+                    disabled
+                    className="border-slate-300 text-slate-500 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
+                  >
+                    Account
+                  </Button>
+                ) : user ? (
+                  <LogoutExpandButton />
+                ) : (
+                  <Link to="/login">
+                    <Button
+                      variant="outline"
+                      className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
+                    >
+                      Login
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            </div>
           </div>
 
           <button
