@@ -434,7 +434,7 @@ export default function EditListing() {
                   <select
                     value={form.agent_id}
                     onChange={(e) => setForm((prev) => ({ ...prev, agent_id: e.target.value }))}
-                    className="bg-white border-slate-200 text-slate-900 rounded-xl h-10 px-3 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50"
+                    className="bg-white border-slate-200 text-slate-900 rounded-xl h-10 px-3 shadow-sm focus-visible:outline-none"
                   >
                     <option value="">Unassigned</option>
                     {agents.map((a) => (

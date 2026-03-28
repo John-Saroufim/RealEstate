@@ -66,16 +66,16 @@ export default function Signup() {
           <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-crestline-gold/40 to-transparent" />
           <div className="space-y-2">
             <Label htmlFor="fullName" className="text-crestline-muted">Full Name</Label>
-            <Input id="fullName" placeholder="John Doe" value={fullName} onChange={(e) => setFullName(e.target.value)} className="bg-white border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-xl shadow-sm focus-visible:ring-crestline-gold/45" />
+            <Input id="fullName" placeholder="John Doe" value={fullName} onChange={(e) => setFullName(e.target.value)} className="bg-white border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-xl shadow-sm" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="email" className="text-crestline-muted">Email</Label>
-            <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="bg-white border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-xl shadow-sm focus-visible:ring-crestline-gold/45" />
+            <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="bg-white border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-xl shadow-sm" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password" className="text-crestline-muted">Password</Label>
             <div className="relative">
-            <Input id="password" type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-white border-slate-200 text-slate-900 placeholder:text-crestline-muted pr-10 rounded-xl shadow-sm focus-visible:ring-crestline-gold/45" />
+            <Input id="password" type={showPassword ? "text" : "password"} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-white border-slate-200 text-slate-900 placeholder:text-crestline-muted pr-10 rounded-xl shadow-sm" />
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-crestline-muted hover:text-slate-900">
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -83,7 +83,7 @@ export default function Signup() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="confirmPassword" className="text-crestline-muted">Confirm Password</Label>
-            <Input id="confirmPassword" type={showPassword ? "text" : "password"} placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="bg-white border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-xl shadow-sm focus-visible:ring-crestline-gold/45" />
+            <Input id="confirmPassword" type={showPassword ? "text" : "password"} placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="bg-white border-slate-200 text-slate-900 placeholder:text-crestline-muted rounded-xl shadow-sm" />
           </div>
           <div className="flex items-center gap-2">
             <Checkbox id="terms" checked={acceptTerms} onCheckedChange={(v) => setAcceptTerms(v as boolean)} />

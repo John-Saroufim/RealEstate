@@ -30,10 +30,10 @@ function filterChipClass(active: boolean) {
 }
 
 const filterFieldClass =
-  "h-12 rounded-lg border border-slate-200 bg-white text-[15px] text-slate-900 shadow-sm shadow-slate-900/5 placeholder:text-slate-400 transition-all duration-200 focus-visible:border-crestline-gold/45 focus-visible:ring-2 focus-visible:ring-crestline-gold/20 focus-visible:ring-offset-0 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:placeholder:text-slate-500 dark:shadow-none";
+  "h-12 rounded-lg border border-slate-200 bg-white text-[15px] text-slate-900 shadow-sm shadow-slate-900/5 placeholder:text-slate-400 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:placeholder:text-slate-500 dark:shadow-none";
 
 const searchInputClass =
-  "h-14 rounded-xl border border-slate-200 bg-white pl-12 pr-4 text-[15px] text-slate-900 shadow-sm shadow-slate-900/5 placeholder:text-slate-500 transition-all duration-200 focus-visible:border-crestline-gold/45 focus-visible:ring-2 focus-visible:ring-crestline-gold/18 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:placeholder:text-slate-500 dark:shadow-none";
+  "h-14 rounded-xl border border-slate-200 bg-white pl-12 pr-4 text-[15px] text-slate-900 shadow-sm shadow-slate-900/5 placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:placeholder:text-slate-500 dark:shadow-none";
 
 const divider = (
   <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent dark:via-slate-600/60" aria-hidden />

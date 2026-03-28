@@ -164,7 +164,7 @@ export default function CrestlineContact() {
                         value={form.name}
                         onChange={(e) => handleChange("name", e.target.value)}
                         placeholder="John Smith"
-                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
+                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12"
                       />
                       {errors.name && <p className="text-xs text-red-400 mt-1">{errors.name}</p>}
                     </div>
@@ -175,7 +175,7 @@ export default function CrestlineContact() {
                         value={form.email}
                         onChange={(e) => handleChange("email", e.target.value)}
                         placeholder="john@example.com"
-                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
+                        className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12"
                       />
                       {errors.email && <p className="text-xs text-red-400 mt-1">{errors.email}</p>}
                     </div>
@@ -187,7 +187,7 @@ export default function CrestlineContact() {
                       value={form.phone}
                       onChange={(e) => handleChange("phone", e.target.value)}
                       placeholder="+1 (555) 000-0000"
-                      className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
+                      className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12"
                     />
                   </div>
 
@@ -198,7 +198,7 @@ export default function CrestlineContact() {
                       onChange={(e) => handleChange("message", e.target.value)}
                       placeholder="Tell us about your requirements..."
                       rows={5}
-                      className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl focus-visible:ring-crestline-gold/50 resize-none"
+                      className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl resize-none"
                     />
                     {errors.message && <p className="text-xs text-red-400 mt-1">{errors.message}</p>}
                   </div>

@@ -275,7 +275,7 @@ export default function InquiryDetail() {
                       <select
                         value={dirtyStatus}
                         onChange={(e) => handleUpdate({ status: e.target.value })}
-                        className="h-11 bg-crestline-bg border border-slate-200 text-slate-900 rounded-xl px-3 focus-visible:outline-none focus-visible:ring-crestline-gold/50"
+                        className="h-11 bg-crestline-bg border border-slate-200 text-slate-900 rounded-xl px-3 focus-visible:outline-none"
                       >
                         {statusOptions.map((s) => (
                           <option key={s} value={s} className="bg-crestline-bg">

@@ -709,7 +709,7 @@ export default function CrestlinePropertyDetails() {
                             <Input
                               value={inquiry.full_name}
                               onChange={(e) => setInquiry((p) => ({ ...p, full_name: e.target.value }))}
-                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
+                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12"
                               placeholder="John Smith"
                             />
                             {fieldErrors.full_name && (
@@ -725,7 +725,7 @@ export default function CrestlinePropertyDetails() {
                               type="email"
                               value={inquiry.email}
                               onChange={(e) => setInquiry((p) => ({ ...p, email: e.target.value }))}
-                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
+                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12"
                               placeholder="john@example.com"
                             />
                             {fieldErrors.email && (
@@ -740,7 +740,7 @@ export default function CrestlinePropertyDetails() {
                             <Input
                               value={inquiry.phone}
                               onChange={(e) => setInquiry((p) => ({ ...p, phone: e.target.value }))}
-                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12 focus-visible:ring-crestline-gold/50"
+                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl h-12"
                               placeholder="+1 (555) 000-0000"
                             />
                           </div>
@@ -753,7 +753,7 @@ export default function CrestlinePropertyDetails() {
                               value={inquiry.message}
                               onChange={(e) => setInquiry((p) => ({ ...p, message: e.target.value }))}
                               rows={5}
-                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl focus-visible:ring-crestline-gold/50 resize-none"
+                              className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl resize-none"
                             />
                             {fieldErrors.message && (
                               <p className="text-xs text-red-400 mt-1">{fieldErrors.message}</p>
