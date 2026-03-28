@@ -90,8 +90,8 @@ export function CrestlineNavbar() {
           </Link>
 
           {/* Reserve space for viewport-pinned logout/login only */}
-          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-8 lg:ml-12 md:pr-[min(9rem,24vw)]">
-            {/* Nav links: core → admin (if applicable) → About → Contact → Schedule Viewing */}
+          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-6 lg:ml-10 md:pr-[min(14.5rem,34vw)]">
+            {/* Nav links: core → admin (if applicable) → About → Contact → Schedule Viewing — pr clears fixed logout (~118px + inset) */}
             <div className="flex items-center gap-8 min-w-0">
               {coreLinks.map((link) => (
                 <Link

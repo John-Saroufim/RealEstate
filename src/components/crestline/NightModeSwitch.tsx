@@ -16,7 +16,7 @@ export function NightModeSwitch({ id = "crestline-night-mode" }: { id?: string }
     return (
       <span
         className="crestline-night-switch crestline-night-switch--placeholder inline-block align-middle"
-        style={{ width: "3.5em", height: "2em" }}
+        style={{ width: "2.65em", height: "1.55em" }}
         aria-hidden
       />
     );

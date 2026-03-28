@@ -635,10 +635,10 @@
 
 /* Night mode toggle — sun/moon slider (from Uiverse.io by satyamchaudharydev) */
 .crestline-night-switch {
-  --crestline-night-w: 3.5em;
-  --crestline-night-h: 2em;
-  --crestline-night-icon: 1.4em;
-  --crestline-night-pad: 0.3em;
+  --crestline-night-w: 2.65em;
+  --crestline-night-h: 1.55em;
+  --crestline-night-icon: 1.05em;
+  --crestline-night-pad: 0.22em;
   position: relative;
   width: var(--crestline-night-w);
   height: var(--crestline-night-h);
