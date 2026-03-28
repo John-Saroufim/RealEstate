@@ -142,12 +142,14 @@ export function PropertyCard({
           onClick={toggleFavorite}
           aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
           aria-pressed={isFavorite}
-          className={cn("property-fav-like-wrapper absolute bottom-4 right-4 z-10 max-w-[min(100%,11rem)]", isFavorite && "property-fav-like-wrapper--favorited")}
+          className={cn(
+            "property-fav-like-wrapper property-fav-like-wrapper--icon-only absolute bottom-4 right-4 z-10",
+            isFavorite && "property-fav-like-wrapper--favorited",
+          )}
         >
           <span className="property-fav-like-inner">
             <Heart className="property-fav-like-icon property-fav-like-icon-inactive text-white" fill="none" stroke="currentColor" strokeWidth={2} />
             <Heart className="property-fav-like-icon property-fav-like-icon-active text-[#f52121]" fill="currentColor" stroke="none" strokeWidth={0} />
-            <span className="property-fav-like-text">Favorite</span>
           </span>
         </button>
       </div>

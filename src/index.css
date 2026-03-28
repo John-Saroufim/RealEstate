@@ -500,6 +500,10 @@
   margin-bottom: -0.25em;
 }
 
+.property-fav-like-wrapper--icon-only {
+  padding: 0.45em;
+}
+
 .property-fav-like-icon {
   width: 1.5em;
   height: 1.5em;
@@ -518,15 +522,6 @@
 
 .property-fav-like-wrapper--favorited .property-fav-like-icon-inactive {
   display: none;
-}
-
-.property-fav-like-text {
-  padding: 0.35em 0.15em;
-  color: #ffffff;
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 0.75rem;
-  white-space: nowrap;
 }
 
 @keyframes property-fav-wiggle {
