@@ -9,9 +9,12 @@ export function CrestlineFooter() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
           <div>
-            <Link to="/crestline" className="flex items-center gap-2 mb-5">
-              <MontelibanoHouseLogo className="h-6 w-6 text-crestline-gold" />
-              <span className="font-serif text-lg font-bold text-slate-900 tracking-wide">
+            <Link
+              to="/crestline"
+              className="crestline-brand-logo crestline-brand-logo--compact mb-5 text-slate-900 dark:text-slate-100"
+            >
+              <MontelibanoHouseLogo className="crestline-brand-logo__icon h-6 w-6 text-crestline-gold" />
+              <span className="crestline-brand-logo__text font-serif text-lg font-bold tracking-wide leading-none">
                 RealEstate
               </span>
             </Link>
