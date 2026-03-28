@@ -12,7 +12,7 @@ import heroImg from "@/assets/crestline-hero.jpg";
 import prop1 from "@/assets/crestline-prop1.jpg";
 import prop2 from "@/assets/crestline-prop2.jpg";
 import prop3 from "@/assets/crestline-prop3.jpg";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PropertyCard } from "@/components/crestline/PropertyCard";
 import { ReviewStars } from "@/components/crestline/ReviewStars";
@@ -204,7 +204,7 @@ export default function CrestlineHome() {
         const max = Math.max(...prices);
         const avg = prices.reduce((acc, n) => acc + n, 0) / prices.length;
 
-        // Slider "rate": bigger average price -> bigger step size -> faster price changes per thumb movement.
+        // Coarse step kept for stats; hero slider uses a finer step (computed at render) for smooth dragging.
         const step = Math.max(1, Math.round(avg * 0.02));
 
         const stats: PriceStats = { min, max, avg, step };
@@ -229,6 +229,14 @@ export default function CrestlineHome() {
 
     loadPriceStats();
   }, []);
+
+  /** Finer step than DB-derived stats so the hero range slider moves smoothly (~thousands of steps on wide spans). */
+  const heroSliderStep = useMemo(() => {
+    if (!priceStats || priceStats.max <= priceStats.min) return 1;
+    const span = priceStats.max - priceStats.min;
+    const step = Math.max(1, Math.floor(span / 4000));
+    return Math.min(step, 250_000);
+  }, [priceStats]);
 
   const handleBrowseProperties = () => {
     const params = new URLSearchParams();
@@ -381,14 +389,14 @@ export default function CrestlineHome() {
                       </div>
                     </div>
 
-                    <div className="text-left min-w-0 w-full max-w-full">
-                      <label className="block text-xs text-white/70 uppercase tracking-wider mb-2">
+                    <div className="w-full max-w-full min-w-0 flex flex-col items-center">
+                      <label className="block text-xs text-white/70 uppercase tracking-wider mb-2 text-center w-full">
                         Price Range
                       </label>
                       {priceStats ? (
-                        <div className="flex flex-col gap-3 w-full max-w-full min-w-0">
-                          <div className="flex flex-wrap items-center justify-center sm:justify-between gap-3 rounded-xl border border-white/20 bg-transparent px-3 py-2.5 sm:px-4">
-                            <div className="uiverse-input-wrap !inline-block w-auto shrink-0 align-middle">
+                        <div className="flex flex-col gap-3 w-full max-w-lg mx-auto items-center min-w-0">
+                          <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 sm:gap-4 w-full rounded-xl border border-white/20 bg-transparent px-4 py-3 sm:px-5">
+                            <div className="uiverse-input-wrap !inline-flex shrink-0 align-middle">
                               <input
                                 type="text"
                                 inputMode="numeric"
@@ -416,14 +424,14 @@ export default function CrestlineHome() {
                                 onKeyDown={(e) => {
                                   if (e.key === "Enter") (e.target as HTMLInputElement).blur();
                                 }}
-                                className="h-9 w-[min(100%,7.5rem)] min-w-[5.5rem] rounded-md border border-white/20 bg-black/20 px-2 text-xs tabular-nums text-white"
+                                className="h-10 w-[7.25rem] sm:w-32 rounded-md border border-white/20 bg-black/20 px-2.5 text-xs tabular-nums text-white text-center"
                                 aria-label="Minimum price"
                               />
                             </div>
-                            <span className="text-white/40 text-xs shrink-0 hidden sm:inline" aria-hidden>
+                            <span className="text-white/50 text-sm font-medium shrink-0 select-none pb-0.5" aria-hidden>
                               —
                             </span>
-                            <div className="uiverse-input-wrap !inline-block w-auto shrink-0 align-middle">
+                            <div className="uiverse-input-wrap !inline-flex shrink-0 align-middle">
                               <input
                                 type="text"
                                 inputMode="numeric"
@@ -451,16 +459,16 @@ export default function CrestlineHome() {
                                 onKeyDown={(e) => {
                                   if (e.key === "Enter") (e.target as HTMLInputElement).blur();
                                 }}
-                                className="h-9 w-[min(100%,7.5rem)] min-w-[5.5rem] rounded-md border border-white/20 bg-black/20 px-2 text-right text-xs tabular-nums text-white"
+                                className="h-10 w-[7.25rem] sm:w-32 rounded-md border border-white/20 bg-black/20 px-2.5 text-xs tabular-nums text-white text-center"
                                 aria-label="Maximum price"
                               />
                             </div>
                           </div>
-                          <div className="w-full max-w-full min-w-0 px-0.5 pt-0.5">
+                          <div className="w-full max-w-lg min-w-0 px-1 pt-1">
                             <Slider
                               min={priceStats.min}
                               max={priceStats.max}
-                              step={priceStats.step}
+                              step={heroSliderStep}
                               disabled={priceStatsLoading || priceStats.min === priceStats.max}
                               value={[heroPriceMin ?? priceStats.min, heroPriceMax ?? priceStats.max]}
                               onValueChange={(v) => {
