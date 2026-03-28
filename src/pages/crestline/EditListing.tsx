@@ -280,22 +280,18 @@ export default function EditListing() {
   };
 
   return (
-    <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
+    <div className="min-h-screen bg-crestline-bg font-sans text-crestline-ink">
       <CrestlineNavbar />
 
-      <section className="pt-32 pb-8 border-b border-crestline-gold/10 bg-crestline-surface">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+      <section className="border-b border-crestline-gold/10 bg-crestline-surface pt-32 pb-8 dark:border-crestline-gold/15">
+        <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <div>
-            <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">
-              Admin
-            </p>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">
-              {isEditing ? "Edit Listing" : "New Listing"}
-            </h1>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.15em] text-crestline-gold">Admin</p>
+            <h1 className="font-serif text-3xl font-bold sm:text-4xl">{isEditing ? "Edit Listing" : "New Listing"}</h1>
           </div>
           <Button
             variant="outline"
-            className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl text-sm"
+            className="rounded-xl border-slate-300 text-sm text-slate-900 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800"
             onClick={() => navigate("/crestline/admin/listings")}
           >
             Back
@@ -310,26 +306,22 @@ export default function EditListing() {
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="space-y-6 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-6 shadow-[0_20px_50px_-28px_rgba(15,23,42,0.3)] sm:p-8"
+              className="space-y-6 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-6 shadow-[0_20px_50px_-28px_rgba(15,23,42,0.3)] sm:p-8 dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg dark:shadow-[0_20px_50px_-28px_rgba(0,0,0,0.45)]"
             >
               {error && (
-                <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
+                <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-400">
+                  {error}
+                </p>
               )}
 
-              <div className="rounded-xl border border-slate-200 bg-white/90 p-4 sm:p-5">
-                <h2 className="mb-4 font-serif text-lg font-semibold text-slate-900">Property Details</h2>
+              <div className="rounded-xl border border-slate-200 bg-white/90 p-4 sm:p-5 dark:border-slate-700/80 dark:bg-crestline-surface/95">
+                <h2 className="mb-4 font-serif text-lg font-semibold text-crestline-ink">Property Details</h2>
                 <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">
                     Title
                   </label>
-                  <Input
-                    name="title"
-                    value={form.title}
-                    onChange={handleChange}
-                    required
-                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
-                  />
+                  <Input name="title" value={form.title} onChange={handleChange} required className="shadow-sm" />
                 </div>
                 <div>
                   <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">
@@ -342,69 +334,38 @@ export default function EditListing() {
                     step="1"
                     value={form.price}
                     onChange={handleChange}
-                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
+                    className="shadow-sm"
                   />
                 </div>
                 <div>
                   <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">
                     Location
                   </label>
-                  <Input
-                    name="location"
-                    value={form.location}
-                    onChange={handleChange}
-                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
-                  />
+                  <Input name="location" value={form.location} onChange={handleChange} className="shadow-sm" />
                 </div>
                 <div>
                   <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">
                     Type (e.g. Villa, Penthouse)
                   </label>
-                  <Input
-                    name="type"
-                    value={form.type}
-                    onChange={handleChange}
-                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
-                  />
+                  <Input name="type" value={form.type} onChange={handleChange} className="shadow-sm" />
                 </div>
                 <div>
                   <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">
                     Beds
                   </label>
-                  <Input
-                    name="beds"
-                    type="number"
-                    min="0"
-                    value={form.beds}
-                    onChange={handleChange}
-                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
-                  />
+                  <Input name="beds" type="number" min="0" value={form.beds} onChange={handleChange} className="shadow-sm" />
                 </div>
                 <div>
                   <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">
                     Baths
                   </label>
-                  <Input
-                    name="baths"
-                    type="number"
-                    min="0"
-                    value={form.baths}
-                    onChange={handleChange}
-                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
-                  />
+                  <Input name="baths" type="number" min="0" value={form.baths} onChange={handleChange} className="shadow-sm" />
                 </div>
                 <div>
                   <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">
                     Square Feet
                   </label>
-                  <Input
-                    name="sqft"
-                    type="number"
-                    min="0"
-                    value={form.sqft}
-                    onChange={handleChange}
-                    className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm"
-                  />
+                  <Input name="sqft" type="number" min="0" value={form.sqft} onChange={handleChange} className="shadow-sm" />
                 </div>
                 <div>
                   <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">
@@ -414,10 +375,10 @@ export default function EditListing() {
                     value={form.status}
                     onValueChange={(v) => setForm((prev) => ({ ...prev, status: v }))}
                   >
-                    <SelectTrigger className="bg-white border-slate-200 text-slate-900 rounded-xl h-10 shadow-sm">
+                    <SelectTrigger className="h-10 rounded-xl shadow-sm">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white text-slate-900 rounded-xl">
+                    <SelectContent className="rounded-xl">
                       {listingStatusOptions(form.status).map((s) => (
                         <SelectItem key={s} value={s} className="cursor-pointer">
                           {s}
@@ -434,7 +395,7 @@ export default function EditListing() {
                   <select
                     value={form.agent_id}
                     onChange={(e) => setForm((prev) => ({ ...prev, agent_id: e.target.value }))}
-                    className="bg-white border-slate-200 text-slate-900 rounded-xl h-10 px-3 shadow-sm focus-visible:outline-none"
+                    className="h-10 w-full rounded-xl border border-input bg-background px-3 text-sm text-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
                     <option value="">Unassigned</option>
                     {agents.map((a) => (
@@ -448,20 +409,12 @@ export default function EditListing() {
               </div>
               </div>
 
-              <div className="rounded-xl border border-slate-200 bg-white/90 p-4 sm:p-5">
-                <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">
-                  Description
-                </label>
-                <Textarea
-                  name="description"
-                  value={form.description}
-                  onChange={handleChange}
-                  rows={4}
-                  className="bg-white border-slate-200 text-slate-900 rounded-xl resize-none shadow-sm"
-                />
+              <div className="rounded-xl border border-slate-200 bg-white/90 p-4 sm:p-5 dark:border-slate-700/80 dark:bg-crestline-surface/95">
+                <label className="mb-2 block text-xs uppercase tracking-wider text-crestline-muted">Description</label>
+                <Textarea name="description" value={form.description} onChange={handleChange} rows={4} className="resize-none shadow-sm" />
               </div>
 
-              <div className="space-y-2 rounded-xl border border-slate-200 bg-white/90 p-4 sm:p-5">
+              <div className="space-y-2 rounded-xl border border-slate-200 bg-white/90 p-4 sm:p-5 dark:border-slate-700/80 dark:bg-crestline-surface/95">
                 <label className="block text-xs text-crestline-muted uppercase tracking-wider">
                   Property Media
                 </label>
@@ -472,7 +425,7 @@ export default function EditListing() {
                       <img
                         src={form.image_url}
                         alt={form.title}
-                        className="w-full border border-slate-200 rounded-lg"
+                        className="w-full rounded-lg border border-slate-200 dark:border-slate-600/80"
                       />
                       <button
                         type="button"
@@ -489,12 +442,15 @@ export default function EditListing() {
                   type="file"
                   accept="image/*,video/*"
                   onChange={handleAddMedia}
-                  className="bg-white border-slate-200 text-slate-900 rounded-xl shadow-sm file:bg-crestline-gold file:text-crestline-on-gold file:border-0 file:px-3 file:py-1.5 file:text-xs"
+                  className="shadow-sm file:border-0 file:bg-crestline-gold file:px-3 file:py-1.5 file:text-xs file:text-crestline-on-gold"
                 />
                 {selectedMedia.length > 0 ? (
                   <div className="grid gap-3 sm:grid-cols-2">
                     {selectedMedia.map((m) => (
-                      <div key={m.id} className="relative overflow-hidden rounded-xl border border-slate-200 bg-white">
+                      <div
+                        key={m.id}
+                        className="relative overflow-hidden rounded-xl border border-slate-200 bg-background dark:border-slate-600/80"
+                      >
                         {m.kind === "video" ? (
                           <video src={m.previewUrl} className="h-40 w-full object-cover" controls />
                         ) : (
@@ -524,7 +480,7 @@ export default function EditListing() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl"
+                  className="rounded-xl border-slate-300 text-slate-900 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-100 dark:hover:bg-slate-800"
                   onClick={() => navigate("/crestline/admin/listings")}
                 >
                   Cancel
