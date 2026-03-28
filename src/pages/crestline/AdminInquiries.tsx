@@ -128,10 +128,10 @@ export default function AdminInquiries() {
         </div>
       </section>
 
-      <section className="py-10">
+      <section className="pt-8 pb-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card className="bg-crestline-surface border border-slate-200 rounded-xl">
-            <CardContent className="p-6">
+            <CardContent className="px-6 pt-5 pb-3 sm:pt-6 sm:pb-3.5">
               <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
                 <div className="flex flex-wrap gap-2">
                   {statusOptions.map((s) => (
@@ -173,10 +173,10 @@ export default function AdminInquiries() {
           )}
 
           {!loading && !error && inquiries.length > 0 && (
-            <div className="grid gap-4">
+            <div className="grid gap-4 -mt-1.5 lg:-mt-2">
               {/* Desktop list */}
               <div className="hidden lg:block">
-                <div className="grid grid-cols-[1.5fr_0.8fr_1fr_0.8fr] gap-4 px-4 pb-3 text-xs text-crestline-muted border-b border-slate-200">
+                <div className="grid grid-cols-[1.5fr_0.8fr_1fr_0.8fr] gap-4 px-4 pb-2 text-xs text-crestline-muted border-b border-slate-200">
                   <div>Sender</div>
                   <div>Status</div>
                   <div>Property</div>
