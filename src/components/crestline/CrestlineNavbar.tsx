@@ -26,6 +26,11 @@ const tailLinks = [
   { label: "Contact", to: "/crestline/contact", linkAccent: "blue" as const },
 ];
 
+/** One size for all desktop nav labels + Schedule Viewing (see .contact-ripple-btn--nav) */
+const NAV_TEXT = "text-[17px] font-medium tracking-wide leading-6";
+const navLinkMotion = "transition-colors transition-transform duration-200 hover:-translate-y-[1px]";
+const navLinkClassMobile = `block ${NAV_TEXT} px-2 py-2.5 rounded-xl ${navLinkMotion}`;
+
 export function CrestlineNavbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
@@ -65,7 +70,7 @@ export function CrestlineNavbar() {
   }, []);
 
   const inactiveAfterClassGold = useMemo(() => {
-    return "text-slate-600 hover:text-slate-900 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-crestline-gold after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300";
+    return "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-crestline-gold after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300";
   }, []);
 
   const activeClassBlue = useMemo(() => {
@@ -85,21 +90,21 @@ export function CrestlineNavbar() {
         scrolled ? "bg-crestline-bg/95" : "bg-crestline-bg/80",
       ].join(" ")}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4 min-w-0 h-20 w-full">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+        <div className="flex items-center justify-between gap-2 sm:gap-3 min-w-0 h-20 w-full">
           <Link
             to="/crestline"
-            className="crestline-brand-logo shrink-0 text-slate-900 dark:text-slate-100"
+            className="crestline-brand-logo shrink-0 text-slate-900 dark:text-slate-100 -ml-1 sm:-ml-0.5"
           >
-            <MontelibanoHouseLogo className="crestline-brand-logo__icon h-7 w-7 text-crestline-gold" />
-            <span className="crestline-brand-logo__text font-serif text-2xl font-bold tracking-wide leading-none">
+            <MontelibanoHouseLogo className="crestline-brand-logo__icon h-6 w-6 text-crestline-gold" />
+            <span className="crestline-brand-logo__text font-serif text-xl sm:text-xl font-bold tracking-wide leading-none">
               RealEstate
             </span>
           </Link>
 
-          {/* Desktop: links + night, then Schedule + auth as a fixed pair (no overlap) */}
-          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-6 lg:ml-10 gap-3 min-[1000px]:gap-5">
-            <div className="flex items-center gap-6 lg:gap-8 min-w-0 overflow-hidden">
+          {/* Desktop: links+night shrink-0 (no overflow-hidden — avoids clipping "Contact"); scroll parent if narrow */}
+          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-1 lg:ml-3 gap-2 lg:gap-3 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex items-center gap-4 lg:gap-5 shrink-0">
               {coreLinks.map((link) => (
                 <Link
                   key={link.to}
@@ -107,9 +112,9 @@ export function CrestlineNavbar() {
                   aria-current={location.pathname === link.to ? "page" : undefined}
                   className={[
                     "relative whitespace-nowrap shrink-0",
-                    "text-[16px] font-medium tracking-wide leading-6",
-                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+                    NAV_TEXT,
+                    navLinkMotion,
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
                     location.pathname === link.to ? activeClassGold : inactiveAfterClassGold,
                   ].join(" ")}
                 >
@@ -124,9 +129,9 @@ export function CrestlineNavbar() {
                   aria-current={location.pathname.startsWith(link.to) ? "page" : undefined}
                   className={[
                     "relative whitespace-nowrap shrink-0",
-                    "text-[16px] font-medium tracking-wide leading-6",
-                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+                    NAV_TEXT,
+                    navLinkMotion,
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
                     location.pathname.startsWith(link.to) ? activeClassGold : inactiveAfterClassGold,
                   ].join(" ")}
                 >
@@ -146,11 +151,11 @@ export function CrestlineNavbar() {
                     aria-current={active ? "page" : undefined}
                     className={[
                       "relative whitespace-nowrap shrink-0",
-                      "text-[16px] font-medium tracking-wide leading-6",
-                      "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
+                      NAV_TEXT,
+                      navLinkMotion,
                       gold
-                        ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                        : "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+                        ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                        : "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
                       active ? tailActive : tailInactive,
                     ].join(" ")}
                   >
@@ -159,12 +164,12 @@ export function CrestlineNavbar() {
                 );
               })}
 
-              <div className="flex items-center gap-3 shrink-0 pl-1 border-l border-crestline-gold/15">
+              <div className="flex items-center gap-3 shrink-0 pl-2 border-l border-crestline-gold/15">
                 <NightModeSwitch id="crestline-night-mode" />
               </div>
             </div>
 
-            <div className="flex shrink-0 items-center gap-3">
+            <div className="flex shrink-0 items-center gap-3 pl-1">
               <ContactPropertiesRippleButton
                 to="/crestline/contact"
                 className="contact-ripple-btn--nav shrink-0 focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
@@ -177,7 +182,7 @@ export function CrestlineNavbar() {
                 <Button
                   variant="outline"
                   disabled
-                  className="border-slate-300 text-slate-500 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
+                  className="border-slate-300 text-slate-500 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
                 >
                   Account
                 </Button>
@@ -187,7 +192,7 @@ export function CrestlineNavbar() {
                 <Link to="/login">
                   <Button
                     variant="outline"
-                    className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
+                    className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
                   >
                     Login
                   </Button>
@@ -251,11 +256,11 @@ export function CrestlineNavbar() {
                     to={link.to}
                     onClick={() => setOpen(false)}
                     className={[
-                      "block text-[16px] font-medium tracking-wide leading-6 px-2 py-2.5 rounded-xl",
-                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+                      navLinkClassMobile,
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
                       location.pathname === link.to
                         ? "text-crestline-gold"
-                        : "text-slate-600 hover:text-slate-900",
+                        : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100",
                     ].join(" ")}
                   >
                     {link.label}
@@ -268,11 +273,11 @@ export function CrestlineNavbar() {
                     to={link.to}
                     onClick={() => setOpen(false)}
                     className={[
-                      "block text-[16px] font-medium tracking-wide leading-6 px-2 py-2.5 rounded-xl",
-                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+                      navLinkClassMobile,
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
                       location.pathname.startsWith(link.to)
                         ? "text-crestline-gold"
-                        : "text-slate-600 hover:text-slate-900",
+                        : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100",
                     ].join(" ")}
                   >
                     {link.label}
@@ -283,17 +288,18 @@ export function CrestlineNavbar() {
                   const active = location.pathname === link.to;
                   const gold = link.linkAccent === "gold";
                   const activeText = gold ? "text-crestline-gold" : "text-blue-700 dark:text-blue-400";
-                  const inactiveText = "text-slate-600 hover:text-slate-900";
+                  const inactiveText =
+                    "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100";
                   return (
                     <div key={link.to}>
                       <Link
                         to={link.to}
                         onClick={() => setOpen(false)}
                         className={[
-                          "block text-[16px] font-medium tracking-wide leading-6 px-2 py-2.5 rounded-xl",
+                          navLinkClassMobile,
                           gold
-                            ? "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                            : "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+                            ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                            : "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
                           active ? activeText : inactiveText,
                         ].join(" ")}
                       >
@@ -303,7 +309,7 @@ export function CrestlineNavbar() {
                         <ContactPropertiesRippleButton
                           to="/crestline/contact"
                           onClick={() => setOpen(false)}
-                          className="mt-2 block w-full rounded-xl py-3 text-center text-sm font-semibold min-h-11 focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                          className="mt-2 block w-full rounded-xl py-3 text-center font-medium min-h-12 text-[17px] focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
                         >
                           Schedule Viewing
                         </ContactPropertiesRippleButton>

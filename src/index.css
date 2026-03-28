@@ -206,8 +206,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   gap: 0;
   border: none;
@@ -238,8 +238,8 @@
 }
 
 .logout-expand-btn__sign svg {
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
 }
 
 .logout-expand-btn__text {
@@ -802,23 +802,16 @@
   appearance: none;
 }
 
-/* Navbar: match 36px logout control height; compact label */
+/* Navbar: same type size as nav links (17px / font-medium); slightly taller than legacy 36px logout */
 .contact-ripple-btn--nav {
-  height: 36px;
-  min-height: 36px;
-  padding: 0 0.65rem;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  line-height: 1;
-  gap: 0.25rem;
+  height: 40px;
+  min-height: 40px;
+  padding: 0 0.875rem;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.2;
+  gap: 0.35rem;
   border-radius: 9999px;
-}
-
-@media (min-width: 1024px) {
-  .contact-ripple-btn--nav {
-    padding: 0 0.75rem;
-    font-size: 0.75rem;
-  }
 }
 
 .contact-ripple-btn:disabled {
