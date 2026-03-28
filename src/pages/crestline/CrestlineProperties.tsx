@@ -1,12 +1,11 @@
-import { startTransition, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
-import { PropertyFiltersPanel, PropertyFiltersFields } from "@/components/crestline/PropertyFiltersPanel";
+import { PropertyFiltersPanel } from "@/components/crestline/PropertyFiltersPanel";
 import { supabase } from "@/integrations/supabase/client";
 import { PropertyCard } from "@/components/crestline/PropertyCard";
 import { MotionSection } from "@/components/MotionSection";
@@ -35,7 +34,6 @@ function parsePriceParam(raw: string | null): number | null {
 export default function CrestlineProperties() {
   const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [reloadNonce, setReloadNonce] = useState(0);
 
   const qParam = searchParams.get("q") ?? "";
@@ -253,7 +251,7 @@ export default function CrestlineProperties() {
       </MotionSection>
 
       {/* Search & Filters */}
-      <MotionSection className="border-b border-slate-200/80 bg-crestline-bg py-10 md:py-12 lg:py-14">
+      <MotionSection className="border-b border-slate-200/80 bg-crestline-bg py-6 md:py-8 lg:py-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <PropertyFiltersPanel
@@ -271,7 +269,6 @@ export default function CrestlineProperties() {
               setParam={setParam}
               clearFilters={clearFilters}
               hasActiveFilters={hasActiveFilters}
-              onOpenMobileFilters={() => startTransition(() => setMobileFiltersOpen(true))}
               favoritesOnly={favoritesOnly}
               onToggleFavoritesOnly={toggleFavoritesOnly}
               favoritesCount={(() => {
@@ -286,47 +283,6 @@ export default function CrestlineProperties() {
               })()}
             />
           </div>
-
-          <Dialog open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
-            <DialogContent className="max-h-[min(90dvh,880px)] max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-0 text-slate-900 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.18)] duration-150 data-[state=open]:duration-150 data-[state=closed]:duration-100 dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg dark:text-slate-100 dark:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.45)] sm:max-w-xl">
-              <DialogHeader className="border-b border-slate-200/80 px-6 py-5 dark:border-slate-700/80 sm:px-8">
-                <DialogTitle className="font-display text-2xl tracking-tight text-slate-900 dark:text-slate-100">Refine results</DialogTitle>
-                <p className="text-sm text-crestline-muted">Adjust filters — updates apply instantly</p>
-              </DialogHeader>
-              <div className="px-6 py-6 sm:px-8 sm:py-8">
-                {mobileFiltersOpen ? (
-                  <PropertyFiltersFields
-                    selectedType={selectedType}
-                    selectedStatus={selectedStatus}
-                    sort={sort}
-                    availableTypes={availableTypesForUI}
-                    priceMin={priceMin}
-                    priceMax={priceMax}
-                    bedsMin={bedsMin}
-                    bathsMin={bathsMin}
-                    setParam={setParam}
-                  />
-                ) : null}
-              </div>
-              <div className="flex flex-col-reverse gap-3 border-t border-slate-200/80 bg-slate-50 px-6 py-5 dark:border-slate-700/80 dark:bg-crestline-bg/90 sm:flex-row sm:justify-end sm:px-8">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="rounded-lg border-slate-300 bg-transparent text-slate-900 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
-                  onClick={clearFilters}
-                >
-                  Clear all
-                </Button>
-                <Button
-                  type="button"
-                  className="rounded-lg bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90"
-                  onClick={() => setMobileFiltersOpen(false)}
-                >
-                  Done
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
         </div>
       </MotionSection>
 

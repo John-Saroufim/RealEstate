@@ -1,7 +1,8 @@
 import { useEffect, useId, useMemo, useState, type ReactNode } from "react";
-import { Search, SlidersHorizontal, X, Heart } from "lucide-react";
+import { ChevronDown, Heart, Search, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 
 const statusOptions = ["All", "For Sale", "For Rent", "Sold", "Featured"] as const;
@@ -13,7 +14,7 @@ const propertySortOptions = [
 
 function FilterSectionLabel({ children }: { children: ReactNode }) {
   return (
-    <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-crestline-muted/95 mb-3 sm:mb-3.5">
+    <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-crestline-muted/95 sm:mb-2.5">
       {children}
     </p>
   );
@@ -21,7 +22,7 @@ function FilterSectionLabel({ children }: { children: ReactNode }) {
 
 function filterChipClass(active: boolean) {
   return cn(
-    "inline-flex min-h-[42px] items-center justify-center rounded-lg border px-4 py-2.5 text-[13px] font-medium tracking-wide transition-all duration-200 ease-out",
+    "inline-flex min-h-[36px] items-center justify-center rounded-lg border px-3 py-1.5 text-[13px] font-medium tracking-wide transition-all duration-200 ease-out sm:min-h-[38px] sm:px-3.5 sm:py-2",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
     active
       ? "border-crestline-gold/90 bg-crestline-gold text-crestline-on-gold shadow-[0_0_0_1px_rgba(30,64,175,0.22),0_10px_28px_-12px_rgba(15,23,42,0.12)] dark:shadow-[0_0_0_1px_rgba(96,165,250,0.12),0_10px_28px_-12px_rgba(0,0,0,0.4)]"
@@ -30,10 +31,10 @@ function filterChipClass(active: boolean) {
 }
 
 const filterFieldClass =
-  "h-12 rounded-lg border border-slate-200 bg-white text-[15px] text-slate-900 shadow-sm shadow-slate-900/5 placeholder:text-slate-400 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:placeholder:text-slate-500 dark:shadow-none";
+  "h-11 rounded-lg border border-slate-200 bg-white text-[15px] text-slate-900 shadow-sm shadow-slate-900/5 placeholder:text-slate-400 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:placeholder:text-slate-500 dark:shadow-none";
 
 const searchInputClass =
-  "h-14 rounded-xl border border-slate-200 bg-white pl-12 pr-4 text-[15px] text-slate-900 shadow-sm shadow-slate-900/5 placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:placeholder:text-slate-500 dark:shadow-none";
+  "h-11 rounded-xl border border-slate-200 bg-white pl-10 pr-3 text-[15px] text-slate-900 shadow-sm shadow-slate-900/5 placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:placeholder:text-slate-500 dark:shadow-none";
 
 const divider = (
   <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent dark:via-slate-600/60" aria-hidden />
@@ -114,10 +115,10 @@ export function PropertyFiltersFields({
   const typeOptions = ["All", ...availableTypes];
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6 sm:space-y-7">
       <div>
         <FilterSectionLabel>Property type</FilterSectionLabel>
-        <div className="flex flex-wrap gap-2.5">
+        <div className="flex flex-wrap gap-2">
           {typeOptions.map((t) => (
             <button
               key={t}
@@ -133,10 +134,10 @@ export function PropertyFiltersFields({
 
       {divider}
 
-      <div className="grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-8 lg:gap-10 xl:gap-12">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-6 lg:gap-8">
         <div>
           <FilterSectionLabel>Price range (USD)</FilterSectionLabel>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
             <div>
               <label
                 className="mb-2 block text-[12px] font-medium text-slate-900/55 dark:text-slate-400"
@@ -172,7 +173,7 @@ export function PropertyFiltersFields({
 
         <div>
           <FilterSectionLabel>Beds & baths</FilterSectionLabel>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
             <div>
               <label className="mb-2 block text-[12px] font-medium text-slate-900/55 dark:text-slate-400">Beds (min)</label>
               <Input
@@ -203,7 +204,7 @@ export function PropertyFiltersFields({
 
       <div>
         <FilterSectionLabel>Listing status</FilterSectionLabel>
-        <div className="flex flex-wrap gap-2.5">
+        <div className="flex flex-wrap gap-2">
           {statusOptions.map((s) => (
             <button
               key={s}
@@ -221,14 +222,14 @@ export function PropertyFiltersFields({
 
       <div>
         <FilterSectionLabel>Sort by</FilterSectionLabel>
-        <div className="flex flex-col rounded-xl border border-slate-200 bg-slate-100/90 p-1.5 shadow-inner shadow-slate-900/5 sm:flex-row sm:gap-0 dark:border-slate-600/80 dark:bg-slate-900/75 dark:shadow-inner dark:shadow-black/40">
+        <div className="flex flex-col rounded-xl border border-slate-200 bg-slate-100/90 p-1 shadow-inner shadow-slate-900/5 sm:flex-row sm:gap-0 dark:border-slate-600/80 dark:bg-slate-900/75 dark:shadow-inner dark:shadow-black/40">
           {propertySortOptions.map((s) => (
             <button
               key={s.id}
               type="button"
               onClick={() => setParam("sort", s.id === "newest" ? null : s.id)}
               className={cn(
-                "min-h-[48px] flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200",
+                "min-h-[40px] flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 sm:min-h-[42px] sm:px-4 sm:py-2.5",
                 sort === s.id
                   ? "bg-crestline-gold text-crestline-on-gold shadow-[0_4px_16px_-4px_rgba(15,23,42,0.15)] dark:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.45)]"
                   : "text-slate-600 hover:bg-white hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/95 dark:hover:text-slate-50",
@@ -263,7 +264,6 @@ type PropertyFiltersPanelProps = {
   setParam: (key: string, value: string | number | null | undefined) => void;
   clearFilters: () => void;
   hasActiveFilters: boolean;
-  onOpenMobileFilters: () => void;
 };
 
 function formatUsd(n: number) {
@@ -289,9 +289,10 @@ export function PropertyFiltersPanel({
   setParam,
   clearFilters,
   hasActiveFilters,
-  onOpenMobileFilters,
 }: PropertyFiltersPanelProps) {
   const [draftQ, setDraftQ] = useState(qParam);
+  /** Open by default when URL already has filters (e.g. shared link). */
+  const [filtersOpen, setFiltersOpen] = useState(hasActiveFilters);
   const searchDatalistId = "crestline-properties-search-suggestions";
 
   const combinedSearchSuggestions = useMemo(() => {
@@ -394,48 +395,45 @@ export function PropertyFiltersPanel({
     setParam,
   };
 
-  return (
-    <div
-      className={cn(
-        "relative overflow-hidden rounded-xl border border-slate-200",
-        "bg-gradient-to-b from-white to-slate-50",
-        "shadow-[0_24px_48px_-28px_rgba(15,23,42,0.12)]",
-        "dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg",
-        "dark:shadow-[0_24px_48px_-28px_rgba(0,0,0,0.35)]",
-      )}
-    >
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-crestline-gold/25 to-transparent"
-        aria-hidden
-      />
-      <div className="p-6 sm:p-8 lg:p-10">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6 mb-8 lg:mb-10">
-          <div className="min-w-0 flex-1">
-            <h2 className="font-display text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl lg:text-[1.75rem]">
-              Find Your Ideal Property
-            </h2>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-crestline-muted sm:text-[15px]">
-              Refine listings by type, price, size, and status
-            </p>
-          </div>
-          {hasActiveFilters && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={clearFilters}
-              className="shrink-0 gap-2 self-start rounded-lg border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-800 transition-colors hover:border-crestline-gold/35 hover:bg-crestline-gold/10 hover:text-crestline-gold dark:border-slate-600 dark:bg-slate-900/50 dark:text-slate-200 dark:hover:border-crestline-gold/40 dark:hover:bg-crestline-gold/15 dark:hover:text-crestline-gold"
-            >
-              <X className="h-4 w-4 opacity-80" />
-              Clear filters
-            </Button>
-          )}
-        </div>
+  const activeFilterCount = activePills.length;
 
-        <div className="mb-8 lg:mb-10">
-          <FilterSectionLabel>Search</FilterSectionLabel>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch sm:gap-4">
+  return (
+    <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
+      <div
+        className={cn(
+          "relative overflow-hidden rounded-xl border border-slate-200",
+          "bg-gradient-to-b from-white to-slate-50",
+          "shadow-[0_12px_32px_-20px_rgba(15,23,42,0.14)]",
+          "dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg",
+          "dark:shadow-[0_12px_32px_-20px_rgba(0,0,0,0.35)]",
+        )}
+      >
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-crestline-gold/25 to-transparent"
+          aria-hidden
+        />
+        <div className="p-4 sm:p-5">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <h2 className="font-display text-base font-semibold tracking-tight text-slate-900 dark:text-slate-100 sm:text-lg">
+              Filters
+            </h2>
+            {hasActiveFilters ? (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                className="h-8 shrink-0 gap-1.5 px-2 text-xs font-medium text-crestline-muted hover:text-crestline-gold"
+              >
+                <X className="h-3.5 w-3.5" />
+                Clear all
+              </Button>
+            ) : null}
+          </div>
+
+          <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:gap-3">
             <div className="relative min-w-0 flex-1">
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-crestline-muted/90" />
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-crestline-muted/90" />
               <Input
                 placeholder="Search by name or location…"
                 value={draftQ}
@@ -445,79 +443,89 @@ export function PropertyFiltersPanel({
                 onBlur={() => setParam("q", draftQ)}
               />
             </div>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onOpenMobileFilters}
-              className="h-14 shrink-0 gap-2 rounded-xl border-slate-200 bg-white px-6 text-sm font-medium text-slate-900 shadow-sm transition-all hover:border-crestline-gold/35 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:shadow-none dark:hover:bg-slate-800 lg:hidden"
-            >
-              <SlidersHorizontal className="h-4 w-4" />
-              All filters
-            </Button>
+            <div className="flex shrink-0 items-center gap-2">
+              <CollapsibleTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  aria-expanded={filtersOpen}
+                  className="h-11 min-w-0 flex-1 gap-2 rounded-xl border-slate-200 bg-white px-3 text-sm font-medium text-slate-900 shadow-sm transition-colors hover:border-crestline-gold/35 hover:bg-slate-50 sm:flex-initial sm:px-4 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:shadow-none dark:hover:bg-slate-800"
+                >
+                  <SlidersHorizontal className="h-4 w-4 shrink-0 opacity-90" />
+                  <span>Filters</span>
+                  {activeFilterCount > 0 ? (
+                    <span className="inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-crestline-gold/15 px-1.5 py-0.5 text-[11px] font-semibold text-crestline-gold">
+                      {activeFilterCount}
+                    </span>
+                  ) : null}
+                  <ChevronDown
+                    className={cn(
+                      "h-4 w-4 shrink-0 opacity-70 transition-transform duration-200",
+                      filtersOpen && "rotate-180",
+                    )}
+                  />
+                </Button>
+              </CollapsibleTrigger>
+
+              {showFavoritesToggle ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={onToggleFavoritesOnly}
+                  className={cn(
+                    "h-11 shrink-0 gap-1.5 rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-900 shadow-sm transition-all duration-200",
+                    "hover:border-crestline-gold/35 hover:bg-slate-50",
+                    "dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:shadow-none dark:hover:bg-slate-800",
+                    favoritesOnly && "border-crestline-gold/40 bg-crestline-gold/10 text-crestline-gold",
+                  )}
+                >
+                  <Heart
+                    className={favoritesOnly ? "h-4 w-4 fill-current" : "h-4 w-4"}
+                    strokeWidth={favoritesOnly ? 0 : 2}
+                  />
+                  <span className="hidden sm:inline">Saved</span>
+                  <span className="inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-slate-100 px-1.5 text-[11px] text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                    {favoritesCount}
+                  </span>
+                </Button>
+              ) : null}
+            </div>
           </div>
 
-          {/* Favorites toggle (public properties only; hidden on admin). */}
-          {showFavoritesToggle ? (
-            <div className="mt-4 flex items-center justify-start gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onToggleFavoritesOnly}
-                className={[
-                  "h-12 rounded-xl border border-slate-200 bg-white px-4 font-medium text-slate-900 shadow-sm transition-all duration-200",
-                  "hover:border-crestline-gold/35 hover:bg-slate-50 hover:text-slate-900",
-                  "dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:shadow-none dark:hover:bg-slate-800",
-                  favoritesOnly ? "border-crestline-gold/40 bg-crestline-gold/10 text-crestline-gold" : "",
-                ].join(" ")}
-              >
-                <Heart
-                  className={favoritesOnly ? "h-4 w-4 fill-current" : "h-4 w-4"}
-                  strokeWidth={favoritesOnly ? 0 : 2}
-                />
-                <span className="ml-2">Favorites</span>
-                <span className="ml-2 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-slate-100 px-2 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                  {favoritesCount}
-                </span>
-              </Button>
+          {combinedSearchSuggestions.length > 0 ? (
+            <datalist id={searchDatalistId}>
+              {combinedSearchSuggestions.map((s) => (
+                <option key={s} value={s} />
+              ))}
+            </datalist>
+          ) : null}
+
+          {activePills.length > 0 ? (
+            <div className="mt-3 border-t border-slate-200/90 pt-3 dark:border-slate-700/70">
+              <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-crestline-muted/90">Active</p>
+              <div className="flex flex-wrap gap-1.5">
+                {activePills.map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={p.onRemove}
+                    className="group inline-flex max-w-full items-center gap-1 rounded-full border border-slate-200 bg-slate-50 py-1 pl-2.5 pr-1.5 text-[11px] font-medium text-slate-700 transition-colors hover:border-crestline-gold/35 hover:bg-crestline-gold/10 hover:text-crestline-gold dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:border-crestline-gold/40 dark:hover:bg-crestline-gold/15"
+                  >
+                    <span className="truncate">{p.label}</span>
+                    <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors group-hover:bg-crestline-gold/20 group-hover:text-crestline-gold dark:bg-slate-700 dark:text-slate-400">
+                      <X className="h-2.5 w-2.5" aria-hidden />
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
           ) : null}
+
+          <CollapsibleContent className="data-[state=closed]:hidden border-t border-slate-200/90 pt-4 dark:border-slate-700/70">
+            <PropertyFiltersFields {...fieldsProps} />
+          </CollapsibleContent>
         </div>
-
-        {combinedSearchSuggestions.length > 0 ? (
-          <datalist id={searchDatalistId}>
-            {combinedSearchSuggestions.map((s) => (
-              <option key={s} value={s} />
-            ))}
-          </datalist>
-        ) : null}
-
-        <div className="hidden lg:block">
-          <PropertyFiltersFields {...fieldsProps} />
-        </div>
-
-        {activePills.length > 0 && (
-          <div className="mt-10 border-t border-slate-200 pt-8 dark:border-slate-700/80 lg:mt-10">
-            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-crestline-muted/90">
-              Active filters
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {activePills.map((p) => (
-                <button
-                  key={p.id}
-                  type="button"
-                  onClick={p.onRemove}
-                  className="group inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 py-1.5 pl-3 pr-2 text-xs font-medium text-slate-700 transition-colors hover:border-crestline-gold/35 hover:bg-crestline-gold/10 hover:text-crestline-gold dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:border-crestline-gold/40 dark:hover:bg-crestline-gold/15"
-                >
-                  <span>{p.label}</span>
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors group-hover:bg-crestline-gold/20 group-hover:text-crestline-gold dark:bg-slate-700 dark:text-slate-400 dark:group-hover:bg-crestline-gold/25">
-                    <X className="h-3 w-3" aria-hidden />
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
-    </div>
+    </Collapsible>
   );
 }
