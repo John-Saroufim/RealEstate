@@ -20,7 +20,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const applySession = async (session: Session | null) => {
+    /**
+     * Apply auth session without awaiting `getUser()` first — that await inside
+     * `onAuthStateChange` can deadlock the Supabase JS client, leaving `loading`
+     * true forever (protected routes show a permanent spinner until refresh).
+     * See: https://github.com/supabase/supabase-js/issues/762
+     */
+    const applySession = (session: Session | null) => {
       if (!session) {
         setSession(null);
         setUser(null);
@@ -28,18 +34,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
       setSession(session);
-      // Prefer server user (includes accurate email_confirmed_at); getSession() can be stale locally.
-      const { data: { user: freshUser } } = await supabase.auth.getUser();
-      setUser(freshUser ?? session.user);
+      setUser(session.user);
       setLoading(false);
+
+      void supabase.auth
+        .getUser()
+        .then(({ data: { user: freshUser } }) => {
+          if (freshUser) setUser(freshUser);
+        })
+        .catch(() => {
+          /* non-fatal; session.user remains */
+        });
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      void applySession(session);
+      queueMicrotask(() => applySession(session));
     });
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      void applySession(session);
+    void supabase.auth.getSession().then(({ data: { session } }) => {
+      applySession(session);
     });
 
     return () => subscription.unsubscribe();
