@@ -26,10 +26,13 @@ const tailLinks = [
   { label: "Contact", to: "/crestline/contact", linkAccent: "blue" as const },
 ];
 
-/** Nav labels + Schedule Viewing (see .contact-ripple-btn--nav in index.css) */
-const NAV_TEXT = "text-[15px] font-medium tracking-wide leading-6";
+/** Default nav labels (logged-in non-admin). Schedule Viewing uses .contact-ripple-btn--nav in index.css */
+const NAV_TEXT_DEFAULT = "text-[15px] font-medium tracking-wide leading-6";
+/** Guests: noticeably larger primary nav */
+const NAV_TEXT_GUEST = "text-lg md:text-xl font-medium tracking-wide leading-7";
+/** Admins: modest bump for Home / Properties / About / Contact (+ admin links) */
+const NAV_TEXT_ADMIN = "text-[16px] md:text-[17px] font-medium tracking-wide leading-6";
 const navLinkMotion = "transition-colors transition-transform duration-200 hover:-translate-y-[1px]";
-const navLinkClassMobile = `block ${NAV_TEXT} px-2 py-2.5 rounded-xl ${navLinkMotion}`;
 
 export function CrestlineNavbar() {
   const [open, setOpen] = useState(false);
@@ -39,6 +42,18 @@ export function CrestlineNavbar() {
   const authReady = !authLoading;
   const isAdminRoute = location.pathname.startsWith("/crestline/admin");
   const showAdminLinks = authReady && user && (isAdmin === true || (adminChecking && isAdminRoute));
+
+  const navLinkSizeClass = useMemo(() => {
+    if (!authReady) return NAV_TEXT_DEFAULT;
+    if (!user) return NAV_TEXT_GUEST;
+    if (showAdminLinks) return NAV_TEXT_ADMIN;
+    return NAV_TEXT_DEFAULT;
+  }, [authReady, user, showAdminLinks]);
+
+  const navLinkClassMobile = useMemo(
+    () => `block ${navLinkSizeClass} px-2 py-2.5 rounded-xl ${navLinkMotion}`,
+    [navLinkSizeClass],
+  );
 
   const [scrolled, setScrolled] = useState(false);
 
@@ -115,7 +130,7 @@ export function CrestlineNavbar() {
                     aria-current={location.pathname === link.to ? "page" : undefined}
                     className={[
                       "relative whitespace-nowrap shrink-0",
-                      NAV_TEXT,
+                      navLinkSizeClass,
                       navLinkMotion,
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
                       location.pathname === link.to ? activeClassGold : inactiveAfterClassGold,
@@ -133,7 +148,7 @@ export function CrestlineNavbar() {
                       aria-current={location.pathname.startsWith(link.to) ? "page" : undefined}
                       className={[
                         "relative whitespace-nowrap shrink-0",
-                        NAV_TEXT,
+                        navLinkSizeClass,
                         navLinkMotion,
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
                         location.pathname.startsWith(link.to) ? activeClassGold : inactiveAfterClassGold,
@@ -155,7 +170,7 @@ export function CrestlineNavbar() {
                       aria-current={active ? "page" : undefined}
                       className={[
                         "relative whitespace-nowrap shrink-0",
-                        NAV_TEXT,
+                        navLinkSizeClass,
                         navLinkMotion,
                         gold
                           ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
