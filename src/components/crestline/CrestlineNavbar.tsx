@@ -90,114 +90,122 @@ export function CrestlineNavbar() {
         scrolled ? "bg-crestline-bg/95" : "bg-crestline-bg/80",
       ].join(" ")}
     >
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+      <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4">
         <div className="flex items-center justify-between gap-2 sm:gap-3 min-w-0 h-20 w-full">
           <Link
             to="/crestline"
-            className="crestline-brand-logo shrink-0 text-slate-900 dark:text-slate-100 -ml-1 sm:-ml-0.5"
+            className="crestline-brand-logo shrink-0 text-slate-900 dark:text-slate-100"
           >
-            <MontelibanoHouseLogo className="crestline-brand-logo__icon h-6 w-6 text-crestline-gold" />
-            <span className="crestline-brand-logo__text font-serif text-xl sm:text-xl font-bold tracking-wide leading-none">
+            <MontelibanoHouseLogo className="crestline-brand-logo__icon h-7 w-7 md:h-8 md:w-8 text-crestline-gold" />
+            <span className="crestline-brand-logo__text font-serif text-xl font-bold tracking-wide leading-none md:text-2xl">
               RealEstate
             </span>
           </Link>
 
-          {/* Desktop: links+night shrink-0 (no overflow-hidden — avoids clipping "Contact"); scroll parent if narrow */}
-          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-1 lg:ml-3 gap-2 lg:gap-3 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex items-center gap-4 lg:gap-5 shrink-0">
-              {coreLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  aria-current={location.pathname === link.to ? "page" : undefined}
-                  className={[
-                    "relative whitespace-nowrap shrink-0",
-                    NAV_TEXT,
-                    navLinkMotion,
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
-                    location.pathname === link.to ? activeClassGold : inactiveAfterClassGold,
-                  ].join(" ")}
-                >
-                  {link.label}
-                </Link>
-              ))}
+          {/*
+            Desktop: scrollable link row sits between logo and Schedule (flex-1 + overflow-x).
+            Avoid justify-end on the same node as overflow-x-auto — it hid the start of "Home".
+          */}
+          <div className="hidden md:flex flex-1 min-w-0 items-center gap-2 lg:gap-3">
+            <div className="flex min-w-0 flex-1 items-center gap-2 lg:gap-3">
+              <div className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                <div className="flex w-max min-w-0 items-center gap-3 md:gap-4 lg:gap-5">
+                  {coreLinks.map((link) => (
+                    <Link
+                      key={link.to}
+                      to={link.to}
+                      aria-current={location.pathname === link.to ? "page" : undefined}
+                      className={[
+                        "relative whitespace-nowrap shrink-0",
+                        NAV_TEXT,
+                        navLinkMotion,
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
+                        location.pathname === link.to ? activeClassGold : inactiveAfterClassGold,
+                      ].join(" ")}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
 
-              {showAdminLinks && adminLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  aria-current={location.pathname.startsWith(link.to) ? "page" : undefined}
-                  className={[
-                    "relative whitespace-nowrap shrink-0",
-                    NAV_TEXT,
-                    navLinkMotion,
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
-                    location.pathname.startsWith(link.to) ? activeClassGold : inactiveAfterClassGold,
-                  ].join(" ")}
-                >
-                  {link.label}
-                </Link>
-              ))}
+                  {showAdminLinks &&
+                    adminLinks.map((link) => (
+                      <Link
+                        key={link.to}
+                        to={link.to}
+                        aria-current={location.pathname.startsWith(link.to) ? "page" : undefined}
+                        className={[
+                          "relative whitespace-nowrap shrink-0",
+                          NAV_TEXT,
+                          navLinkMotion,
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
+                          location.pathname.startsWith(link.to) ? activeClassGold : inactiveAfterClassGold,
+                        ].join(" ")}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
 
-              {tailLinks.map((link) => {
-                const active = location.pathname === link.to;
-                const gold = link.linkAccent === "gold";
-                const tailActive = gold ? activeClassGold : activeClassBlue;
-                const tailInactive = gold ? inactiveAfterClassGold : inactiveAfterClassBlue;
-                return (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    aria-current={active ? "page" : undefined}
-                    className={[
-                      "relative whitespace-nowrap shrink-0",
-                      NAV_TEXT,
-                      navLinkMotion,
-                      gold
-                        ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
-                        : "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
-                      active ? tailActive : tailInactive,
-                    ].join(" ")}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
+                  {tailLinks.map((link) => {
+                    const active = location.pathname === link.to;
+                    const gold = link.linkAccent === "gold";
+                    const tailActive = gold ? activeClassGold : activeClassBlue;
+                    const tailInactive = gold ? inactiveAfterClassGold : inactiveAfterClassBlue;
+                    return (
+                      <Link
+                        key={link.to}
+                        to={link.to}
+                        aria-current={active ? "page" : undefined}
+                        className={[
+                          "relative whitespace-nowrap shrink-0",
+                          NAV_TEXT,
+                          navLinkMotion,
+                          gold
+                            ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                            : "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
+                          active ? tailActive : tailInactive,
+                        ].join(" ")}
+                      >
+                        {link.label}
+                      </Link>
+                    );
+                  })}
 
-              <div className="flex items-center gap-3 shrink-0 pl-2 border-l border-crestline-gold/15">
-                <NightModeSwitch id="crestline-night-mode" />
+                  <div className="flex items-center gap-3 shrink-0 pl-2 border-l border-crestline-gold/15">
+                    <NightModeSwitch id="crestline-night-mode" />
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div className="flex shrink-0 items-center gap-3 pl-1">
-              <ContactPropertiesRippleButton
-                to="/crestline/contact"
-                className="contact-ripple-btn--nav shrink-0 focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
-              >
-                Schedule Viewing
-              </ContactPropertiesRippleButton>
-
-              <div className="flex items-center border-l border-crestline-gold/15 pl-3 lg:pl-4">
-              {!authReady ? (
-                <Button
-                  variant="outline"
-                  disabled
-                  className="border-slate-300 text-slate-500 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
+              <div className="flex shrink-0 items-center gap-3">
+                <ContactPropertiesRippleButton
+                  to="/crestline/contact"
+                  className="contact-ripple-btn--nav shrink-0 focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
                 >
-                  Account
-                </Button>
-              ) : user ? (
-                <LogoutExpandButton />
-              ) : (
-                <Link to="/login">
-                  <Button
-                    variant="outline"
-                    className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
-                  >
-                    Login
-                  </Button>
-                </Link>
-              )}
+                  Schedule Viewing
+                </ContactPropertiesRippleButton>
+
+                <div className="flex items-center border-l border-crestline-gold/15 pl-3 lg:pl-4">
+                  {!authReady ? (
+                    <Button
+                      variant="outline"
+                      disabled
+                      className="border-slate-300 text-slate-500 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
+                    >
+                      Account
+                    </Button>
+                  ) : user ? (
+                    <LogoutExpandButton />
+                  ) : (
+                    <Link to="/login">
+                      <Button
+                        variant="outline"
+                        className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
+                      >
+                        Login
+                      </Button>
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
           </div>
