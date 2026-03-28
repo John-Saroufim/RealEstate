@@ -282,7 +282,7 @@ export default function AdminListings() {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div>
               <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">Manage Listings</h1>
+              <h1 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900">Manage Listings</h1>
             </div>
             <div className="flex flex-wrap gap-3">
               <Button
@@ -336,7 +336,7 @@ export default function AdminListings() {
           <Dialog open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
             <DialogContent className="max-h-[min(90vh,880px)] max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-0 text-slate-900 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.18)] dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg dark:text-slate-100 dark:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.45)] sm:max-w-xl">
               <DialogHeader className="border-b border-slate-200/80 px-6 py-5 dark:border-slate-700/80 sm:px-8">
-                <DialogTitle className="font-serif text-2xl tracking-tight text-slate-900 dark:text-slate-100">Refine results</DialogTitle>
+                <DialogTitle className="font-sans text-2xl tracking-tight text-slate-900 dark:text-slate-100">Refine results</DialogTitle>
                 <p className="text-sm text-crestline-muted">Adjust filters — updates apply instantly</p>
               </DialogHeader>
               <div className="px-6 py-6 sm:px-8 sm:py-8">
@@ -384,7 +384,7 @@ export default function AdminListings() {
               <div className="mx-auto h-12 w-12 border border-crestline-gold/20 bg-crestline-bg/50 flex items-center justify-center mb-4">
                 <Pencil className="h-6 w-6 text-crestline-gold" />
               </div>
-              <p className="font-serif text-xl font-bold text-slate-900 mb-2">No listings yet</p>
+              <p className="font-sans text-xl font-bold text-slate-900 mb-2">No listings yet</p>
               <p className="text-sm text-crestline-muted mb-6">Add your first property to start managing galleries, agents, and inquiry submissions.</p>
               <Button
                 onClick={() => navigate("/crestline/admin/listings/new")}
@@ -397,7 +397,7 @@ export default function AdminListings() {
 
           {!loading && listings.length === 0 && !error && hasActiveFilters && (
             <div className="border border-slate-200 p-10 text-center bg-crestline-surface">
-              <p className="font-serif text-xl font-bold text-slate-900 mb-2">No listings match your filters</p>
+              <p className="font-sans text-xl font-bold text-slate-900 mb-2">No listings match your filters</p>
               <p className="text-sm text-crestline-muted mb-6">Try clearing or adjusting search, type, price, or status.</p>
               <Button variant="outline" className="rounded-xl border-slate-300" onClick={clearFilters}>
                 Clear filters
@@ -462,10 +462,10 @@ export default function AdminListings() {
                   </div>
                   <div className="p-5 space-y-3">
                     <div>
-                      <p className="text-crestline-gold font-serif text-lg font-bold mb-1">
+                      <p className="text-crestline-gold font-sans text-lg font-bold mb-1">
                         {formatPrice(p.price ?? null)}
                       </p>
-                      <h2 className="font-serif text-base font-semibold text-slate-900">{p.title}</h2>
+                      <h2 className="font-sans text-base font-semibold text-slate-900">{p.title}</h2>
                     </div>
                     {p.location && (
                       <div className="flex items-center gap-1.5 text-xs text-crestline-muted">

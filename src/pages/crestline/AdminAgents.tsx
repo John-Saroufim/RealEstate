@@ -97,7 +97,7 @@ export default function AdminAgents() {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div>
               <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">Manage Agents</h1>
+              <h1 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900">Manage Agents</h1>
             </div>
             <Button
               onClick={() => navigate("/crestline/admin/agents/new")}
@@ -132,7 +132,7 @@ export default function AdminAgents() {
               <div className="mx-auto h-12 w-12 border border-crestline-gold/20 bg-crestline-bg/50 flex items-center justify-center mb-4">
                 <User className="h-6 w-6 text-crestline-gold" />
               </div>
-              <p className="font-serif text-xl font-bold text-slate-900 mb-2">No agents yet</p>
+              <p className="font-sans text-xl font-bold text-slate-900 mb-2">No agents yet</p>
               <p className="text-sm text-crestline-muted mb-6">Create your first agent profile to start assigning advisors to listings.</p>
               <Button
                 onClick={() => navigate("/crestline/admin/agents/new")}
@@ -155,7 +155,7 @@ export default function AdminAgents() {
                         <div className="h-16 w-16 bg-slate-50 border border-slate-200" />
                       )}
                       <div className="flex-1">
-                        <div className="font-serif text-xl font-bold text-slate-900 leading-tight">{a.full_name ?? "Agent"}</div>
+                        <div className="font-sans text-xl font-bold text-slate-900 leading-tight">{a.full_name ?? "Agent"}</div>
                         {a.title ? <div className="text-xs text-crestline-gold uppercase tracking-wider mt-1">{a.title}</div> : null}
                         {a.city ? <div className="text-sm text-crestline-muted mt-2">{a.city}</div> : null}
                         <div className="mt-3 flex flex-wrap gap-2 items-center">

@@ -216,7 +216,7 @@ export default function EditAgent() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
           <div>
             <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">{isEditing ? "Edit Agent" : "New Agent"}</h1>
+            <h1 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900">{isEditing ? "Edit Agent" : "New Agent"}</h1>
           </div>
           <Button
             variant="outline"

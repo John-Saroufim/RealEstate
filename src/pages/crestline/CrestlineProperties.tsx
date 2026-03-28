@@ -306,7 +306,7 @@ export default function CrestlineProperties() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Portfolio</p>
           <div className="flex flex-col gap-4">
-            <h1 className="font-serif text-4xl sm:text-5xl font-bold text-slate-900">Exclusive Properties</h1>
+            <h1 className="font-sans text-4xl sm:text-5xl font-bold text-slate-900">Exclusive Properties</h1>
           </div>
           <p className="text-crestline-muted max-w-xl">Browse our curated collection of exceptional residences across the most prestigious addresses.</p>
         </div>
@@ -350,7 +350,7 @@ export default function CrestlineProperties() {
           <Dialog open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
             <DialogContent className="max-h-[min(90vh,880px)] max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-0 text-slate-900 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.18)] dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg dark:text-slate-100 dark:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.45)] sm:max-w-xl">
               <DialogHeader className="border-b border-slate-200/80 px-6 py-5 dark:border-slate-700/80 sm:px-8">
-                <DialogTitle className="font-serif text-2xl tracking-tight text-slate-900 dark:text-slate-100">Refine results</DialogTitle>
+                <DialogTitle className="font-sans text-2xl tracking-tight text-slate-900 dark:text-slate-100">Refine results</DialogTitle>
                 <p className="text-sm text-crestline-muted">Adjust filters — updates apply instantly</p>
               </DialogHeader>
               <div className="px-6 py-6 sm:px-8 sm:py-8">
@@ -397,7 +397,7 @@ export default function CrestlineProperties() {
           {error && <p className="mb-10 text-sm text-red-400/95 lg:mb-12">{error}</p>}
           {!loading && !error && (
             <div className="mb-10 border-b border-slate-200/80 pb-8 lg:mb-12 lg:pb-10">
-              <p className="font-serif text-3xl text-slate-900 sm:text-4xl">
+              <p className="font-sans text-3xl text-slate-900 sm:text-4xl">
                 <span className="tabular-nums text-crestline-gold">{properties.length}</span>
                 <span className="text-slate-800">
                   {" "}
@@ -458,7 +458,7 @@ export default function CrestlineProperties() {
           ) : (
             <div className="text-center py-20 border border-slate-200">
               <Search className="h-10 w-10 text-crestline-muted mx-auto mb-4" />
-              <p className="text-slate-900 font-serif text-lg mb-2">No properties found</p>
+              <p className="text-slate-900 font-sans text-lg mb-2">No properties found</p>
               <p className="text-sm text-crestline-muted mb-6">Try adjusting your filters or search terms.</p>
               <Button onClick={clearFilters} className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl">
                 Clear Filters

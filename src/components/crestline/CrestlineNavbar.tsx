@@ -187,7 +187,7 @@ export function CrestlineNavbar() {
             className="crestline-brand-logo shrink-0 text-slate-900 dark:text-slate-100"
           >
             <MontelibanoHouseLogo className="crestline-brand-logo__icon h-7 w-7 md:h-8 md:w-8 text-crestline-gold" />
-            <span className="crestline-brand-logo__text font-serif text-xl font-bold tracking-wide leading-none md:text-2xl">
+            <span className="crestline-brand-logo__text font-sans text-xl font-bold tracking-wide leading-none md:text-2xl">
               RealEstate
             </span>
           </Link>

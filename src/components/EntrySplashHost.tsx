@@ -72,7 +72,7 @@ export function EntrySplashHost() {
             <rect x="8" y="8" width="64" height="64" rx="8" ry="8" />
           </svg>
         </div>
-        <p className="text-center font-serif text-2xl font-bold tracking-tight text-foreground">
+        <p className="text-center font-sans text-2xl font-bold tracking-tight text-foreground">
           <span className="text-primary">Real</span>
           <span className="text-foreground/90">Estate</span>
         </p>

@@ -287,7 +287,7 @@ export default function EditListing() {
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <div>
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.15em] text-crestline-gold">Admin</p>
-            <h1 className="font-serif text-3xl font-bold sm:text-4xl">{isEditing ? "Edit Listing" : "New Listing"}</h1>
+            <h1 className="font-sans text-3xl font-bold sm:text-4xl">{isEditing ? "Edit Listing" : "New Listing"}</h1>
           </div>
           <Button
             variant="outline"
@@ -315,7 +315,7 @@ export default function EditListing() {
               )}
 
               <div className="rounded-xl border border-slate-200 bg-white/90 p-4 sm:p-5 dark:border-slate-700/80 dark:bg-crestline-surface/95">
-                <h2 className="mb-4 font-serif text-lg font-semibold text-crestline-ink">Property Details</h2>
+                <h2 className="mb-4 font-sans text-lg font-semibold text-crestline-ink">Property Details</h2>
                 <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">

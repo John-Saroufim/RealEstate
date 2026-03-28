@@ -136,7 +136,7 @@ export function CrestlineAiChatDock() {
               <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3 bg-crestline-surface/80">
                 <div>
                   <p className="text-xs font-semibold tracking-[0.12em] uppercase text-crestline-gold">Assistant</p>
-                  <p className="font-serif text-base font-bold text-slate-900">Ask anything</p>
+                  <p className="font-sans text-base font-bold text-slate-900">Ask anything</p>
                 </div>
                 <Button
                   type="button"

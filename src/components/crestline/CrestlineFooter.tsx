@@ -14,7 +14,7 @@ export function CrestlineFooter() {
               className="crestline-brand-logo crestline-brand-logo--compact mb-5 text-slate-900 dark:text-slate-100"
             >
               <MontelibanoHouseLogo className="crestline-brand-logo__icon h-6 w-6 text-crestline-gold" />
-              <span className="crestline-brand-logo__text font-serif text-lg font-bold tracking-wide leading-none">
+              <span className="crestline-brand-logo__text font-sans text-lg font-bold tracking-wide leading-none">
                 RealEstate
               </span>
             </Link>
@@ -24,7 +24,7 @@ export function CrestlineFooter() {
           </div>
 
           <div>
-            <h4 className="font-serif font-semibold text-slate-900 mb-4 text-sm tracking-wider uppercase">Quick Links</h4>
+            <h4 className="font-sans font-semibold text-slate-900 mb-4 text-sm tracking-wider uppercase">Quick Links</h4>
             <div className="space-y-3">
               {[
                 { label: "Properties", to: "/crestline/properties" },
@@ -43,7 +43,7 @@ export function CrestlineFooter() {
           </div>
 
           <div>
-            <h4 className="font-serif font-semibold text-slate-900 mb-4 text-sm tracking-wider uppercase">Services</h4>
+            <h4 className="font-sans font-semibold text-slate-900 mb-4 text-sm tracking-wider uppercase">Services</h4>
             <div className="space-y-3">
               {["Residential Sales", "Investment Advisory", "Property Management", "Luxury Rentals"].map((s) => (
                 <span key={s} className="block text-sm text-crestline-muted">{s}</span>
@@ -52,7 +52,7 @@ export function CrestlineFooter() {
           </div>
 
           <div>
-            <h4 className="font-serif font-semibold text-slate-900 mb-4 text-sm tracking-wider uppercase">Contact</h4>
+            <h4 className="font-sans font-semibold text-slate-900 mb-4 text-sm tracking-wider uppercase">Contact</h4>
             <div className="space-y-3">
               <div className="flex items-start gap-2 text-sm text-crestline-muted">
                 <MapPin className="h-4 w-4 text-crestline-gold mt-0.5 shrink-0" />

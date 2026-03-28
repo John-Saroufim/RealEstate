@@ -153,11 +153,11 @@ export function PropertyCard({
       </div>
 
       <div className="p-6 flex flex-col flex-1">
-        <p className="text-crestline-gold font-serif text-2xl font-bold leading-tight">
+        <p className="text-crestline-gold font-sans text-2xl font-bold leading-tight">
           {priceLabel}
         </p>
         {title ? (
-          <h3 className="mt-2 font-serif text-xl font-bold text-slate-900 leading-snug">
+          <h3 className="mt-2 font-sans text-xl font-bold text-slate-900 leading-snug">
             {title}
           </h3>
         ) : null}

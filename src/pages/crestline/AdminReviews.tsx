@@ -179,7 +179,7 @@ export default function AdminReviews() {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div>
               <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">Reviews</h1>
+              <h1 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900">Reviews</h1>
             </div>
             <div className="text-xs text-crestline-muted flex items-center gap-2">
               <Circle className="h-2.5 w-2.5 text-crestline-gold" />
@@ -235,7 +235,7 @@ export default function AdminReviews() {
 
           {!loading && !error && reviews.length === 0 ? (
             <div className="border border-slate-200 p-10 text-center bg-crestline-surface mt-6">
-              <p className="font-serif text-xl font-bold text-slate-900 mb-2">No reviews match your filters.</p>
+              <p className="font-sans text-xl font-bold text-slate-900 mb-2">No reviews match your filters.</p>
               <p className="text-sm text-crestline-muted mb-6">Reviews will appear here as soon as they are submitted.</p>
               <Button
                 onClick={() => {

@@ -355,7 +355,7 @@ export default function CrestlinePropertyDetails() {
             </Button>
             <div className="border border-slate-200 p-8 text-center">
               <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Property</p>
-              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Not Found</h1>
+              <h1 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Not Found</h1>
               <p className="text-crestline-muted mb-6">{error ?? "This property does not exist."}</p>
               <Button
                 onClick={() => navigate("/crestline/properties")}
@@ -506,11 +506,11 @@ export default function CrestlinePropertyDetails() {
                   </div>
 
                   <div className="mt-6">
-                    <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 mb-2">
+                    <h1 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900 mb-2">
                       {property.title}
                     </h1>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4">
-                      <p className="text-crestline-gold font-serif text-2xl sm:text-3xl font-bold">
+                      <p className="text-crestline-gold font-sans text-2xl sm:text-3xl font-bold">
                         {formatPrice(property.price)}
                       </p>
                         {(property.address ?? property.location) && (
@@ -609,7 +609,7 @@ export default function CrestlinePropertyDetails() {
                     <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">
                       Related Properties
                     </p>
-                    <h2 className="font-serif text-2xl sm:text-3xl font-bold text-slate-900 mb-6">Explore More Options</h2>
+                    <h2 className="font-sans text-2xl sm:text-3xl font-bold text-slate-900 mb-6">Explore More Options</h2>
                     {related.length > 0 ? (
                       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                         {related.map((p) => (
@@ -655,7 +655,7 @@ export default function CrestlinePropertyDetails() {
                             <div className="w-16 h-16 border border-slate-200 bg-slate-50" />
                           )}
                           <div className="flex-1">
-                            <div className="font-serif text-lg font-bold text-slate-900">{agent.full_name ?? "Agent"}</div>
+                            <div className="font-sans text-lg font-bold text-slate-900">{agent.full_name ?? "Agent"}</div>
                             {agent.title && <div className="text-xs text-crestline-gold uppercase tracking-wider mt-1">{agent.title}</div>}
                             {agent.phone && (
                               <div className="flex items-center gap-2 text-sm text-crestline-muted mt-3">
@@ -689,7 +689,7 @@ export default function CrestlinePropertyDetails() {
                       {submitted ? (
                         <div className="space-y-3">
                           <CheckCircle2 className="h-10 w-10 text-crestline-gold" />
-                          <p className="font-serif text-2xl font-bold text-slate-900">Inquiry Received</p>
+                          <p className="font-sans text-2xl font-bold text-slate-900">Inquiry Received</p>
                           <p className="text-sm text-crestline-muted leading-relaxed">
                             Thanks for reaching out. We will contact you shortly regarding this property.
                           </p>

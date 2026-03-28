@@ -30,7 +30,7 @@ function Stat({
         </div>
         <div className="min-w-0">
           <div className="text-xs text-crestline-muted uppercase tracking-[0.15em] font-semibold">{label}</div>
-          <div className="mt-2 font-serif text-3xl font-bold text-slate-900 leading-none">
+          <div className="mt-2 font-sans text-3xl font-bold text-slate-900 leading-none">
             {value === null ? "—" : value.toLocaleString("en-US")}
           </div>
         </div>

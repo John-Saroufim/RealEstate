@@ -171,7 +171,7 @@ export function LeaveReviewModal({
 
       <DialogContent className="bg-crestline-bg border border-slate-200 text-slate-900 p-6 max-w-2xl rounded-xl">
         <DialogHeader>
-          <DialogTitle className="font-serif text-2xl">Leave a Review</DialogTitle>
+          <DialogTitle className="font-sans text-2xl">Leave a Review</DialogTitle>
           <DialogDescription className="text-crestline-muted">
             Your feedback helps future clients trust our process. Reviews are approved by our team before they appear publicly.
           </DialogDescription>

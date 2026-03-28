@@ -93,7 +93,7 @@ export default function CrestlineContact() {
       <MotionSection className="pt-32 pb-12 bg-crestline-surface border-b border-crestline-gold/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Get In Touch</p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-bold text-slate-900 mb-4">Contact Us</h1>
+          <h1 className="font-sans text-4xl sm:text-5xl font-bold text-slate-900 mb-4">Contact Us</h1>
           <p className="text-crestline-muted max-w-xl">Ready to explore your next investment or dream home? Our advisors are here to help.</p>
         </div>
       </MotionSection>
@@ -105,7 +105,7 @@ export default function CrestlineContact() {
             {/* Info */}
             <div className="lg:col-span-2 space-y-8">
               <div>
-                <h3 className="font-serif text-xl font-semibold text-slate-900 mb-6">Our Offices</h3>
+                <h3 className="font-sans text-xl font-semibold text-slate-900 mb-6">Our Offices</h3>
                 <div className="space-y-6">
                   <div className="flex gap-4">
                     <MapPin className="h-5 w-5 text-crestline-gold shrink-0 mt-0.5" />
@@ -150,7 +150,7 @@ export default function CrestlineContact() {
               {submitted ? (
                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="border border-crestline-gold/20 p-12 text-center">
                   <CheckCircle2 className="h-14 w-14 text-crestline-gold mx-auto mb-6" />
-                  <h3 className="font-serif text-2xl font-bold text-slate-900 mb-4">Thank You</h3>
+                  <h3 className="font-sans text-2xl font-bold text-slate-900 mb-4">Thank You</h3>
                   <p className="text-crestline-muted max-w-md mx-auto">
                     Your inquiry has been received. A RealEstate advisor will contact you within 24 hours to discuss your requirements.
                   </p>

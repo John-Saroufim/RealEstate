@@ -76,7 +76,7 @@ export default function Login() {
       <div className="pt-28 pb-16 px-4 flex items-center justify-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
           <div className="text-center mb-8">
-            <h1 className="font-serif text-3xl font-bold">Login</h1>
+            <h1 className="font-sans text-3xl font-bold">Login</h1>
             <p className="text-crestline-muted text-sm mt-2">
               Welcome back. Sign in to view saved homes, track inquiries, and continue your property search.
             </p>

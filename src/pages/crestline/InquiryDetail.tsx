@@ -185,7 +185,7 @@ export default function InquiryDetail() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
           <div>
             <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">Inquiry Detail</h1>
+            <h1 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900">Inquiry Detail</h1>
           </div>
           <Button
             variant="outline"
@@ -207,7 +207,7 @@ export default function InquiryDetail() {
                   <div className="flex items-center gap-3">
                     <User className="h-5 w-5 text-crestline-gold" />
                     <div>
-                      <div className="font-serif text-xl font-bold text-slate-900">{inquiry.full_name}</div>
+                      <div className="font-sans text-xl font-bold text-slate-900">{inquiry.full_name}</div>
                       <div className="text-xs text-crestline-muted">{formatWhen(inquiry.created_at)}</div>
                     </div>
                   </div>
@@ -310,7 +310,7 @@ export default function InquiryDetail() {
                   <div className="text-xs text-crestline-muted uppercase tracking-wider mb-2">Agent</div>
                   {agent ? (
                     <div className="border border-slate-200 bg-background/20 p-4">
-                      <div className="font-serif text-lg font-bold text-slate-900">{agent.full_name ?? "Agent"}</div>
+                      <div className="font-sans text-lg font-bold text-slate-900">{agent.full_name ?? "Agent"}</div>
                       {agent.title ? <div className="text-xs text-crestline-gold uppercase tracking-wider mt-1">{agent.title}</div> : null}
                       {agent.phone ? (
                         <div className="flex items-center gap-2 text-sm text-crestline-muted mt-3">

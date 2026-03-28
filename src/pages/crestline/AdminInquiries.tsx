@@ -114,7 +114,7 @@ export default function AdminInquiries() {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div>
               <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900">Inquiries</h1>
+              <h1 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900">Inquiries</h1>
             </div>
             <div className="text-xs text-crestline-muted flex items-center gap-2">
               <Circle className="h-2.5 w-2.5 text-crestline-gold" />

@@ -410,7 +410,7 @@ export function PropertyFiltersPanel({
       <div className="p-6 sm:p-8 lg:p-10">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6 mb-8 lg:mb-10">
           <div className="min-w-0 flex-1">
-            <h2 className="font-serif text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl lg:text-[1.75rem]">
+            <h2 className="font-sans text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl lg:text-[1.75rem]">
               Find Your Ideal Property
             </h2>
             <p className="mt-2 max-w-xl text-sm leading-relaxed text-crestline-muted sm:text-[15px]">
