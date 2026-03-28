@@ -28,7 +28,6 @@ import AdminAgents from "./pages/crestline/AdminAgents";
 import EditAgent from "./pages/crestline/EditAgent";
 import AdminReviews from "./pages/crestline/AdminReviews";
 import Logout from "./pages/Logout";
-import { CrestlineAiChatDock } from "@/components/crestline/CrestlineAiChatDock";
 import { EntrySplashHost } from "@/components/EntrySplashHost";
 
 const queryClient = new QueryClient();
@@ -155,7 +154,6 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop smooth />
           <AuthProvider>
-            <CrestlineAiChatDock />
             <EntrySplashHost />
             <AnimatedRoutes />
           </AuthProvider>
