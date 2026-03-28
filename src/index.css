@@ -856,12 +856,12 @@
   appearance: none;
 }
 
-/* Navbar: same type size as nav links (17px / font-medium); slightly taller than legacy 36px logout */
+/* Navbar: same type size as nav links (15px / font-medium); aligns with Login h-10 */
 .contact-ripple-btn--nav {
-  height: 40px;
-  min-height: 40px;
+  height: 38px;
+  min-height: 38px;
   padding: 0 0.875rem;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 1.2;
   gap: 0.35rem;

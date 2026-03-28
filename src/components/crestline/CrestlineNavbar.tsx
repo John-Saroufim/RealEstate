@@ -26,8 +26,8 @@ const tailLinks = [
   { label: "Contact", to: "/crestline/contact", linkAccent: "blue" as const },
 ];
 
-/** One size for all desktop nav labels + Schedule Viewing (see .contact-ripple-btn--nav) */
-const NAV_TEXT = "text-[17px] font-medium tracking-wide leading-6";
+/** Nav labels + Schedule Viewing (see .contact-ripple-btn--nav in index.css) */
+const NAV_TEXT = "text-[15px] font-medium tracking-wide leading-6";
 const navLinkMotion = "transition-colors transition-transform duration-200 hover:-translate-y-[1px]";
 const navLinkClassMobile = `block ${NAV_TEXT} px-2 py-2.5 rounded-xl ${navLinkMotion}`;
 
@@ -80,6 +80,12 @@ export function CrestlineNavbar() {
   const inactiveAfterClassBlue = useMemo(() => {
     return "text-slate-600 hover:text-blue-800 dark:text-slate-400 dark:hover:text-blue-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-blue-600 after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300";
   }, []);
+
+  /** Guests use Schedule Viewing → /contact only; hide duplicate “Contact” link */
+  const visibleTailLinks = useMemo(() => {
+    if (authReady && !user) return tailLinks.filter((l) => l.to !== "/crestline/contact");
+    return tailLinks;
+  }, [authReady, user]);
 
   return (
     <nav
@@ -145,7 +151,7 @@ export function CrestlineNavbar() {
                       </Link>
                     ))}
 
-                  {tailLinks.map((link) => {
+                  {visibleTailLinks.map((link) => {
                     const active = location.pathname === link.to;
                     const gold = link.linkAccent === "gold";
                     const tailActive = gold ? activeClassGold : activeClassBlue;
@@ -169,20 +175,20 @@ export function CrestlineNavbar() {
                       </Link>
                     );
                   })}
-
-                  <div className="flex items-center gap-3 shrink-0 pl-2 border-l border-crestline-gold/15">
-                    <NightModeSwitch id="crestline-night-mode" />
-                  </div>
                 </div>
               </div>
 
-              <div className="flex shrink-0 items-center gap-3">
+              <div className="flex shrink-0 items-center gap-2">
                 <ContactPropertiesRippleButton
                   to="/crestline/contact"
                   className="contact-ripple-btn--nav shrink-0 focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
                 >
                   Schedule Viewing
                 </ContactPropertiesRippleButton>
+
+                <div className="flex shrink-0 items-center border-l border-crestline-gold/15 pl-2">
+                  <NightModeSwitch id="crestline-night-mode" />
+                </div>
 
                 <div className="flex items-center border-l border-crestline-gold/15 pl-3 lg:pl-4">
                   {!authReady ? (
@@ -243,10 +249,6 @@ export function CrestlineNavbar() {
               className="md:hidden fixed top-0 left-0 right-0 z-50 bg-crestline-bg/95 backdrop-blur-xl border-b border-crestline-gold/10 max-h-[min(85vh,640px)] overflow-y-auto"
             >
               <div className="px-4 pt-5 pb-6 space-y-5">
-                <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-200">
-                  <span className="text-sm font-medium text-slate-600">Night mode</span>
-                  <NightModeSwitch id="crestline-night-mode-mobile" />
-                </div>
                 <div className="flex items-center justify-between">
                   <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-crestline-muted/95">Menu</div>
                   <button
@@ -292,12 +294,14 @@ export function CrestlineNavbar() {
                   </Link>
                 ))}
 
-                {tailLinks.map((link) => {
+                {visibleTailLinks.map((link) => {
                   const active = location.pathname === link.to;
                   const gold = link.linkAccent === "gold";
                   const activeText = gold ? "text-crestline-gold" : "text-blue-700 dark:text-blue-400";
                   const inactiveText =
                     "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100";
+                  const showScheduleUnderAbout = link.to === "/crestline/about" && authReady && !user;
+                  const showScheduleUnderContact = link.to === "/crestline/contact" && Boolean(user);
                   return (
                     <div key={link.to}>
                       <Link
@@ -313,11 +317,11 @@ export function CrestlineNavbar() {
                       >
                         {link.label}
                       </Link>
-                      {link.to === "/crestline/contact" && (
+                      {(showScheduleUnderAbout || showScheduleUnderContact) && (
                         <ContactPropertiesRippleButton
                           to="/crestline/contact"
                           onClick={() => setOpen(false)}
-                          className="mt-2 block w-full rounded-xl py-3 text-center font-medium min-h-12 text-[17px] focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                          className="mt-2 block w-full rounded-xl py-3 text-center font-medium min-h-11 text-[15px] focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
                         >
                           Schedule Viewing
                         </ContactPropertiesRippleButton>
@@ -325,6 +329,11 @@ export function CrestlineNavbar() {
                     </div>
                   );
                 })}
+
+                <div className="flex items-center justify-between gap-3 pt-2 border-t border-slate-200 dark:border-slate-600/40">
+                  <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Night mode</span>
+                  <NightModeSwitch id="crestline-night-mode-mobile" />
+                </div>
 
                 {!authReady ? (
                   <Button
