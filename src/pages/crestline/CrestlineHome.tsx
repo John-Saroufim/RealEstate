@@ -334,30 +334,60 @@ export default function CrestlineHome() {
                   }}
                   className="bg-white/5 backdrop-blur rounded-xl border border-white/10 px-5 py-5 sm:px-6 sm:py-6"
                 >
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
-                    <div className="text-left">
-                      <label className="block text-xs text-white/70 uppercase tracking-wider mb-2">
-                        Location
-                      </label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60" />
-                        <Input
-                          value={heroLocation}
-                          onChange={(e) => setHeroLocation(e.target.value)}
-                          placeholder="e.g. Palm Beach, NY"
-                          list="crestline-hero-locations"
-                          className="bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-xl h-12 pl-10"
-                        />
+                  {/* Location + Type on one row; Price Range full width below so the slider never collides with Type */}
+                  <div className="flex flex-col gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start min-w-0">
+                      <div className="text-left min-w-0">
+                        <label className="block text-xs text-white/70 uppercase tracking-wider mb-2">
+                          Location
+                        </label>
+                        <div className="relative">
+                          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60 pointer-events-none z-10" />
+                          <Input
+                            value={heroLocation}
+                            onChange={(e) => setHeroLocation(e.target.value)}
+                            placeholder="e.g. Palm Beach, NY"
+                            list="crestline-hero-locations"
+                            className="bg-transparent border-white/20 text-white placeholder:text-white/50 rounded-xl h-12 pl-10 w-full"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="text-left min-w-0">
+                        <label className="block text-xs text-white/70 uppercase tracking-wider mb-2">
+                          Type
+                        </label>
+                        <select
+                          value={heroType}
+                          onChange={(e) => setHeroType(e.target.value)}
+                          disabled={heroTypesLoading}
+                          className="w-full min-w-0 h-12 appearance-none bg-black/25 border border-white/20 text-white rounded-xl px-3 pr-9 text-sm leading-normal focus:outline-none focus:ring-2 focus:ring-sky-200/50 disabled:opacity-60"
+                          style={{
+                            backgroundImage:
+                              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.65)' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "right 0.65rem center",
+                          }}
+                        >
+                          <option value="All" className="bg-slate-900">
+                            All Types
+                          </option>
+                          {heroTypes.map((t) => (
+                            <option key={t} value={t} className="bg-slate-900">
+                              {t}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                     </div>
 
-                    <div className="text-left">
+                    <div className="text-left min-w-0 w-full max-w-full">
                       <label className="block text-xs text-white/70 uppercase tracking-wider mb-2">
                         Price Range
                       </label>
                       {priceStats ? (
-                        <div className="flex flex-col gap-2">
-                          <div className="h-12 rounded-xl border border-white/20 bg-transparent px-2.5 flex items-center gap-2">
+                        <div className="flex flex-col gap-3 w-full max-w-full min-w-0">
+                          <div className="flex flex-wrap items-center justify-center sm:justify-between gap-3 rounded-xl border border-white/20 bg-transparent px-3 py-2.5 sm:px-4">
                             <div className="uiverse-input-wrap !inline-block w-auto shrink-0 align-middle">
                               <input
                                 type="text"
@@ -386,11 +416,13 @@ export default function CrestlineHome() {
                                 onKeyDown={(e) => {
                                   if (e.key === "Enter") (e.target as HTMLInputElement).blur();
                                 }}
-                                className="h-8 w-[92px] shrink-0 rounded-md border border-white/20 bg-black/20 px-2 text-xs tabular-nums text-white"
+                                className="h-9 w-[min(100%,7.5rem)] min-w-[5.5rem] rounded-md border border-white/20 bg-black/20 px-2 text-xs tabular-nums text-white"
                                 aria-label="Minimum price"
                               />
                             </div>
-                            <div className="flex-1 min-w-0" />
+                            <span className="text-white/40 text-xs shrink-0 hidden sm:inline" aria-hidden>
+                              —
+                            </span>
                             <div className="uiverse-input-wrap !inline-block w-auto shrink-0 align-middle">
                               <input
                                 type="text"
@@ -419,12 +451,12 @@ export default function CrestlineHome() {
                                 onKeyDown={(e) => {
                                   if (e.key === "Enter") (e.target as HTMLInputElement).blur();
                                 }}
-                                className="h-8 w-[92px] shrink-0 rounded-md border border-white/20 bg-black/20 px-2 text-right text-xs tabular-nums text-white"
+                                className="h-9 w-[min(100%,7.5rem)] min-w-[5.5rem] rounded-md border border-white/20 bg-black/20 px-2 text-right text-xs tabular-nums text-white"
                                 aria-label="Maximum price"
                               />
                             </div>
                           </div>
-                          <div className="px-0.5 pt-0">
+                          <div className="w-full max-w-full min-w-0 px-0.5 pt-0.5">
                             <Slider
                               min={priceStats.min}
                               max={priceStats.max}
@@ -448,28 +480,6 @@ export default function CrestlineHome() {
                           Loading price range…
                         </div>
                       )}
-                    </div>
-
-                    <div className="text-left">
-                      <label className="block text-xs text-white/70 uppercase tracking-wider mb-2">
-                        Type
-                      </label>
-                      <select
-                        value={heroType}
-                        onChange={(e) => setHeroType(e.target.value)}
-                        disabled={heroTypesLoading}
-                        className="w-full h-12 appearance-none bg-black/25 border border-white/20 text-white rounded-xl px-3 pr-9 text-sm leading-normal focus:outline-none focus:ring-2 focus:ring-sky-200/50 disabled:opacity-60"
-                        style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.65)' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")", backgroundRepeat: "no-repeat", backgroundPosition: "right 0.65rem center" }}
-                      >
-                        <option value="All" className="bg-slate-900">
-                          All Types
-                        </option>
-                        {heroTypes.map((t) => (
-                          <option key={t} value={t} className="bg-slate-900">
-                            {t}
-                          </option>
-                        ))}
-                      </select>
                     </div>
                   </div>
                 </form>
