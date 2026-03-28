@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { FloatingNightToggle } from "@/components/crestline/FloatingNightToggle";
 
 export default function Signup() {
   const [fullName, setFullName] = useState("");
@@ -51,6 +52,7 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen bg-crestline-bg text-slate-900 flex items-center justify-center px-4 py-12">
+      <FloatingNightToggle />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="font-serif text-2xl font-bold">Create account</h1>

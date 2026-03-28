@@ -7,6 +7,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { MontelibanoHouseLogo } from "@/components/crestline/MontelibanoHouseLogo";
 import { LogoutExpandButton } from "@/components/crestline/LogoutExpandButton";
+import { NightModeSwitch } from "@/components/crestline/NightModeSwitch";
+import { ContactPropertiesRippleButton } from "@/components/crestline/ContactPropertiesRippleButton";
 
 const coreLinks = [
   { label: "Home", to: "/crestline" },
@@ -139,11 +141,16 @@ export function CrestlineNavbar() {
                 </Link>
               ))}
 
-              <Link to="/crestline/contact" className="shrink-0">
-                <Button className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm px-6 rounded-xl h-9 transition-colors duration-200">
-                  Schedule Viewing
-                </Button>
-              </Link>
+              <div className="flex items-center gap-3 shrink-0 pl-1 border-l border-crestline-gold/15">
+                <NightModeSwitch id="crestline-night-mode" />
+              </div>
+
+              <ContactPropertiesRippleButton
+                to="/crestline/contact"
+                className="shrink-0 rounded-xl px-6 py-2 text-sm font-semibold min-h-9 focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+              >
+                Schedule Viewing
+              </ContactPropertiesRippleButton>
             </div>
           </div>
 
@@ -206,6 +213,10 @@ export function CrestlineNavbar() {
               className="md:hidden fixed top-0 left-0 right-0 z-50 bg-crestline-bg/95 backdrop-blur-xl border-b border-crestline-gold/10 max-h-[min(85vh,640px)] overflow-y-auto"
             >
               <div className="px-4 pt-5 pb-6 space-y-5">
+                <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-200">
+                  <span className="text-sm font-medium text-slate-600">Night mode</span>
+                  <NightModeSwitch id="crestline-night-mode-mobile" />
+                </div>
                 <div className="flex items-center justify-between">
                   <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-crestline-muted/95">Menu</div>
                   <button
@@ -267,11 +278,13 @@ export function CrestlineNavbar() {
                       {link.label}
                     </Link>
                     {link.to === "/crestline/contact" && (
-                      <Link to="/crestline/contact" onClick={() => setOpen(false)} className="block mt-2">
-                        <Button className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm rounded-xl h-11 transition-colors duration-200">
-                          Schedule Viewing
-                        </Button>
-                      </Link>
+                      <ContactPropertiesRippleButton
+                        to="/crestline/contact"
+                        onClick={() => setOpen(false)}
+                        className="mt-2 block w-full rounded-xl py-3 text-center text-sm font-semibold min-h-11 focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                      >
+                        Schedule Viewing
+                      </ContactPropertiesRippleButton>
                     )}
                   </div>
                 ))}

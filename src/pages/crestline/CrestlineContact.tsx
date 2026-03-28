@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Clock, CheckCircle2, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ContactPropertiesRippleButton } from "@/components/crestline/ContactPropertiesRippleButton";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { useToast } from "@/hooks/use-toast";
@@ -192,23 +193,30 @@ export default function CrestlineContact() {
 
                   <div>
                     <label className="block text-xs text-crestline-muted uppercase tracking-wider mb-2">Message *</label>
-                    <textarea
+                    <Textarea
                       value={form.message}
                       onChange={(e) => handleChange("message", e.target.value)}
                       placeholder="Tell us about your requirements..."
                       rows={5}
-                      className="w-full bg-crestline-bg border border-slate-200 text-slate-900 placeholder:text-slate-400 px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-crestline-gold/50 resize-none"
+                      className="bg-crestline-bg border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl focus-visible:ring-crestline-gold/50 resize-none"
                     />
                     {errors.message && <p className="text-xs text-red-400 mt-1">{errors.message}</p>}
                   </div>
 
-                  <Button
+                  <ContactPropertiesRippleButton
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 font-semibold text-sm rounded-xl h-12"
+                    className="w-full rounded-xl min-h-12 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
                   >
-                    {loading ? <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Submitting...</> : "Submit Inquiry"}
-                  </Button>
+                    {loading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin shrink-0" />
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit Inquiry"
+                    )}
+                  </ContactPropertiesRippleButton>
                 </form>
               )}
             </div>

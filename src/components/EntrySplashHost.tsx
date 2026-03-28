@@ -50,7 +50,7 @@ export function EntrySplashHost() {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background"
       role="status"
       aria-live="polite"
       aria-busy="true"
@@ -65,7 +65,7 @@ export function EntrySplashHost() {
             r="52"
             pathLength="360"
             fill="none"
-            stroke="hsl(221 56% 32%)"
+            stroke="hsl(var(--primary))"
             strokeWidth="3"
             strokeLinecap="round"
           />
@@ -76,14 +76,14 @@ export function EntrySplashHost() {
             r="34"
             pathLength="360"
             fill="none"
-            stroke="hsl(221 70% 58%)"
+            stroke="hsl(var(--muted-foreground))"
             strokeWidth="3"
             strokeLinecap="round"
           />
         </svg>
-        <p className="text-center font-serif text-2xl font-bold tracking-tight">
-          <span className="text-[hsl(221_56%_30%)]">Real</span>
-          <span className="text-[hsl(221_56%_48%)]">Estate</span>
+        <p className="text-center font-serif text-2xl font-bold tracking-tight text-foreground">
+          <span className="text-primary">Real</span>
+          <span className="text-foreground/90">Estate</span>
         </p>
       </div>
     </div>

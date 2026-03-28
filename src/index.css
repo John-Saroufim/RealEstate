@@ -65,6 +65,57 @@
     --crestline-ink: 222 30% 14%;
     --crestline-on-gold: 0 0% 100%;
   }
+
+  .dark {
+    color-scheme: dark;
+    --background: 222 47% 6%;
+    --foreground: 210 25% 96%;
+
+    --card: 222 40% 10%;
+    --card-foreground: 210 25% 94%;
+
+    --popover: 222 40% 11%;
+    --popover-foreground: 210 25% 94%;
+
+    --primary: 217 70% 58%;
+    --primary-foreground: 222 47% 6%;
+
+    --secondary: 217 22% 16%;
+    --secondary-foreground: 210 22% 92%;
+
+    --muted: 217 20% 16%;
+    --muted-foreground: 215 15% 68%;
+
+    --accent: 217 22% 18%;
+    --accent-foreground: 210 22% 94%;
+
+    --destructive: 0 62% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 217 18% 22%;
+    --input: 217 18% 22%;
+    --ring: 217 70% 55%;
+
+    --sidebar-background: 222 42% 9%;
+    --sidebar-foreground: 210 22% 94%;
+    --sidebar-primary: 217 70% 58%;
+    --sidebar-primary-foreground: 222 47% 6%;
+    --sidebar-accent: 217 22% 16%;
+    --sidebar-accent-foreground: 210 22% 92%;
+    --sidebar-border: 217 18% 22%;
+    --sidebar-ring: 217 70% 55%;
+
+    --surface-1: 222 40% 10%;
+    --surface-2: 222 38% 12%;
+    --surface-3: 217 20% 18%;
+
+    --crestline-bg: 222 47% 6%;
+    --crestline-surface: 222 40% 9%;
+    --crestline-gold: 217 72% 62%;
+    --crestline-muted: 215 14% 62%;
+    --crestline-ink: 210 25% 94%;
+    --crestline-on-gold: 222 47% 8%;
+  }
 }
 
 @layer base {
@@ -101,6 +152,10 @@
   .glass-card {
     @apply bg-card border border-border rounded-xl backdrop-blur-sm;
     background: linear-gradient(145deg, hsl(0 0% 100% / 0.92), hsl(210 22% 96% / 0.92));
+  }
+
+  .dark .glass-card {
+    background: linear-gradient(145deg, hsl(222 40% 12% / 0.94), hsl(222 34% 9% / 0.94));
   }
 
   .gradient-neon-bg {
@@ -576,4 +631,242 @@
   100% {
     transform: rotate(1080deg);
   }
+}
+
+/* Night mode toggle — sun/moon slider (from Uiverse.io by satyamchaudharydev) */
+.crestline-night-switch {
+  --crestline-night-w: 3.5em;
+  --crestline-night-h: 2em;
+  --crestline-night-icon: 1.4em;
+  --crestline-night-pad: 0.3em;
+  position: relative;
+  width: var(--crestline-night-w);
+  height: var(--crestline-night-h);
+}
+
+.crestline-night-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.crestline-night-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #f4f4f5;
+  transition: 0.4s;
+  border-radius: 30px;
+}
+
+.crestline-night-slider::before {
+  position: absolute;
+  content: "";
+  height: var(--crestline-night-icon);
+  width: var(--crestline-night-icon);
+  border-radius: 20px;
+  left: var(--crestline-night-pad);
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(40deg, #ff0080, #ff8c00 70%);
+  transition: 0.4s;
+}
+
+.crestline-night-switch input:checked + .crestline-night-slider {
+  background-color: #303136;
+}
+
+.crestline-night-switch input:checked + .crestline-night-slider::before {
+  left: calc(100% - (var(--crestline-night-icon) + var(--crestline-night-pad)));
+  background: #303136;
+  box-shadow:
+    inset -3px -2px 5px -2px #8983f7,
+    inset -10px -4px 0 0 #a3dafb;
+}
+
+.crestline-night-switch--placeholder {
+  border-radius: 30px;
+  background-color: hsl(var(--muted) / 0.5);
+}
+
+/* Dark mode: map common light Tailwind surfaces (pages use fixed slate/white classes) */
+.dark .bg-white {
+  background-color: hsl(222 42% 8%) !important;
+}
+
+.dark .bg-slate-50 {
+  background-color: hsl(222 40% 10%) !important;
+}
+
+.dark .bg-slate-100 {
+  background-color: hsl(222 38% 12%) !important;
+}
+
+.dark .hover\:bg-slate-50:hover {
+  background-color: hsl(222 38% 14%) !important;
+}
+
+.dark .hover\:bg-slate-100:hover {
+  background-color: hsl(222 36% 15%) !important;
+}
+
+.dark .text-slate-900 {
+  color: hsl(210 25% 96%) !important;
+}
+
+.dark .text-slate-800 {
+  color: hsl(210 22% 90%) !important;
+}
+
+.dark .text-slate-700 {
+  color: hsl(215 16% 78%) !important;
+}
+
+.dark .text-slate-600 {
+  color: hsl(215 14% 68%) !important;
+}
+
+.dark .text-slate-500 {
+  color: hsl(215 12% 55%) !important;
+}
+
+.dark .hover\:text-slate-900:hover {
+  color: hsl(210 25% 96%) !important;
+}
+
+.dark .border-slate-200 {
+  border-color: hsl(217 18% 22%) !important;
+}
+
+.dark .border-slate-300 {
+  border-color: hsl(217 16% 28%) !important;
+}
+
+.dark .border-slate-100 {
+  border-color: hsl(217 18% 18%) !important;
+}
+
+.dark .ring-offset-white {
+  --tw-ring-offset-color: hsl(222 47% 6%) !important;
+}
+
+.dark .from-white {
+  --tw-gradient-from: hsl(222 42% 11%) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: hsl(222 42% 11%) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+.dark .via-white\/40 {
+  --tw-gradient-via: hsl(222 40% 14% / 0.4) var(--tw-gradient-via-position) !important;
+}
+
+.dark .to-slate-50 {
+  --tw-gradient-to: hsl(222 40% 10%) var(--tw-gradient-to-position) !important;
+}
+
+.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: hsl(217 18% 22%) !important;
+}
+
+/* Contact / property inquiry CTAs — ripple fill (from Uiverse.io by cssbuttons-io); font from utilities */
+.contact-ripple-btn {
+  --cr-accent: #39bda7;
+  --cr-border: #4f4f4f;
+  --cr-fg: #0f172a;
+  --cr-hover-fg: #ffffff;
+  --cr-before-idle: rgba(0, 0, 0, 0.05);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 12px 24px;
+  border: 1px solid var(--cr-border);
+  transition:
+    color 0.2s ease-in,
+    border-color 0.2s ease-in;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  color: var(--cr-fg);
+  z-index: 1;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  line-height: inherit;
+  text-decoration: none;
+  background: transparent;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.contact-ripple-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.contact-ripple-btn--hero {
+  --cr-border: rgba(255, 255, 255, 0.42);
+  --cr-fg: #ffffff;
+  --cr-hover-fg: #ffffff;
+  --cr-before-idle: rgba(255, 255, 255, 0.08);
+}
+
+.dark .contact-ripple-btn:not(.contact-ripple-btn--hero) {
+  --cr-border: hsl(217 18% 34%);
+  --cr-fg: hsl(210 25% 96%);
+  --cr-before-idle: rgba(255, 255, 255, 0.06);
+}
+
+.contact-ripple-btn::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+  top: 100%;
+  width: 140%;
+  height: 180%;
+  background-color: var(--cr-before-idle);
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.contact-ripple-btn::after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  background-color: var(--cr-accent);
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.contact-ripple-btn:hover,
+.contact-ripple-btn:focus-visible {
+  color: var(--cr-hover-fg);
+  border-color: var(--cr-accent);
+  outline: none;
+}
+
+.contact-ripple-btn:hover::before,
+.contact-ripple-btn:focus-visible::before {
+  top: -35%;
+  background-color: var(--cr-accent);
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+.contact-ripple-btn:hover::after,
+.contact-ripple-btn:focus-visible::after {
+  top: -45%;
+  background-color: var(--cr-accent);
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
 }

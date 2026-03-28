@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { FloatingNightToggle } from "@/components/crestline/FloatingNightToggle";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -25,6 +26,7 @@ export default function ForgotPassword() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4">
+      <FloatingNightToggle />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/crestline" className="inline-flex items-center gap-2 mb-6">

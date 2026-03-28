@@ -19,6 +19,7 @@ import {
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
 import { Button } from "@/components/ui/button";
+import { ContactPropertiesRippleButton } from "@/components/crestline/ContactPropertiesRippleButton";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
@@ -757,20 +758,20 @@ export default function CrestlinePropertyDetails() {
                             )}
                           </div>
 
-                          <Button
+                          <ContactPropertiesRippleButton
                             type="submit"
                             disabled={submitting}
-                            className="w-full bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl h-12 font-semibold text-sm"
+                            className="w-full rounded-xl min-h-12 text-sm font-semibold focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
                           >
                             {submitting ? (
                               <>
-                                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                                <Loader2 className="h-4 w-4 animate-spin shrink-0" />
                                 Sending...
                               </>
                             ) : (
-                              <>Submit Inquiry</>
+                              "Submit Inquiry"
                             )}
-                          </Button>
+                          </ContactPropertiesRippleButton>
                         </form>
                       )}
 
