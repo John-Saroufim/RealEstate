@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { startTransition, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
@@ -18,6 +18,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { AdminStatsOverview } from "@/components/crestline/admin/AdminStatsOverview";
 import { MotionSection } from "@/components/MotionSection";
 import { PropertyFiltersPanel, PropertyFiltersFields } from "@/components/crestline/PropertyFiltersPanel";
+import { isDemoListingTitle, loadListingFilterMetadata } from "@/lib/crestlineListingMetadata";
 
 type Listing = {
   id: string;
@@ -34,11 +35,6 @@ type Listing = {
 };
 
 const LISTING_STATUSES = ["For Sale", "For Rent", "Sold", "Featured"] as const;
-
-function isDemoListingTitle(title: string | null | undefined): boolean {
-  const s = String(title ?? "").trim();
-  return /^\s*demo\s*listing/i.test(s);
-}
 
 function listingStatusOptions(current: string | null): string[] {
   const base = [...LISTING_STATUSES];
@@ -183,67 +179,25 @@ export default function AdminListings() {
   }, [qParam, selectedType, selectedStatus, priceMin, priceMax, bedsMin, bathsMin, sort]);
 
   useEffect(() => {
-    const loadTypes = async () => {
+    let cancelled = false;
+    const load = async () => {
       try {
         setTypesLoading(true);
-        const { data, error: tErr } = await supabase.from("listings").select("type").limit(5000);
-        if (tErr) throw tErr;
-        const uniq = Array.from(
-          new Set(
-            (data ?? [])
-              .map((r) => (r as { type?: string }).type)
-              .filter((t): t is string => typeof t === "string" && t.trim().length > 0),
-          ),
-        ).sort((a, b) => a.localeCompare(b));
-        if (uniq.length > 0) setAvailableTypes(uniq);
+        const { types, locations, names } = await loadListingFilterMetadata();
+        if (cancelled) return;
+        if (types.length > 0) setAvailableTypes(types);
+        if (locations.length > 0) setLocationSuggestions(locations);
+        if (names.length > 0) setNameSuggestions(names);
       } catch {
-        // keep fallback
+        // keep fallbacks
       } finally {
-        setTypesLoading(false);
+        if (!cancelled) setTypesLoading(false);
       }
     };
-    loadTypes();
-  }, []);
-
-  useEffect(() => {
-    const loadLocations = async () => {
-      try {
-        const { data, error: lErr } = await supabase.from("listings").select("location").limit(8000);
-        if (lErr) throw lErr;
-        const uniq = Array.from(
-          new Set(
-            (data ?? [])
-              .map((r) => (r as { location?: string }).location)
-              .filter((loc): loc is string => typeof loc === "string" && loc.trim().length > 0),
-          ),
-        ).sort((a, b) => a.localeCompare(b));
-        if (uniq.length > 0) setLocationSuggestions(uniq);
-      } catch {
-        // keep empty
-      }
+    load();
+    return () => {
+      cancelled = true;
     };
-    loadLocations();
-  }, []);
-
-  useEffect(() => {
-    const loadNames = async () => {
-      try {
-        const { data, error: nErr } = await supabase.from("listings").select("title").limit(8000);
-        if (nErr) throw nErr;
-        const uniq = Array.from(
-          new Set(
-            (data ?? [])
-              .map((r) => (r as { title?: string }).title)
-              .filter((t): t is string => typeof t === "string" && t.trim().length > 0),
-          ),
-        ).sort((a, b) => a.localeCompare(b));
-        const filtered = uniq.filter((t) => !isDemoListingTitle(t));
-        if (filtered.length > 0) setNameSuggestions(filtered);
-      } catch {
-        // keep empty
-      }
-    };
-    loadNames();
   }, []);
 
   const formatPrice = (price: number | null) =>
@@ -282,7 +236,7 @@ export default function AdminListings() {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div>
               <p className="text-crestline-gold text-xs font-semibold tracking-[0.15em] uppercase mb-2">Admin</p>
-              <h1 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900">Manage Listings</h1>
+              <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Manage Listings</h1>
             </div>
             <div className="flex flex-wrap gap-3">
               <Button
@@ -325,7 +279,7 @@ export default function AdminListings() {
               setParam={setParam}
               clearFilters={clearFilters}
               hasActiveFilters={hasActiveFilters}
-              onOpenMobileFilters={() => setMobileFiltersOpen(true)}
+              onOpenMobileFilters={() => startTransition(() => setMobileFiltersOpen(true))}
               favoritesOnly={false}
               onToggleFavoritesOnly={() => {}}
               favoritesCount={0}
@@ -334,23 +288,25 @@ export default function AdminListings() {
           </div>
 
           <Dialog open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
-            <DialogContent className="max-h-[min(90vh,880px)] max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-0 text-slate-900 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.18)] dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg dark:text-slate-100 dark:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.45)] sm:max-w-xl">
+            <DialogContent className="max-h-[min(90dvh,880px)] max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-0 text-slate-900 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.18)] duration-150 data-[state=open]:duration-150 data-[state=closed]:duration-100 dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg dark:text-slate-100 dark:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.45)] sm:max-w-xl">
               <DialogHeader className="border-b border-slate-200/80 px-6 py-5 dark:border-slate-700/80 sm:px-8">
-                <DialogTitle className="font-sans text-2xl tracking-tight text-slate-900 dark:text-slate-100">Refine results</DialogTitle>
+                <DialogTitle className="font-display text-2xl tracking-tight text-slate-900 dark:text-slate-100">Refine results</DialogTitle>
                 <p className="text-sm text-crestline-muted">Adjust filters — updates apply instantly</p>
               </DialogHeader>
               <div className="px-6 py-6 sm:px-8 sm:py-8">
-                <PropertyFiltersFields
-                  selectedType={selectedType}
-                  selectedStatus={selectedStatus}
-                  sort={sort}
-                  availableTypes={typesLoading ? fallbackTypes : availableTypesForUI}
-                  priceMin={priceMin}
-                  priceMax={priceMax}
-                  bedsMin={bedsMin}
-                  bathsMin={bathsMin}
-                  setParam={setParam}
-                />
+                {mobileFiltersOpen ? (
+                  <PropertyFiltersFields
+                    selectedType={selectedType}
+                    selectedStatus={selectedStatus}
+                    sort={sort}
+                    availableTypes={typesLoading ? fallbackTypes : availableTypesForUI}
+                    priceMin={priceMin}
+                    priceMax={priceMax}
+                    bedsMin={bedsMin}
+                    bathsMin={bathsMin}
+                    setParam={setParam}
+                  />
+                ) : null}
               </div>
               <div className="flex flex-col-reverse gap-3 border-t border-slate-200/80 bg-slate-50 px-6 py-5 dark:border-slate-700/80 dark:bg-crestline-bg/90 sm:flex-row sm:justify-end sm:px-8">
                 <Button

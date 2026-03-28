@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
@@ -10,6 +10,7 @@ import { PropertyFiltersPanel, PropertyFiltersFields } from "@/components/crestl
 import { supabase } from "@/integrations/supabase/client";
 import { PropertyCard } from "@/components/crestline/PropertyCard";
 import { MotionSection } from "@/components/MotionSection";
+import { isDemoListingTitle, loadListingFilterMetadata } from "@/lib/crestlineListingMetadata";
 
 type Listing = {
   id: string;
@@ -29,13 +30,6 @@ function parsePriceParam(raw: string | null): number | null {
   const n = Number(raw);
   if (!Number.isFinite(n) || n < 0) return null;
   return n;
-}
-
-function isDemoListingTitle(title: string | null | undefined): boolean {
-  const s = String(title ?? "").trim();
-  // Handles variations like "DEMO Listing #1", "Demo listing-1", etc.
-  // Anchored so we don't accidentally remove real titles containing "demo listing" text.
-  return /^\s*demo\s*listing/i.test(s);
 }
 
 export default function CrestlineProperties() {
@@ -215,79 +209,25 @@ export default function CrestlineProperties() {
   }, []);
 
   useEffect(() => {
-    const loadTypes = async () => {
+    let cancelled = false;
+    const load = async () => {
       try {
         setTypesLoading(true);
-        // We fetch types used by listings and dedupe client-side.
-        const { data, error: tErr } = await supabase.from("listings").select("type").limit(5000);
-        if (tErr) throw tErr;
-
-        const uniq = Array.from(
-          new Set(
-            (data ?? [])
-              .map((r) => (r as any).type)
-              .filter((t): t is string => typeof t === "string" && t.trim().length > 0),
-          ),
-        ).sort((a, b) => a.localeCompare(b));
-
-        if (uniq.length > 0) setAvailableTypes(uniq);
+        const { types, locations, names } = await loadListingFilterMetadata();
+        if (cancelled) return;
+        if (types.length > 0) setAvailableTypes(types);
+        if (locations.length > 0) setLocationSuggestions(locations);
+        if (names.length > 0) setNameSuggestions(names);
       } catch {
-        // Keep fallback types if anything fails.
+        // Keep fallbacks / empty suggestions.
       } finally {
-        setTypesLoading(false);
+        if (!cancelled) setTypesLoading(false);
       }
     };
-
-    loadTypes();
-  }, []);
-
-  useEffect(() => {
-    // Location autocomplete suggestions for the Search input.
-    const loadLocations = async () => {
-      try {
-        const { data, error: lErr } = await supabase.from("listings").select("location").limit(8000);
-        if (lErr) throw lErr;
-
-        const uniq = Array.from(
-          new Set(
-            (data ?? [])
-              .map((r) => (r as any).location)
-              .filter((loc): loc is string => typeof loc === "string" && loc.trim().length > 0),
-          ),
-        ).sort((a, b) => a.localeCompare(b));
-
-        if (uniq.length > 0) setLocationSuggestions(uniq);
-      } catch {
-        // Keep empty; user can still type freely.
-      }
+    load();
+    return () => {
+      cancelled = true;
     };
-
-    loadLocations();
-  }, []);
-
-  useEffect(() => {
-    // Title autocomplete suggestions for the Search input.
-    const loadNames = async () => {
-      try {
-        const { data, error: nErr } = await supabase.from("listings").select("title").limit(8000);
-        if (nErr) throw nErr;
-
-        const uniq = Array.from(
-          new Set(
-            (data ?? [])
-              .map((r) => (r as any).title)
-              .filter((t): t is string => typeof t === "string" && t.trim().length > 0),
-          ),
-        ).sort((a, b) => a.localeCompare(b));
-
-        const filtered = uniq.filter((t) => !isDemoListingTitle(t));
-        if (filtered.length > 0) setNameSuggestions(filtered);
-      } catch {
-        // Keep empty; user can still type freely.
-      }
-    };
-
-    loadNames();
   }, []);
 
   const availableTypesForUI = (() => {
@@ -306,7 +246,7 @@ export default function CrestlineProperties() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Portfolio</p>
           <div className="flex flex-col gap-4">
-            <h1 className="font-sans text-4xl sm:text-5xl font-bold text-slate-900">Exclusive Properties</h1>
+            <h1 className="font-display text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Exclusive Properties</h1>
           </div>
           <p className="text-crestline-muted max-w-xl">Browse our curated collection of exceptional residences across the most prestigious addresses.</p>
         </div>
@@ -331,7 +271,7 @@ export default function CrestlineProperties() {
               setParam={setParam}
               clearFilters={clearFilters}
               hasActiveFilters={hasActiveFilters}
-              onOpenMobileFilters={() => setMobileFiltersOpen(true)}
+              onOpenMobileFilters={() => startTransition(() => setMobileFiltersOpen(true))}
               favoritesOnly={favoritesOnly}
               onToggleFavoritesOnly={toggleFavoritesOnly}
               favoritesCount={(() => {
@@ -348,23 +288,25 @@ export default function CrestlineProperties() {
           </div>
 
           <Dialog open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
-            <DialogContent className="max-h-[min(90vh,880px)] max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-0 text-slate-900 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.18)] dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg dark:text-slate-100 dark:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.45)] sm:max-w-xl">
+            <DialogContent className="max-h-[min(90dvh,880px)] max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-0 text-slate-900 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.18)] duration-150 data-[state=open]:duration-150 data-[state=closed]:duration-100 dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg dark:text-slate-100 dark:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.45)] sm:max-w-xl">
               <DialogHeader className="border-b border-slate-200/80 px-6 py-5 dark:border-slate-700/80 sm:px-8">
-                <DialogTitle className="font-sans text-2xl tracking-tight text-slate-900 dark:text-slate-100">Refine results</DialogTitle>
+                <DialogTitle className="font-display text-2xl tracking-tight text-slate-900 dark:text-slate-100">Refine results</DialogTitle>
                 <p className="text-sm text-crestline-muted">Adjust filters — updates apply instantly</p>
               </DialogHeader>
               <div className="px-6 py-6 sm:px-8 sm:py-8">
-                <PropertyFiltersFields
-                  selectedType={selectedType}
-                  selectedStatus={selectedStatus}
-                  sort={sort}
-                  availableTypes={availableTypesForUI}
-                  priceMin={priceMin}
-                  priceMax={priceMax}
-                  bedsMin={bedsMin}
-                  bathsMin={bathsMin}
-                  setParam={setParam}
-                />
+                {mobileFiltersOpen ? (
+                  <PropertyFiltersFields
+                    selectedType={selectedType}
+                    selectedStatus={selectedStatus}
+                    sort={sort}
+                    availableTypes={availableTypesForUI}
+                    priceMin={priceMin}
+                    priceMax={priceMax}
+                    bedsMin={bedsMin}
+                    bathsMin={bathsMin}
+                    setParam={setParam}
+                  />
+                ) : null}
               </div>
               <div className="flex flex-col-reverse gap-3 border-t border-slate-200/80 bg-slate-50 px-6 py-5 dark:border-slate-700/80 dark:bg-crestline-bg/90 sm:flex-row sm:justify-end sm:px-8">
                 <Button
@@ -397,7 +339,7 @@ export default function CrestlineProperties() {
           {error && <p className="mb-10 text-sm text-red-400/95 lg:mb-12">{error}</p>}
           {!loading && !error && (
             <div className="mb-10 border-b border-slate-200/80 pb-8 lg:mb-12 lg:pb-10">
-              <p className="font-sans text-3xl text-slate-900 sm:text-4xl">
+              <p className="font-display text-3xl tracking-tight text-slate-900 sm:text-4xl">
                 <span className="tabular-nums text-crestline-gold">{properties.length}</span>
                 <span className="text-slate-800">
                   {" "}
@@ -458,7 +400,7 @@ export default function CrestlineProperties() {
           ) : (
             <div className="text-center py-20 border border-slate-200">
               <Search className="h-10 w-10 text-crestline-muted mx-auto mb-4" />
-              <p className="text-slate-900 font-sans text-lg mb-2">No properties found</p>
+              <p className="font-display text-lg font-semibold tracking-tight text-slate-900 mb-2">No properties found</p>
               <p className="text-sm text-crestline-muted mb-6">Try adjusting your filters or search terms.</p>
               <Button onClick={clearFilters} className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl">
                 Clear Filters

@@ -327,7 +327,7 @@ export default function CrestlineHome() {
                 <p className="text-sky-200 text-sm font-semibold tracking-[0.2em] uppercase mb-5">
                   RealEstate | Luxury Brokerage
                 </p>
-                <h1 className="font-sans text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] mb-6 text-white">
+                <h1 className="font-display text-4xl font-bold leading-[1.05] text-white sm:text-5xl md:text-6xl mb-6">
                   Find Your Dream Home
                 </h1>
                 <p className="text-lg text-white/80 mb-8 leading-relaxed">
@@ -496,7 +496,9 @@ export default function CrestlineHome() {
                 </form>
 
                 <datalist id="crestline-hero-locations">
-                  {heroLocationsLoading ? null : heroLocations.map((loc) => <option key={loc} value={loc} />)}
+                  {heroLocationsLoading
+                    ? null
+                    : heroLocations.slice(0, 120).map((loc) => <option key={loc} value={loc} />)}
                 </datalist>
 
                 {/* CTA buttons */}
@@ -526,7 +528,7 @@ export default function CrestlineHome() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((s, i) => (
               <motion.div key={s.label} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center">
-                <div className="font-sans text-3xl sm:text-4xl font-bold text-crestline-gold">{s.value}</div>
+                <div className="font-display text-3xl font-bold tracking-tight text-crestline-gold sm:text-4xl">{s.value}</div>
                 <div className="text-sm text-crestline-muted mt-1">{s.label}</div>
               </motion.div>
             ))}
@@ -539,7 +541,7 @@ export default function CrestlineHome() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Curated Selection</p>
-            <h2 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Featured Properties</h2>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-4">Featured Properties</h2>
             <p className="text-crestline-muted max-w-xl mx-auto">Handpicked residences that represent the finest in luxury living across our most sought-after markets.</p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -596,7 +598,7 @@ export default function CrestlineHome() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">The RealEstate Difference</p>
-            <h2 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Why Clients Choose Us</h2>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-4">Why Clients Choose Us</h2>
             <p className="text-crestline-muted max-w-xl mx-auto">A commitment to excellence that transforms every transaction into an exceptional experience.</p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -605,7 +607,7 @@ export default function CrestlineHome() {
                 <div className="h-12 w-12 border border-crestline-gold/20 flex items-center justify-center mb-5 group-hover:bg-crestline-gold/10 transition-colors">
                   <item.icon className="h-5 w-5 text-crestline-gold" />
                 </div>
-                <h3 className="font-sans font-semibold text-lg text-slate-900 mb-2">{item.title}</h3>
+                <h3 className="font-display font-semibold text-lg text-slate-900 mb-2">{item.title}</h3>
                 <p className="text-sm text-crestline-muted leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
@@ -618,12 +620,12 @@ export default function CrestlineHome() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Our Services</p>
-            <h2 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Comprehensive Real Estate Solutions</h2>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-4">Comprehensive Real Estate Solutions</h2>
           </motion.div>
           <div className="grid md:grid-cols-3 gap-8">
             {services.map((s, i) => (
               <motion.div key={s.title} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="border border-slate-200 p-10 hover:border-crestline-gold/20 transition-all duration-300 text-center transform-gpu shadow-sm hover:shadow-md hover:-translate-y-0.5">
-                <h3 className="font-sans text-2xl font-bold text-crestline-gold mb-4">{s.title}</h3>
+                <h3 className="font-display text-2xl font-bold tracking-tight text-crestline-gold mb-4">{s.title}</h3>
                 <p className="text-sm text-crestline-muted leading-relaxed mb-6">{s.desc}</p>
                 <Link to="/crestline/contact">
                   <Button variant="outline" className="border-crestline-gold/30 text-crestline-gold hover:bg-crestline-gold/10 rounded-xl text-sm px-6">
@@ -641,7 +643,7 @@ export default function CrestlineHome() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Client Reviews</p>
-            <h2 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900 mb-4">What Our Clients Say</h2>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-4">What Our Clients Say</h2>
           </motion.div>
           {reviewsLoading ? (
             <div className="flex gap-6 overflow-x-auto md:grid md:grid-cols-3 md:gap-8 md:overflow-visible pb-2">
@@ -662,7 +664,7 @@ export default function CrestlineHome() {
             <p className="text-sm text-red-400 text-center">{reviewsError}</p>
           ) : reviews.length === 0 ? (
             <div className="border border-slate-200 p-10 text-center bg-crestline-bg/30">
-              <p className="font-sans text-xl font-bold text-slate-900 mb-2">No approved reviews yet</p>
+              <p className="font-display text-xl font-bold tracking-tight text-slate-900 mb-2">No approved reviews yet</p>
               <p className="text-sm text-crestline-muted">Check back soon—new reviews are added after admin approval.</p>
             </div>
           ) : (
@@ -686,7 +688,7 @@ export default function CrestlineHome() {
                   </p>
 
                   <div>
-                    <p className="font-sans font-semibold text-slate-900">{r.name}</p>
+                    <p className="font-display font-semibold text-slate-900">{r.name}</p>
                   </div>
                 </motion.div>
               ))}
@@ -700,12 +702,12 @@ export default function CrestlineHome() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">FAQ</p>
-            <h2 className="font-sans text-3xl sm:text-4xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl mb-4">Frequently Asked Questions</h2>
           </motion.div>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
               <motion.details key={i} custom={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="group border border-slate-200 hover:border-crestline-gold/20 transition-colors">
-                <summary className="flex items-center gap-3 cursor-pointer p-6 text-slate-900 font-sans font-semibold text-sm list-none [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center gap-3 p-6 font-display text-sm font-semibold text-slate-900 [&::-webkit-details-marker]:hidden">
                   <HelpCircle className="h-4 w-4 text-crestline-gold shrink-0" />
                   <span className="flex-1">{faq.q}</span>
                   <ChevronRight className="h-4 w-4 text-crestline-muted transition-transform group-open:rotate-90" />
@@ -724,7 +726,7 @@ export default function CrestlineHome() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <p className="text-crestline-gold text-sm font-semibold tracking-[0.15em] uppercase mb-4">Begin Your Journey</p>
-            <h2 className="font-sans text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl mb-6">
               Ready to Find Your
               <br />
               <span className="text-crestline-gold">Dream Property?</span>
