@@ -771,7 +771,8 @@
 
 /* Contact / property inquiry CTAs — ripple fill (from Uiverse.io by cssbuttons-io); font from utilities */
 .contact-ripple-btn {
-  --cr-accent: #2563eb;
+  /* Same brand blue as Browse Properties (see --crestline-gold / .browse-properties-uiverse-btn) */
+  --cr-accent: hsl(var(--crestline-gold));
   --cr-border: #4f4f4f;
   --cr-fg: #0f172a;
   --cr-hover-fg: #ffffff;
@@ -801,6 +802,25 @@
   appearance: none;
 }
 
+/* Navbar: match 36px logout control height; compact label */
+.contact-ripple-btn--nav {
+  height: 36px;
+  min-height: 36px;
+  padding: 0 0.65rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  gap: 0.25rem;
+  border-radius: 9999px;
+}
+
+@media (min-width: 1024px) {
+  .contact-ripple-btn--nav {
+    padding: 0 0.75rem;
+    font-size: 0.75rem;
+  }
+}
+
 .contact-ripple-btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
@@ -808,7 +828,7 @@
 }
 
 .contact-ripple-btn--hero {
-  --cr-accent: #2563eb;
+  --cr-accent: hsl(var(--crestline-gold));
   --cr-border: rgba(255, 255, 255, 0.42);
   --cr-fg: #ffffff;
   --cr-hover-fg: #ffffff;

@@ -97,9 +97,9 @@ export function CrestlineNavbar() {
             </span>
           </Link>
 
-          {/* Desktop: nav cluster + auth in one row so logout never overlaps Schedule Viewing */}
-          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-6 lg:ml-10 gap-4 lg:gap-5">
-            <div className="flex items-center gap-8 min-w-0">
+          {/* Desktop: links + night, then Schedule + auth as a fixed pair (no overlap) */}
+          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-6 lg:ml-10 gap-3 min-[1000px]:gap-5">
+            <div className="flex items-center gap-6 lg:gap-8 min-w-0 overflow-hidden">
               {coreLinks.map((link) => (
                 <Link
                   key={link.to}
@@ -162,16 +162,17 @@ export function CrestlineNavbar() {
               <div className="flex items-center gap-3 shrink-0 pl-1 border-l border-crestline-gold/15">
                 <NightModeSwitch id="crestline-night-mode" />
               </div>
+            </div>
 
+            <div className="flex shrink-0 items-center gap-3">
               <ContactPropertiesRippleButton
                 to="/crestline/contact"
-                className="shrink-0 rounded-xl px-6 py-2 text-sm font-semibold min-h-9 focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                className="contact-ripple-btn--nav shrink-0 focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
               >
                 Schedule Viewing
               </ContactPropertiesRippleButton>
-            </div>
 
-            <div className="shrink-0 flex items-center border-l border-crestline-gold/15 pl-4 lg:pl-5">
+              <div className="flex items-center border-l border-crestline-gold/15 pl-3 lg:pl-4">
               {!authReady ? (
                 <Button
                   variant="outline"
@@ -192,6 +193,7 @@ export function CrestlineNavbar() {
                   </Button>
                 </Link>
               )}
+              </div>
             </div>
           </div>
 
