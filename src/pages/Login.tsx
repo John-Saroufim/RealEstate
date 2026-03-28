@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
@@ -17,6 +17,8 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { signIn, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  /** Prevents useEffect redirect from replacing handleSubmit navigation and stripping `reSplash` (splash stuck). */
+  const skipAuthRedirectRef = useRef(false);
 
   const adminEmailsRaw = (import.meta as any).env?.VITE_ADMIN_EMAILS ?? (import.meta as any).env?.VITE_ADMIN_EMAIL ?? "";
   const adminEmails = String(adminEmailsRaw)
@@ -27,6 +29,10 @@ export default function Login() {
   useEffect(() => {
     if (authLoading) return;
     if (!user) return;
+    if (skipAuthRedirectRef.current) {
+      skipAuthRedirectRef.current = false;
+      return;
+    }
 
     if (adminEmails.length > 0) {
       if (user.email && adminEmails.includes(user.email.toLowerCase())) {
@@ -52,6 +58,7 @@ export default function Login() {
       toast.error(error.message);
       return;
     }
+    skipAuthRedirectRef.current = true;
     if (adminEmails.length > 0) {
       if (adminEmails.includes(email.toLowerCase())) {
         navigate("/crestline/admin/listings", { state: { reSplash: true } });

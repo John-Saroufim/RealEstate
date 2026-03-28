@@ -30,7 +30,12 @@ export function EntrySplashHost() {
         { replace: true, state: {} },
       );
     }, duration);
-    return () => window.clearTimeout(id);
+    return () => {
+      window.clearTimeout(id);
+      // If another navigation clears `reSplash` before the timer fires, this cleanup runs
+      // without a new effect starting — hide the overlay or it stays stuck (Login double-nav).
+      setShow(false);
+    };
   }, [location.state, location.pathname, location.search, location.hash, navigate, duration]);
 
   useEffect(() => {
@@ -43,7 +48,10 @@ export function EntrySplashHost() {
       setShow(false);
       sessionStorage.setItem(SESSION_KEY, "1");
     }, duration);
-    return () => window.clearTimeout(id);
+    return () => {
+      window.clearTimeout(id);
+      setShow(false);
+    };
   }, [duration, location.state]);
 
   if (!show) return null;
