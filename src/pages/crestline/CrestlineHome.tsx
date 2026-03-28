@@ -394,8 +394,10 @@ export default function CrestlineHome() {
                         Price Range
                       </label>
                       {priceStats ? (
-                        <div className="flex flex-col gap-3 w-full max-w-md mx-auto items-center min-w-0">
-                          <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 sm:gap-3 w-full max-w-[min(100%,20rem)] sm:max-w-[22rem] mx-auto rounded-xl border border-white/20 bg-black/10 px-3 py-2.5 sm:px-4 overflow-hidden">
+                        <div className="flex flex-col gap-3 w-full items-center min-w-0">
+                          {/* Single width for inputs + slider so the track matches the price box */}
+                          <div className="flex w-full max-w-[min(100%,20rem)] sm:max-w-[22rem] flex-col gap-3 mx-auto min-w-0">
+                          <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 sm:gap-3 w-full rounded-xl border border-white/20 bg-black/10 px-3 py-2.5 sm:px-4 overflow-hidden">
                             <div className="uiverse-input-wrap uiverse-input-wrap--fit shrink-0">
                               <input
                                 type="text"
@@ -464,7 +466,7 @@ export default function CrestlineHome() {
                               />
                             </div>
                           </div>
-                          <div className="w-full max-w-md min-w-0 px-1 pt-1 mx-auto">
+                          <div className="w-full min-w-0 px-0.5 pt-0.5">
                             <Slider
                               min={priceStats.min}
                               max={priceStats.max}
@@ -481,6 +483,7 @@ export default function CrestlineHome() {
                               className="w-full"
                               aria-label="Price range (min to max)"
                             />
+                          </div>
                           </div>
                         </div>
                       ) : (
