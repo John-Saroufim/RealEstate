@@ -22,20 +22,22 @@ function FilterSectionLabel({ children }: { children: ReactNode }) {
 function filterChipClass(active: boolean) {
   return cn(
     "inline-flex min-h-[42px] items-center justify-center rounded-lg border px-4 py-2.5 text-[13px] font-medium tracking-wide transition-all duration-200 ease-out",
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
     active
-      ? "border-crestline-gold/90 bg-crestline-gold text-crestline-on-gold shadow-[0_0_0_1px_rgba(30,64,175,0.22),0_10px_28px_-12px_rgba(15,23,42,0.12)]"
-      : "border-slate-200 bg-white text-slate-800 hover:border-crestline-gold/35 hover:bg-slate-50 hover:text-slate-900",
+      ? "border-crestline-gold/90 bg-crestline-gold text-crestline-on-gold shadow-[0_0_0_1px_rgba(30,64,175,0.22),0_10px_28px_-12px_rgba(15,23,42,0.12)] dark:shadow-[0_0_0_1px_rgba(96,165,250,0.12),0_10px_28px_-12px_rgba(0,0,0,0.4)]"
+      : "border-slate-200 bg-white text-slate-800 hover:border-crestline-gold/35 hover:bg-slate-50 hover:text-slate-900 dark:border-slate-600 dark:bg-slate-800/90 dark:text-slate-200 dark:hover:border-crestline-gold/40 dark:hover:bg-slate-700/85 dark:hover:text-slate-50",
   );
 }
 
 const filterFieldClass =
-  "h-12 rounded-lg border border-slate-200 bg-white text-[15px] text-slate-900 shadow-sm shadow-slate-900/5 placeholder:text-slate-400 transition-all duration-200 focus-visible:border-crestline-gold/45 focus-visible:ring-2 focus-visible:ring-crestline-gold/20 focus-visible:ring-offset-0";
+  "h-12 rounded-lg border border-slate-200 bg-white text-[15px] text-slate-900 shadow-sm shadow-slate-900/5 placeholder:text-slate-400 transition-all duration-200 focus-visible:border-crestline-gold/45 focus-visible:ring-2 focus-visible:ring-crestline-gold/20 focus-visible:ring-offset-0 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:placeholder:text-slate-500 dark:shadow-none";
 
 const searchInputClass =
-  "h-14 rounded-xl border border-slate-200 bg-white pl-12 pr-4 text-[15px] text-slate-900 shadow-sm shadow-slate-900/5 placeholder:text-slate-500 transition-all duration-200 focus-visible:border-crestline-gold/45 focus-visible:ring-2 focus-visible:ring-crestline-gold/18";
+  "h-14 rounded-xl border border-slate-200 bg-white pl-12 pr-4 text-[15px] text-slate-900 shadow-sm shadow-slate-900/5 placeholder:text-slate-500 transition-all duration-200 focus-visible:border-crestline-gold/45 focus-visible:ring-2 focus-visible:ring-crestline-gold/18 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:placeholder:text-slate-500 dark:shadow-none";
 
-const divider = <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" aria-hidden />;
+const divider = (
+  <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent dark:via-slate-600/60" aria-hidden />
+);
 
 /** Strip non-digits, parse for URL state (commas ignored). */
 function parsePriceInputDigits(raw: string): number | null {
@@ -136,7 +138,10 @@ export function PropertyFiltersFields({
           <FilterSectionLabel>Price range (USD)</FilterSectionLabel>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-2 block text-[12px] font-medium text-slate-900/55" htmlFor={minPriceFieldId}>
+              <label
+                className="mb-2 block text-[12px] font-medium text-slate-900/55 dark:text-slate-400"
+                htmlFor={minPriceFieldId}
+              >
                 Minimum
               </label>
               <PriceFilterInput
@@ -148,7 +153,10 @@ export function PropertyFiltersFields({
               />
             </div>
             <div>
-              <label className="mb-2 block text-[12px] font-medium text-slate-900/55" htmlFor={maxPriceFieldId}>
+              <label
+                className="mb-2 block text-[12px] font-medium text-slate-900/55 dark:text-slate-400"
+                htmlFor={maxPriceFieldId}
+              >
                 Maximum
               </label>
               <PriceFilterInput
@@ -166,7 +174,7 @@ export function PropertyFiltersFields({
           <FilterSectionLabel>Beds & baths</FilterSectionLabel>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-2 block text-[12px] font-medium text-slate-900/55">Beds (min)</label>
+              <label className="mb-2 block text-[12px] font-medium text-slate-900/55 dark:text-slate-400">Beds (min)</label>
               <Input
                 type="number"
                 min={0}
@@ -177,7 +185,7 @@ export function PropertyFiltersFields({
               />
             </div>
             <div>
-              <label className="mb-2 block text-[12px] font-medium text-slate-900/55">Baths (min)</label>
+              <label className="mb-2 block text-[12px] font-medium text-slate-900/55 dark:text-slate-400">Baths (min)</label>
               <Input
                 type="number"
                 min={0}
@@ -213,7 +221,7 @@ export function PropertyFiltersFields({
 
       <div>
         <FilterSectionLabel>Sort by</FilterSectionLabel>
-        <div className="flex flex-col rounded-xl border border-slate-200 bg-slate-100/90 p-1.5 shadow-inner shadow-slate-900/5 sm:flex-row sm:gap-0">
+        <div className="flex flex-col rounded-xl border border-slate-200 bg-slate-100/90 p-1.5 shadow-inner shadow-slate-900/5 sm:flex-row sm:gap-0 dark:border-slate-600/80 dark:bg-slate-900/75 dark:shadow-inner dark:shadow-black/40">
           {propertySortOptions.map((s) => (
             <button
               key={s.id}
@@ -222,8 +230,8 @@ export function PropertyFiltersFields({
               className={cn(
                 "min-h-[48px] flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200",
                 sort === s.id
-                  ? "bg-crestline-gold text-crestline-on-gold shadow-[0_4px_16px_-4px_rgba(15,23,42,0.15)]"
-                  : "text-slate-600 hover:bg-white hover:text-slate-900",
+                  ? "bg-crestline-gold text-crestline-on-gold shadow-[0_4px_16px_-4px_rgba(15,23,42,0.15)] dark:shadow-[0_4px_16px_-4px_rgba(0,0,0,0.45)]"
+                  : "text-slate-600 hover:bg-white hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/95 dark:hover:text-slate-50",
               )}
             >
               {s.label}
@@ -388,6 +396,8 @@ export function PropertyFiltersPanel({
         "relative overflow-hidden rounded-xl border border-slate-200",
         "bg-gradient-to-b from-white to-slate-50",
         "shadow-[0_24px_48px_-28px_rgba(15,23,42,0.12)]",
+        "dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg",
+        "dark:shadow-[0_24px_48px_-28px_rgba(0,0,0,0.35)]",
       )}
     >
       <div
@@ -397,7 +407,7 @@ export function PropertyFiltersPanel({
       <div className="p-6 sm:p-8 lg:p-10">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6 mb-8 lg:mb-10">
           <div className="min-w-0 flex-1">
-            <h2 className="font-serif text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-[1.75rem]">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl lg:text-[1.75rem]">
               Find Your Ideal Property
             </h2>
             <p className="mt-2 max-w-xl text-sm leading-relaxed text-crestline-muted sm:text-[15px]">
@@ -409,7 +419,7 @@ export function PropertyFiltersPanel({
               type="button"
               variant="outline"
               onClick={clearFilters}
-              className="shrink-0 gap-2 self-start rounded-lg border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-800 transition-colors hover:border-crestline-gold/35 hover:bg-crestline-gold/10 hover:text-crestline-gold"
+              className="shrink-0 gap-2 self-start rounded-lg border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-800 transition-colors hover:border-crestline-gold/35 hover:bg-crestline-gold/10 hover:text-crestline-gold dark:border-slate-600 dark:bg-slate-900/50 dark:text-slate-200 dark:hover:border-crestline-gold/40 dark:hover:bg-crestline-gold/15 dark:hover:text-crestline-gold"
             >
               <X className="h-4 w-4 opacity-80" />
               Clear filters
@@ -435,7 +445,7 @@ export function PropertyFiltersPanel({
               type="button"
               variant="outline"
               onClick={onOpenMobileFilters}
-              className="h-14 shrink-0 gap-2 rounded-xl border-slate-200 bg-white px-6 text-sm font-medium text-slate-900 shadow-sm transition-all hover:border-crestline-gold/35 hover:bg-slate-50 lg:hidden"
+              className="h-14 shrink-0 gap-2 rounded-xl border-slate-200 bg-white px-6 text-sm font-medium text-slate-900 shadow-sm transition-all hover:border-crestline-gold/35 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:shadow-none dark:hover:bg-slate-800 lg:hidden"
             >
               <SlidersHorizontal className="h-4 w-4" />
               All filters
@@ -451,6 +461,7 @@ export function PropertyFiltersPanel({
               className={[
                 "h-12 rounded-xl border border-slate-200 bg-white px-4 font-medium text-slate-900 shadow-sm transition-all duration-200",
                 "hover:border-crestline-gold/35 hover:bg-slate-50 hover:text-slate-900",
+                "dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:shadow-none dark:hover:bg-slate-800",
                 favoritesOnly ? "border-crestline-gold/40 bg-crestline-gold/10 text-crestline-gold" : "",
               ].join(" ")}
             >
@@ -459,7 +470,7 @@ export function PropertyFiltersPanel({
                 strokeWidth={favoritesOnly ? 0 : 2}
               />
               <span className="ml-2">Favorites</span>
-              <span className="ml-2 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-slate-100 px-2 text-xs text-slate-700">
+              <span className="ml-2 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-slate-100 px-2 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                 {favoritesCount}
               </span>
             </Button>
@@ -479,7 +490,7 @@ export function PropertyFiltersPanel({
         </div>
 
         {activePills.length > 0 && (
-          <div className="mt-10 border-t border-slate-200 pt-8 lg:mt-10">
+          <div className="mt-10 border-t border-slate-200 pt-8 dark:border-slate-700/80 lg:mt-10">
             <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-crestline-muted/90">
               Active filters
             </p>
@@ -489,10 +500,10 @@ export function PropertyFiltersPanel({
                   key={p.id}
                   type="button"
                   onClick={p.onRemove}
-                  className="group inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 py-1.5 pl-3 pr-2 text-xs font-medium text-slate-700 transition-colors hover:border-crestline-gold/35 hover:bg-crestline-gold/10 hover:text-crestline-gold"
+                  className="group inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 py-1.5 pl-3 pr-2 text-xs font-medium text-slate-700 transition-colors hover:border-crestline-gold/35 hover:bg-crestline-gold/10 hover:text-crestline-gold dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-300 dark:hover:border-crestline-gold/40 dark:hover:bg-crestline-gold/15"
                 >
                   <span>{p.label}</span>
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors group-hover:bg-crestline-gold/20 group-hover:text-crestline-gold">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-100 text-slate-600 transition-colors group-hover:bg-crestline-gold/20 group-hover:text-crestline-gold dark:bg-slate-700 dark:text-slate-400 dark:group-hover:bg-crestline-gold/25">
                     <X className="h-3 w-3" aria-hidden />
                   </span>
                 </button>

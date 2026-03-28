@@ -348,9 +348,9 @@ export default function CrestlineProperties() {
           </div>
 
           <Dialog open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
-            <DialogContent className="max-h-[min(90vh,880px)] max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-0 text-slate-900 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.18)] sm:max-w-xl">
-              <DialogHeader className="border-b border-slate-200/80 px-6 py-5 sm:px-8">
-                <DialogTitle className="font-serif text-2xl tracking-tight text-slate-900">Refine results</DialogTitle>
+            <DialogContent className="max-h-[min(90vh,880px)] max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-0 text-slate-900 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.18)] dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg dark:text-slate-100 dark:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.45)] sm:max-w-xl">
+              <DialogHeader className="border-b border-slate-200/80 px-6 py-5 dark:border-slate-700/80 sm:px-8">
+                <DialogTitle className="font-serif text-2xl tracking-tight text-slate-900 dark:text-slate-100">Refine results</DialogTitle>
                 <p className="text-sm text-crestline-muted">Adjust filters — updates apply instantly</p>
               </DialogHeader>
               <div className="px-6 py-6 sm:px-8 sm:py-8">
@@ -366,11 +366,11 @@ export default function CrestlineProperties() {
                   setParam={setParam}
                 />
               </div>
-              <div className="flex flex-col-reverse gap-3 border-t border-slate-200/80 bg-slate-50 px-6 py-5 sm:flex-row sm:justify-end sm:px-8">
+              <div className="flex flex-col-reverse gap-3 border-t border-slate-200/80 bg-slate-50 px-6 py-5 dark:border-slate-700/80 dark:bg-crestline-bg/90 sm:flex-row sm:justify-end sm:px-8">
                 <Button
                   type="button"
                   variant="outline"
-                  className="rounded-lg border-slate-300 bg-transparent text-slate-900 hover:bg-slate-100"
+                  className="rounded-lg border-slate-300 bg-transparent text-slate-900 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
                   onClick={clearFilters}
                 >
                   Clear all
