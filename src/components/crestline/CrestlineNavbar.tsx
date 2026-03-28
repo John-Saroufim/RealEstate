@@ -33,8 +33,10 @@ const NAV_TEXT_GUEST = "text-lg md:text-xl font-medium tracking-wide leading-7";
 const NAV_TEXT_ADMIN = "text-[16px] md:text-[17px] font-medium tracking-wide leading-6";
 const navLinkMotion = "transition-colors transition-transform duration-200 hover:-translate-y-[1px]";
 
-/** Desktop: equal spacing between all primary nav items (flex gap) */
+/** Desktop: default spacing between primary nav items */
 const DESKTOP_NAV_LINK_GAP = "gap-6 md:gap-8 lg:gap-10";
+/** Desktop: logged-in non-admin — wider spacing between Home / Properties / About / Contact */
+const DESKTOP_NAV_LINK_GAP_USER = "gap-8 md:gap-10 lg:gap-12";
 
 /** Desktop: same distance logo→Home as Contact→night mode (single flex gap token) */
 const HEADER_SECTION_GAP = "md:gap-5 lg:gap-6";
@@ -59,6 +61,10 @@ export function CrestlineNavbar() {
     () => `block ${navLinkSizeClass} px-2 py-2.5 rounded-xl ${navLinkMotion}`,
     [navLinkSizeClass],
   );
+
+  /** Logged-in user without admin nav — primary links sit on the right with extra gap (desktop). */
+  const isRegularUser = authReady && Boolean(user) && !showAdminLinks;
+  const desktopNavLinkGapClass = isRegularUser ? DESKTOP_NAV_LINK_GAP_USER : DESKTOP_NAV_LINK_GAP;
 
   const [scrolled, setScrolled] = useState(false);
 
@@ -193,17 +199,21 @@ export function CrestlineNavbar() {
           </Link>
 
           {/*
-            Desktop: logo → Home and Contact → night mode use HEADER_SECTION_GAP; nav links use DESKTOP_NAV_LINK_GAP.
+            Desktop: logo → nav cluster uses HEADER_SECTION_GAP. Regular users: links right-aligned with wider gaps.
           */}
           <div
             className={["hidden md:flex flex-1 min-w-0 items-center", HEADER_SECTION_GAP].join(" ")}
           >
-            <div className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            <div
+              className={[
+                "min-w-0 flex-1 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden",
+                isRegularUser && "flex justify-end",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
               <div
-                className={[
-                  "flex w-max min-w-0 items-center",
-                  DESKTOP_NAV_LINK_GAP,
-                ].join(" ")}
+                className={["flex w-max min-w-0 items-center", desktopNavLinkGapClass].join(" ")}
               >
                 {desktopLinkList}
               </div>
@@ -269,7 +279,9 @@ export function CrestlineNavbar() {
               aria-modal="true"
               className="md:hidden fixed top-0 left-0 right-0 z-50 bg-crestline-bg/95 backdrop-blur-xl border-b border-crestline-gold/10 max-h-[min(85vh,640px)] overflow-y-auto"
             >
-              <div className="px-4 pt-5 pb-6 space-y-5">
+              <div
+                className={["px-4 pt-5 pb-6", isRegularUser ? "space-y-7" : "space-y-5"].join(" ")}
+              >
                 <div className="flex items-center justify-between">
                   <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-crestline-muted/95">Menu</div>
                   <button
