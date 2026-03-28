@@ -81,12 +81,6 @@ export function CrestlineNavbar() {
     return "text-slate-600 hover:text-blue-800 dark:text-slate-400 dark:hover:text-blue-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-blue-600 after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300";
   }, []);
 
-  /** Guests use Schedule Viewing → /contact only; hide duplicate “Contact” link */
-  const visibleTailLinks = useMemo(() => {
-    if (authReady && !user) return tailLinks.filter((l) => l.to !== "/crestline/contact");
-    return tailLinks;
-  }, [authReady, user]);
-
   return (
     <nav
       className={[
@@ -109,76 +103,74 @@ export function CrestlineNavbar() {
           </Link>
 
           {/*
-            Desktop: scrollable link row sits between logo and Schedule (flex-1 + overflow-x).
-            Avoid justify-end on the same node as overflow-x-auto — it hid the start of "Home".
+            Desktop: logo left; nav links + actions grouped on the right (justify-end).
           */}
-          <div className="hidden md:flex flex-1 min-w-0 items-center gap-2 lg:gap-3">
-            <div className="flex min-w-0 flex-1 items-center gap-2 lg:gap-3">
-              <div className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-                <div className="flex w-max min-w-0 items-center gap-3 md:gap-4 lg:gap-5">
-                  {coreLinks.map((link) => (
+          <div className="hidden md:flex flex-1 min-w-0 justify-end items-center gap-3 lg:gap-4">
+            <div className="min-w-0 max-w-full overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex w-max min-w-0 items-center justify-end gap-3 md:gap-4 lg:gap-5">
+                {coreLinks.map((link) => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    aria-current={location.pathname === link.to ? "page" : undefined}
+                    className={[
+                      "relative whitespace-nowrap shrink-0",
+                      NAV_TEXT,
+                      navLinkMotion,
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
+                      location.pathname === link.to ? activeClassGold : inactiveAfterClassGold,
+                    ].join(" ")}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+
+                {showAdminLinks &&
+                  adminLinks.map((link) => (
                     <Link
                       key={link.to}
                       to={link.to}
-                      aria-current={location.pathname === link.to ? "page" : undefined}
+                      aria-current={location.pathname.startsWith(link.to) ? "page" : undefined}
                       className={[
                         "relative whitespace-nowrap shrink-0",
                         NAV_TEXT,
                         navLinkMotion,
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
-                        location.pathname === link.to ? activeClassGold : inactiveAfterClassGold,
+                        location.pathname.startsWith(link.to) ? activeClassGold : inactiveAfterClassGold,
                       ].join(" ")}
                     >
                       {link.label}
                     </Link>
                   ))}
 
-                  {showAdminLinks &&
-                    adminLinks.map((link) => (
-                      <Link
-                        key={link.to}
-                        to={link.to}
-                        aria-current={location.pathname.startsWith(link.to) ? "page" : undefined}
-                        className={[
-                          "relative whitespace-nowrap shrink-0",
-                          NAV_TEXT,
-                          navLinkMotion,
-                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
-                          location.pathname.startsWith(link.to) ? activeClassGold : inactiveAfterClassGold,
-                        ].join(" ")}
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-
-                  {visibleTailLinks.map((link) => {
-                    const active = location.pathname === link.to;
-                    const gold = link.linkAccent === "gold";
-                    const tailActive = gold ? activeClassGold : activeClassBlue;
-                    const tailInactive = gold ? inactiveAfterClassGold : inactiveAfterClassBlue;
-                    return (
-                      <Link
-                        key={link.to}
-                        to={link.to}
-                        aria-current={active ? "page" : undefined}
-                        className={[
-                          "relative whitespace-nowrap shrink-0",
-                          NAV_TEXT,
-                          navLinkMotion,
-                          gold
-                            ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
-                            : "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
-                          active ? tailActive : tailInactive,
-                        ].join(" ")}
-                      >
-                        {link.label}
-                      </Link>
-                    );
-                  })}
-                </div>
+                {tailLinks.map((link) => {
+                  const active = location.pathname === link.to;
+                  const gold = link.linkAccent === "gold";
+                  const tailActive = gold ? activeClassGold : activeClassBlue;
+                  const tailInactive = gold ? inactiveAfterClassGold : inactiveAfterClassBlue;
+                  return (
+                    <Link
+                      key={link.to}
+                      to={link.to}
+                      aria-current={active ? "page" : undefined}
+                      className={[
+                        "relative whitespace-nowrap shrink-0",
+                        NAV_TEXT,
+                        navLinkMotion,
+                        gold
+                          ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                          : "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
+                        active ? tailActive : tailInactive,
+                      ].join(" ")}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
               </div>
+            </div>
 
-              <div className="flex shrink-0 items-center gap-2">
+            <div className="flex shrink-0 items-center gap-2">
                 <ContactPropertiesRippleButton
                   to="/crestline/contact"
                   className="contact-ripple-btn--nav shrink-0 focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
@@ -213,7 +205,6 @@ export function CrestlineNavbar() {
                   )}
                 </div>
               </div>
-            </div>
           </div>
 
           <button
@@ -294,7 +285,7 @@ export function CrestlineNavbar() {
                   </Link>
                 ))}
 
-                {visibleTailLinks.map((link) => {
+                {tailLinks.map((link) => {
                   const active = location.pathname === link.to;
                   const gold = link.linkAccent === "gold";
                   const activeText = gold ? "text-crestline-gold" : "text-blue-700 dark:text-blue-400";
