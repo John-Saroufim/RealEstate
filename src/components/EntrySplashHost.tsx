@@ -7,8 +7,8 @@ const DURATION_MS = 2200;
 const DURATION_REDUCED_MS = 1000;
 
 /**
- * Full-screen flash with Uiverse (SelfMadeSystem) ring animation — blue/white “RealEstate”.
- * Runs once per tab session on first load (no login state), and after login via location.state.reSplash.
+ * Full-screen entry splash — Uiverse morph-stroke loader (mobinkakei) + RealEstate wordmark.
+ * Runs once per tab session on first load, and after login via location.state.reSplash.
  */
 export function EntrySplashHost() {
   const [show, setShow] = useState(false);
@@ -56,31 +56,14 @@ export function EntrySplashHost() {
       aria-busy="true"
       aria-label="Loading"
     >
-      <div className={`re-splash-loader flex flex-col items-center gap-6 ${reducedMotion ? "re-splash-reduced" : ""}`}>
-        <svg className="re-splash-svg h-24 w-24" viewBox="0 0 120 120" aria-hidden>
-          <circle
-            className="re-splash-dash"
-            cx="60"
-            cy="60"
-            r="52"
-            pathLength="360"
-            fill="none"
-            stroke="hsl(var(--primary))"
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-          <circle
-            className="re-splash-spin"
-            cx="60"
-            cy="60"
-            r="34"
-            pathLength="360"
-            fill="none"
-            stroke="hsl(var(--muted-foreground))"
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-        </svg>
+      <div
+        className={`flex flex-col items-center gap-8 ${reducedMotion ? "re-entry-splash--reduced" : ""}`}
+      >
+        <div className="re-entry-loader" aria-hidden>
+          <svg viewBox="0 0 80 80">
+            <rect x="8" y="8" width="64" height="64" rx="8" ry="8" />
+          </svg>
+        </div>
         <p className="text-center font-serif text-2xl font-bold tracking-tight text-foreground">
           <span className="text-primary">Real</span>
           <span className="text-foreground/90">Estate</span>
