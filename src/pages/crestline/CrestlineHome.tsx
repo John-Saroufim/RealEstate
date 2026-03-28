@@ -394,9 +394,9 @@ export default function CrestlineHome() {
                         Price Range
                       </label>
                       {priceStats ? (
-                        <div className="flex flex-col gap-3 w-full max-w-lg mx-auto items-center min-w-0">
-                          <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 sm:gap-4 w-full rounded-xl border border-white/20 bg-transparent px-4 py-3 sm:px-5">
-                            <div className="uiverse-input-wrap !inline-flex shrink-0 align-middle">
+                        <div className="flex flex-col gap-3 w-full max-w-md mx-auto items-center min-w-0">
+                          <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 sm:gap-3 w-full max-w-[min(100%,20rem)] sm:max-w-[22rem] mx-auto rounded-xl border border-white/20 bg-black/10 px-3 py-2.5 sm:px-4 overflow-hidden">
+                            <div className="uiverse-input-wrap uiverse-input-wrap--fit shrink-0">
                               <input
                                 type="text"
                                 inputMode="numeric"
@@ -431,7 +431,7 @@ export default function CrestlineHome() {
                             <span className="text-white/50 text-sm font-medium shrink-0 select-none pb-0.5" aria-hidden>
                               —
                             </span>
-                            <div className="uiverse-input-wrap !inline-flex shrink-0 align-middle">
+                            <div className="uiverse-input-wrap uiverse-input-wrap--fit shrink-0">
                               <input
                                 type="text"
                                 inputMode="numeric"
@@ -464,7 +464,7 @@ export default function CrestlineHome() {
                               />
                             </div>
                           </div>
-                          <div className="w-full max-w-lg min-w-0 px-1 pt-1">
+                          <div className="w-full max-w-md min-w-0 px-1 pt-1 mx-auto">
                             <Slider
                               min={priceStats.min}
                               max={priceStats.max}

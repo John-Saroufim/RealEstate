@@ -416,6 +416,19 @@
   min-width: 0;
 }
 
+/* Side-by-side fields (e.g. hero min/max price): full-width wrap would break flex rows and shift inputs */
+.uiverse-input-wrap--fit {
+  width: auto !important;
+  display: inline-flex !important;
+  align-items: center;
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
+.uiverse-input-wrap--fit :is(input, textarea):active {
+  transform: none;
+}
+
 .uiverse-input-wrap :is(input, textarea) {
   outline: none;
   transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
