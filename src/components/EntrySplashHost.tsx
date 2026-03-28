@@ -58,7 +58,7 @@ export function EntrySplashHost() {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background"
+      className="fixed inset-0 z-[100] flex min-h-dvh w-full max-w-full flex-col items-center justify-center overflow-x-hidden overflow-y-auto overscroll-none bg-background px-4 pt-[env(safe-area-inset-top,0px)] pb-[env(safe-area-inset-bottom,0px)]"
       role="status"
       aria-live="polite"
       aria-busy="true"

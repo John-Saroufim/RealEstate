@@ -170,6 +170,7 @@ export function CrestlineNavbar() {
       className={[
         "fixed top-0 left-0 right-0 z-50",
         "border-b border-crestline-gold/10 backdrop-blur-xl",
+        "pt-[env(safe-area-inset-top,0px)]",
         "transition-colors duration-300",
         scrolled ? "bg-crestline-bg/95" : "bg-crestline-bg/80",
       ].join(" ")}
@@ -262,9 +263,9 @@ export function CrestlineNavbar() {
               transition={{ duration: 0.18 }}
               role="dialog"
               aria-modal="true"
-              className="md:hidden fixed top-0 left-0 right-0 z-50 bg-crestline-bg/95 backdrop-blur-xl border-b border-crestline-gold/10 max-h-[min(85vh,640px)] overflow-y-auto"
+              className="md:hidden fixed left-0 right-0 top-0 z-50 max-h-[min(85dvh,640px)] overflow-y-auto border-b border-crestline-gold/10 bg-crestline-bg/95 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl"
             >
-              <div className="px-4 pt-5 pb-6 space-y-6">
+              <div className="space-y-6 px-4 pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] pt-5">
                 <div className="flex items-center justify-between">
                   <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-crestline-muted/95">Menu</div>
                   <button

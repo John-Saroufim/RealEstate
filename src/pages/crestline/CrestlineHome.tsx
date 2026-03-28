@@ -303,11 +303,11 @@ export default function CrestlineHome() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-crestline-bg text-slate-900 font-sans">
+    <div className="min-h-dvh w-full max-w-full overflow-x-hidden bg-crestline-bg font-sans text-slate-900">
       <CrestlineNavbar />
 
-      {/* Hero */}
-      <section className="relative min-h-[calc(80vh+6rem)] flex items-start overflow-hidden pt-24 pb-12 md:items-center">
+      {/* Hero — pt clears fixed nav (h-20) + notch safe-area; dvh avoids iOS 100vh jump */}
+      <section className="relative flex min-h-[calc(80dvh+6rem)] items-start overflow-x-hidden overflow-y-hidden pt-[max(6rem,calc(5rem+env(safe-area-inset-top,0px)+1rem))] pb-12 md:items-center">
         <div className="absolute inset-0">
           <img src={heroImg} alt="Luxury real estate" className="w-full h-full object-cover" />
           {/* Premium dark overlay */}
@@ -315,8 +315,8 @@ export default function CrestlineHome() {
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 via-slate-950/30 to-slate-950/5" />
         </div>
 
-        <div className="relative w-full">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-start justify-center min-h-[80vh] md:items-center">
+        <div className="relative w-full min-w-0 max-w-full">
+          <div className="mx-auto flex min-h-[80dvh] max-w-7xl items-start justify-center px-4 sm:px-6 lg:px-8 md:items-center">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -397,7 +397,7 @@ export default function CrestlineHome() {
                         <div className="flex flex-col gap-3 w-full items-center min-w-0">
                           {/* Single width for inputs + slider so the track matches the price box */}
                           <div className="flex w-full max-w-[min(100%,20rem)] sm:max-w-[22rem] flex-col gap-3 mx-auto min-w-0">
-                          <div className="flex flex-row flex-nowrap items-center justify-center gap-2.5 sm:gap-3 w-full rounded-xl border border-white/20 bg-black/10 px-3 py-2.5 sm:px-4 overflow-hidden">
+                          <div className="flex w-full flex-row flex-wrap items-center justify-center gap-2.5 overflow-hidden rounded-xl border border-white/20 bg-black/10 px-2 py-2.5 sm:flex-nowrap sm:gap-3 sm:px-4">
                             <div className="uiverse-input-wrap uiverse-input-wrap--fit shrink-0">
                               <input
                                 type="text"

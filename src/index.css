@@ -123,9 +123,15 @@
     @apply border-border;
   }
 
+  html {
+    overflow-x: clip;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
     line-height: 1.7;
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
   }
 
   h1, h2, h3, h4, h5, h6 {
