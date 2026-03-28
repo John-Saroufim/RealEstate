@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { CrestlineNavbar } from "@/components/crestline/CrestlineNavbar";
 import { CrestlineFooter } from "@/components/crestline/CrestlineFooter";
@@ -11,10 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { MapPin, Bed, Bath, Ruler, Plus, Pencil, Trash2 } from "lucide-react";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { AdminStatsOverview } from "@/components/crestline/admin/AdminStatsOverview";
+import { MotionSection } from "@/components/MotionSection";
+import { PropertyFiltersPanel, PropertyFiltersFields } from "@/components/crestline/PropertyFiltersPanel";
 
 type Listing = {
   id: string;
@@ -50,32 +53,197 @@ function listingStatusValue(status: string | null): string {
   return status?.trim() || "For Sale";
 }
 
+function parsePriceParam(raw: string | null): number | null {
+  if (raw == null || raw === "") return null;
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n < 0) return null;
+  return n;
+}
+
 export default function AdminListings() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const qParam = searchParams.get("q") ?? "";
+  const selectedType = searchParams.get("type") ?? "All";
+  const selectedStatus = searchParams.get("status") ?? "All";
+  const sort = searchParams.get("sort") ?? "newest";
+
+  const priceMin = parsePriceParam(searchParams.get("min_price"));
+  const priceMax = parsePriceParam(searchParams.get("max_price"));
+
+  const bedsMin = (() => {
+    const raw = searchParams.get("beds");
+    const n = raw ? Number(raw) : 0;
+    if (!Number.isFinite(n)) return 0;
+    return Math.max(0, n);
+  })();
+
+  const bathsMin = (() => {
+    const raw = searchParams.get("baths");
+    const n = raw ? Number(raw) : 0;
+    if (!Number.isFinite(n)) return 0;
+    return Math.max(0, n);
+  })();
+
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updatingStatusId, setUpdatingStatusId] = useState<string | null>(null);
   const [statsRefreshKey, setStatsRefreshKey] = useState(0);
-  const navigate = useNavigate();
+
+  const [locationSuggestions, setLocationSuggestions] = useState<string[]>([]);
+  const [nameSuggestions, setNameSuggestions] = useState<string[]>([]);
+  const fallbackTypes = ["Villa", "Penthouse", "Estate", "Townhouse"];
+  const [availableTypes, setAvailableTypes] = useState<string[]>(fallbackTypes);
+  const [typesLoading, setTypesLoading] = useState(true);
+
+  const hasActiveFilters =
+    Boolean(qParam.trim()) ||
+    selectedType !== "All" ||
+    selectedStatus !== "All" ||
+    priceMin != null ||
+    priceMax != null ||
+    bedsMin > 0 ||
+    bathsMin > 0 ||
+    sort !== "newest";
+
+  const setParam = (key: string, value: string | number | null | undefined) => {
+    const next = new URLSearchParams(searchParams);
+    if (value === null || value === undefined || value === "" || value === "All" || value === 0) {
+      next.delete(key);
+    } else {
+      next.set(key, String(value));
+    }
+    setSearchParams(next, { replace: true });
+  };
+
+  const clearFilters = () => {
+    setSearchParams(new URLSearchParams(), { replace: true });
+  };
+
+  const availableTypesForUI = useMemo(() => {
+    if (selectedType === "All") return availableTypes;
+    if (!selectedType) return availableTypes;
+    if (availableTypes.includes(selectedType)) return availableTypes;
+    return [...availableTypes, selectedType];
+  }, [availableTypes, selectedType]);
 
   useEffect(() => {
     const load = async () => {
       setLoading(true);
-      const { data, error } = await supabase
-        .from("listings")
-        .select("*")
-        .order("created_at", { ascending: false });
+      setListings([]);
+      setError(null);
 
-      if (error) {
+      const q = qParam.trim().replace(/\s+/g, " ");
+
+      let query = supabase.from("listings").select("*");
+
+      if (q) {
+        if (q.includes(",")) {
+          query = query.ilike("location", `%${q}%`);
+        } else {
+          query = query.or(`title.ilike.%${q}%,location.ilike.%${q}%`);
+        }
+      }
+
+      if (selectedType !== "All") query = query.eq("type", selectedType);
+      if (selectedStatus !== "All") query = query.eq("status", selectedStatus);
+      if (bedsMin > 0) query = query.gte("beds", bedsMin);
+      if (bathsMin > 0) query = query.gte("baths", bathsMin);
+
+      let minP = priceMin;
+      let maxP = priceMax;
+      if (minP != null && maxP != null && minP > maxP) {
+        [minP, maxP] = [maxP, minP];
+      }
+      if (minP != null && minP > 0) query = query.gte("price", minP);
+      if (maxP != null && maxP > 0) query = query.lte("price", maxP);
+
+      if (sort === "price_asc") query = query.order("price", { ascending: true });
+      else if (sort === "price_desc") query = query.order("price", { ascending: false });
+      else query = query.order("created_at", { ascending: false });
+
+      query = query.limit(1000);
+
+      const { data, error: qErr } = await query;
+
+      if (qErr) {
         setError("Failed to load listings.");
       } else {
-        const next = (data ?? []) as Listing[];
-        setListings(next.filter((p) => !isDemoListingTitle(p.title)));
+        let next = (data ?? []) as Listing[];
+        next = next.filter((p) => !isDemoListingTitle(p.title));
+        setListings(next);
       }
       setLoading(false);
     };
 
     load();
+  }, [qParam, selectedType, selectedStatus, priceMin, priceMax, bedsMin, bathsMin, sort]);
+
+  useEffect(() => {
+    const loadTypes = async () => {
+      try {
+        setTypesLoading(true);
+        const { data, error: tErr } = await supabase.from("listings").select("type").limit(5000);
+        if (tErr) throw tErr;
+        const uniq = Array.from(
+          new Set(
+            (data ?? [])
+              .map((r) => (r as { type?: string }).type)
+              .filter((t): t is string => typeof t === "string" && t.trim().length > 0),
+          ),
+        ).sort((a, b) => a.localeCompare(b));
+        if (uniq.length > 0) setAvailableTypes(uniq);
+      } catch {
+        // keep fallback
+      } finally {
+        setTypesLoading(false);
+      }
+    };
+    loadTypes();
+  }, []);
+
+  useEffect(() => {
+    const loadLocations = async () => {
+      try {
+        const { data, error: lErr } = await supabase.from("listings").select("location").limit(8000);
+        if (lErr) throw lErr;
+        const uniq = Array.from(
+          new Set(
+            (data ?? [])
+              .map((r) => (r as { location?: string }).location)
+              .filter((loc): loc is string => typeof loc === "string" && loc.trim().length > 0),
+          ),
+        ).sort((a, b) => a.localeCompare(b));
+        if (uniq.length > 0) setLocationSuggestions(uniq);
+      } catch {
+        // keep empty
+      }
+    };
+    loadLocations();
+  }, []);
+
+  useEffect(() => {
+    const loadNames = async () => {
+      try {
+        const { data, error: nErr } = await supabase.from("listings").select("title").limit(8000);
+        if (nErr) throw nErr;
+        const uniq = Array.from(
+          new Set(
+            (data ?? [])
+              .map((r) => (r as { title?: string }).title)
+              .filter((t): t is string => typeof t === "string" && t.trim().length > 0),
+          ),
+        ).sort((a, b) => a.localeCompare(b));
+        const filtered = uniq.filter((t) => !isDemoListingTitle(t));
+        if (filtered.length > 0) setNameSuggestions(filtered);
+      } catch {
+        // keep empty
+      }
+    };
+    loadNames();
   }, []);
 
   const formatPrice = (price: number | null) =>
@@ -83,8 +251,8 @@ export default function AdminListings() {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this listing? This cannot be undone.")) return;
-    const { error } = await supabase.from("listings").delete().eq("id", id);
-    if (error) {
+    const { error: delErr } = await supabase.from("listings").delete().eq("id", id);
+    if (delErr) {
       setError("Failed to delete listing.");
       return;
     }
@@ -139,12 +307,79 @@ export default function AdminListings() {
         </div>
       </section>
 
+      <MotionSection className="border-b border-slate-200/80 bg-crestline-bg py-10 md:py-12 lg:py-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <PropertyFiltersPanel
+              qParam={qParam}
+              selectedType={selectedType}
+              selectedStatus={selectedStatus}
+              sort={sort}
+              availableTypes={typesLoading ? fallbackTypes : availableTypesForUI}
+              locationSuggestions={locationSuggestions}
+              nameSuggestions={nameSuggestions}
+              priceMin={priceMin}
+              priceMax={priceMax}
+              bedsMin={bedsMin}
+              bathsMin={bathsMin}
+              setParam={setParam}
+              clearFilters={clearFilters}
+              hasActiveFilters={hasActiveFilters}
+              onOpenMobileFilters={() => setMobileFiltersOpen(true)}
+              favoritesOnly={false}
+              onToggleFavoritesOnly={() => {}}
+              favoritesCount={0}
+              showFavoritesToggle={false}
+            />
+          </div>
+
+          <Dialog open={mobileFiltersOpen} onOpenChange={setMobileFiltersOpen}>
+            <DialogContent className="max-h-[min(90vh,880px)] max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-crestline-surface p-0 text-slate-900 shadow-[0_24px_48px_-20px_rgba(15,23,42,0.18)] dark:border-slate-700/85 dark:bg-gradient-to-b dark:from-crestline-surface dark:to-crestline-bg dark:text-slate-100 dark:shadow-[0_24px_48px_-20px_rgba(0,0,0,0.45)] sm:max-w-xl">
+              <DialogHeader className="border-b border-slate-200/80 px-6 py-5 dark:border-slate-700/80 sm:px-8">
+                <DialogTitle className="font-serif text-2xl tracking-tight text-slate-900 dark:text-slate-100">Refine results</DialogTitle>
+                <p className="text-sm text-crestline-muted">Adjust filters — updates apply instantly</p>
+              </DialogHeader>
+              <div className="px-6 py-6 sm:px-8 sm:py-8">
+                <PropertyFiltersFields
+                  selectedType={selectedType}
+                  selectedStatus={selectedStatus}
+                  sort={sort}
+                  availableTypes={typesLoading ? fallbackTypes : availableTypesForUI}
+                  priceMin={priceMin}
+                  priceMax={priceMax}
+                  bedsMin={bedsMin}
+                  bathsMin={bathsMin}
+                  setParam={setParam}
+                />
+              </div>
+              <div className="flex flex-col-reverse gap-3 border-t border-slate-200/80 bg-slate-50 px-6 py-5 dark:border-slate-700/80 dark:bg-crestline-bg/90 sm:flex-row sm:justify-end sm:px-8">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="rounded-lg border-slate-300 bg-transparent text-slate-900 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+                  onClick={clearFilters}
+                >
+                  Clear all
+                </Button>
+                <Button
+                  type="button"
+                  className="rounded-lg bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90"
+                  onClick={() => setMobileFiltersOpen(false)}
+                >
+                  Done
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </MotionSection>
+
       <section className="py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading && <LoadingSpinner label="Loading listings..." />}
           {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
 
-          {!loading && listings.length === 0 && !error && (
+          {!loading && listings.length === 0 && !error && !hasActiveFilters && (
             <div className="border border-slate-200 p-10 text-center bg-crestline-surface">
               <div className="mx-auto h-12 w-12 border border-crestline-gold/20 bg-crestline-bg/50 flex items-center justify-center mb-4">
                 <Pencil className="h-6 w-6 text-crestline-gold" />
@@ -156,6 +391,16 @@ export default function AdminListings() {
                 className="bg-crestline-gold text-crestline-on-gold hover:bg-crestline-gold/90 rounded-xl"
               >
                 Create your first listing
+              </Button>
+            </div>
+          )}
+
+          {!loading && listings.length === 0 && !error && hasActiveFilters && (
+            <div className="border border-slate-200 p-10 text-center bg-crestline-surface">
+              <p className="font-serif text-xl font-bold text-slate-900 mb-2">No listings match your filters</p>
+              <p className="text-sm text-crestline-muted mb-6">Try clearing or adjusting search, type, price, or status.</p>
+              <Button variant="outline" className="rounded-xl border-slate-300" onClick={clearFilters}>
+                Clear filters
               </Button>
             </div>
           )}
@@ -283,4 +528,3 @@ export default function AdminListings() {
     </div>
   );
 }
-

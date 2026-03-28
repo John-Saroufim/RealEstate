@@ -254,6 +254,8 @@ type PropertyFiltersPanelProps = {
   favoritesOnly: boolean;
   favoritesCount: number;
   onToggleFavoritesOnly: () => void;
+  /** Hide “Favorites” toggle (e.g. admin listings). Default true. */
+  showFavoritesToggle?: boolean;
   priceMin: number | null;
   priceMax: number | null;
   bedsMin: number;
@@ -279,6 +281,7 @@ export function PropertyFiltersPanel({
   favoritesOnly,
   favoritesCount,
   onToggleFavoritesOnly,
+  showFavoritesToggle = true,
   priceMin,
   priceMax,
   bedsMin,
@@ -452,29 +455,31 @@ export function PropertyFiltersPanel({
             </Button>
           </div>
 
-          {/* Favorites toggle (DB/public listings are filtered client-side based on the hearts you clicked). */}
-          <div className="mt-4 flex items-center justify-start gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onToggleFavoritesOnly}
-              className={[
-                "h-12 rounded-xl border border-slate-200 bg-white px-4 font-medium text-slate-900 shadow-sm transition-all duration-200",
-                "hover:border-crestline-gold/35 hover:bg-slate-50 hover:text-slate-900",
-                "dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:shadow-none dark:hover:bg-slate-800",
-                favoritesOnly ? "border-crestline-gold/40 bg-crestline-gold/10 text-crestline-gold" : "",
-              ].join(" ")}
-            >
-              <Heart
-                className={favoritesOnly ? "h-4 w-4 fill-current" : "h-4 w-4"}
-                strokeWidth={favoritesOnly ? 0 : 2}
-              />
-              <span className="ml-2">Favorites</span>
-              <span className="ml-2 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-slate-100 px-2 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                {favoritesCount}
-              </span>
-            </Button>
-          </div>
+          {/* Favorites toggle (public properties only; hidden on admin). */}
+          {showFavoritesToggle ? (
+            <div className="mt-4 flex items-center justify-start gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onToggleFavoritesOnly}
+                className={[
+                  "h-12 rounded-xl border border-slate-200 bg-white px-4 font-medium text-slate-900 shadow-sm transition-all duration-200",
+                  "hover:border-crestline-gold/35 hover:bg-slate-50 hover:text-slate-900",
+                  "dark:border-slate-600 dark:bg-slate-900/55 dark:text-slate-100 dark:shadow-none dark:hover:bg-slate-800",
+                  favoritesOnly ? "border-crestline-gold/40 bg-crestline-gold/10 text-crestline-gold" : "",
+                ].join(" ")}
+              >
+                <Heart
+                  className={favoritesOnly ? "h-4 w-4 fill-current" : "h-4 w-4"}
+                  strokeWidth={favoritesOnly ? 0 : 2}
+                />
+                <span className="ml-2">Favorites</span>
+                <span className="ml-2 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-slate-100 px-2 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                  {favoritesCount}
+                </span>
+              </Button>
+            </div>
+          ) : null}
         </div>
 
         {combinedSearchSuggestions.length > 0 ? (
