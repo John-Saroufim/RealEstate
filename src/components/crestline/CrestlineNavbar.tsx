@@ -17,7 +17,7 @@ const coreLinks = [
 const adminLinks = [
   { label: "Inquiries", to: "/crestline/admin/inquiries" },
   { label: "Reviews", to: "/crestline/admin/reviews" },
-  { label: "Listings Admin", to: "/crestline/admin/listings" },
+  { label: "Listings", to: "/crestline/admin/listings" },
 ];
 
 const tailLinks = [

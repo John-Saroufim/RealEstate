@@ -59,7 +59,7 @@ export default function AdminStatus() {
                   to="/crestline/admin/listings"
                   className="inline-block bg-crestline-gold text-crestline-on-gold px-6 py-3 hover:opacity-90 transition-opacity"
                 >
-                  Go to Listings Admin
+                  Go to Listings
                 </Link>
                 <span className="mx-3 text-crestline-muted">or</span>
                 <Link to="/logout" className="text-crestline-gold hover:underline">
