@@ -306,33 +306,21 @@ export function CrestlineNavbar() {
                   const activeText = gold ? "text-crestline-gold" : "text-blue-700 dark:text-blue-400";
                   const inactiveText =
                     "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100";
-                  const showScheduleUnderAbout = link.to === "/crestline/about" && authReady && !user;
-                  const showScheduleUnderContact = link.to === "/crestline/contact" && Boolean(user);
                   return (
-                    <div key={link.to}>
-                      <Link
-                        to={link.to}
-                        onClick={() => setOpen(false)}
-                        className={[
-                          navLinkClassMobile,
-                          gold
-                            ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
-                            : "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
-                          active ? activeText : inactiveText,
-                        ].join(" ")}
-                      >
-                        {link.label}
-                      </Link>
-                      {(showScheduleUnderAbout || showScheduleUnderContact) && (
-                        <ContactPropertiesRippleButton
-                          to="/crestline/contact"
-                          onClick={() => setOpen(false)}
-                          className="mt-2 block w-full rounded-xl py-3 text-center font-medium min-h-11 text-[15px] focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
-                        >
-                          Schedule Viewing
-                        </ContactPropertiesRippleButton>
-                      )}
-                    </div>
+                    <Link
+                      key={link.to}
+                      to={link.to}
+                      onClick={() => setOpen(false)}
+                      className={[
+                        navLinkClassMobile,
+                        gold
+                          ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                          : "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg",
+                        active ? activeText : inactiveText,
+                      ].join(" ")}
+                    >
+                      {link.label}
+                    </Link>
                   );
                 })}
 
