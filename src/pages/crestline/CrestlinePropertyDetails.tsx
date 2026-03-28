@@ -381,7 +381,7 @@ export default function CrestlinePropertyDetails() {
               <div className="grid lg:grid-cols-5 gap-10">
                 <div className="lg:col-span-3">
                   {/* Gallery + Title */}
-                  <div className="relative border border-slate-200 bg-crestline-surface overflow-hidden">
+                  <div className="relative border border-slate-200 bg-crestline-surface overflow-hidden dark:border-slate-700/80">
                     <div
                       className="relative"
                       role="region"
@@ -434,27 +434,27 @@ export default function CrestlinePropertyDetails() {
 
                           {images.length > 1 && (
                             <>
-                              <div className="pointer-events-none absolute inset-y-0 left-0 flex w-14 items-center bg-gradient-to-r from-crestline-bg/60 to-transparent sm:w-20" />
-                              <div className="pointer-events-none absolute inset-y-0 right-0 flex w-14 items-center justify-end bg-gradient-to-l from-crestline-bg/60 to-transparent sm:w-20" />
+                              <div className="pointer-events-none absolute inset-y-0 left-0 flex w-14 items-center bg-gradient-to-r from-crestline-bg/60 to-transparent dark:from-black/55 sm:w-20" />
+                              <div className="pointer-events-none absolute inset-y-0 right-0 flex w-14 items-center justify-end bg-gradient-to-l from-crestline-bg/60 to-transparent dark:from-black/55 sm:w-20" />
                               <button
                                 type="button"
                                 aria-label="Previous photo"
                                 onClick={() => scrollToSlide(activeImageIndex - 1)}
                                 disabled={activeImageIndex <= 0}
-                                className="absolute left-2 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center border border-slate-200 bg-white/90 text-slate-900 backdrop-blur-sm transition-opacity hover:bg-white disabled:pointer-events-none disabled:opacity-30"
+                                className="absolute left-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-md border border-slate-200/90 bg-white/90 text-slate-900 shadow-sm backdrop-blur-sm transition-colors hover:bg-white disabled:pointer-events-none disabled:opacity-30 dark:border-slate-600/90 dark:bg-slate-950/90 dark:text-slate-50 dark:shadow-black/40 dark:hover:bg-slate-900/95"
                               >
-                                <ChevronLeft className="h-6 w-6" />
+                                <ChevronLeft className="h-6 w-6 shrink-0 text-current" strokeWidth={2} />
                               </button>
                               <button
                                 type="button"
                                 aria-label="Next photo"
                                 onClick={() => scrollToSlide(activeImageIndex + 1)}
                                 disabled={activeImageIndex >= images.length - 1}
-                                className="absolute right-2 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center border border-slate-200 bg-white/90 text-slate-900 backdrop-blur-sm transition-opacity hover:bg-white disabled:pointer-events-none disabled:opacity-30"
+                                className="absolute right-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-md border border-slate-200/90 bg-white/90 text-slate-900 shadow-sm backdrop-blur-sm transition-colors hover:bg-white disabled:pointer-events-none disabled:opacity-30 dark:border-slate-600/90 dark:bg-slate-950/90 dark:text-slate-50 dark:shadow-black/40 dark:hover:bg-slate-900/95"
                               >
-                                <ChevronRight className="h-6 w-6" />
+                                <ChevronRight className="h-6 w-6 shrink-0 text-current" strokeWidth={2} />
                               </button>
-                              <div className="absolute bottom-4 right-4 z-10 bg-crestline-bg/80 px-2.5 py-1 text-[11px] font-semibold tabular-nums text-slate-800 backdrop-blur-sm border border-slate-200">
+                              <div className="absolute bottom-4 right-4 z-10 border border-slate-200/90 bg-crestline-bg/85 px-2.5 py-1 text-[11px] font-semibold tabular-nums text-slate-800 backdrop-blur-sm dark:border-slate-600/80 dark:bg-slate-950/90 dark:text-slate-100">
                                 {activeImageIndex + 1} / {images.length}
                               </div>
                             </>
@@ -480,7 +480,9 @@ export default function CrestlinePropertyDetails() {
                               aria-label={`View image ${idx + 1}`}
                               className={[
                                 "relative shrink-0 w-20 h-14 sm:w-24 sm:h-16 border transition-all duration-200",
-                                idx === activeImageIndex ? "border-crestline-gold" : "border-slate-200 hover:border-crestline-gold/30",
+                                idx === activeImageIndex
+                                  ? "border-crestline-gold"
+                                  : "border-slate-200 hover:border-crestline-gold/30 dark:border-slate-600 dark:hover:border-crestline-gold/40",
                               ].join(" ")}
                             >
                               {img.mediaType === "video" ? (
