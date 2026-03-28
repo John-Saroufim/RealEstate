@@ -490,3 +490,90 @@
     transform: rotate(-10deg);
   }
 }
+
+/* Entry splash — SVG dash rings (from Uiverse.io by SelfMadeSystem) */
+.re-splash-loader {
+  display: flex;
+  margin: 0.25em 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.re-splash-svg {
+  display: block;
+  overflow: visible;
+}
+
+.re-splash-dash {
+  animation:
+    re-splash-dashArray 2s ease-in-out infinite,
+    re-splash-dashOffset 2s linear infinite;
+}
+
+.re-splash-spin {
+  animation:
+    re-splash-spinDashArray 2s ease-in-out infinite,
+    re-splash-spinRotate 8s ease-in-out infinite,
+    re-splash-dashOffset 2s linear infinite;
+  transform-origin: 60px 60px;
+}
+
+.re-splash-reduced .re-splash-dash,
+.re-splash-reduced .re-splash-spin {
+  animation: none;
+}
+
+@keyframes re-splash-dashArray {
+  0% {
+    stroke-dasharray: 0 1 359 0;
+  }
+  50% {
+    stroke-dasharray: 0 359 1 0;
+  }
+  100% {
+    stroke-dasharray: 359 1 0 0;
+  }
+}
+
+@keyframes re-splash-spinDashArray {
+  0% {
+    stroke-dasharray: 270 90;
+  }
+  50% {
+    stroke-dasharray: 0 360;
+  }
+  100% {
+    stroke-dasharray: 270 90;
+  }
+}
+
+@keyframes re-splash-dashOffset {
+  0% {
+    stroke-dashoffset: 365;
+  }
+  100% {
+    stroke-dashoffset: 5;
+  }
+}
+
+@keyframes re-splash-spinRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  12.5%,
+  25% {
+    transform: rotate(270deg);
+  }
+  37.5%,
+  50% {
+    transform: rotate(540deg);
+  }
+  62.5%,
+  75% {
+    transform: rotate(810deg);
+  }
+  87.5%,
+  100% {
+    transform: rotate(1080deg);
+  }
+}

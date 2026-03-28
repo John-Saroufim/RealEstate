@@ -32,7 +32,7 @@ export default function ResetPassword() {
     setLoading(false);
     if (error) { toast.error(error.message); } else {
       toast.success("Password updated successfully!");
-      navigate("/crestline/admin/listings");
+      navigate("/crestline/admin/listings", { state: { reSplash: true } });
     }
   };
 

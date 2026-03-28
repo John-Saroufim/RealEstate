@@ -54,12 +54,12 @@ export default function Login() {
     }
     if (adminEmails.length > 0) {
       if (adminEmails.includes(email.toLowerCase())) {
-        navigate("/crestline/admin/listings");
+        navigate("/crestline/admin/listings", { state: { reSplash: true } });
       } else {
-        navigate("/crestline");
+        navigate("/crestline", { state: { reSplash: true } });
       }
     } else {
-      navigate("/crestline/admin/listings");
+      navigate("/crestline/admin/listings", { state: { reSplash: true } });
     }
   };
 
