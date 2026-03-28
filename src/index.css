@@ -771,7 +771,7 @@
 
 /* Contact / property inquiry CTAs — ripple fill (from Uiverse.io by cssbuttons-io); font from utilities */
 .contact-ripple-btn {
-  --cr-accent: #39bda7;
+  --cr-accent: #2563eb;
   --cr-border: #4f4f4f;
   --cr-fg: #0f172a;
   --cr-hover-fg: #ffffff;
@@ -808,34 +808,11 @@
 }
 
 .contact-ripple-btn--hero {
+  --cr-accent: #2563eb;
   --cr-border: rgba(255, 255, 255, 0.42);
   --cr-fg: #ffffff;
   --cr-hover-fg: #ffffff;
   --cr-before-idle: rgba(255, 255, 255, 0.08);
-}
-
-@keyframes contact-hero-blue-flash {
-  0%,
-  40%,
-  100% {
-    box-shadow: 0 0 0 0 rgb(56 189 248 / 0);
-  }
-  50% {
-    box-shadow: 0 0 26px 8px rgb(56 189 248 / 0.55);
-  }
-  60% {
-    box-shadow: 0 0 12px 4px rgb(56 189 248 / 0.3);
-  }
-}
-
-.contact-ripple-btn--hero-flash {
-  animation: contact-hero-blue-flash 2.75s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .contact-ripple-btn--hero-flash {
-    animation: none;
-  }
 }
 
 .dark .contact-ripple-btn:not(.contact-ripple-btn--hero) {

@@ -484,7 +484,7 @@ export default function CrestlineHome() {
                   <ContactPropertiesRippleButton
                     to="/crestline/contact"
                     variant="hero"
-                    className="contact-ripple-btn--hero-flash w-full sm:w-auto rounded-xl px-8 py-3 text-base font-semibold focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900/80"
+                    className="w-full sm:w-auto rounded-xl px-8 py-3 text-base font-semibold focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900/80"
                   >
                     Contact Us
                   </ContactPropertiesRippleButton>

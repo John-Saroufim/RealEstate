@@ -22,8 +22,8 @@ const adminLinks = [
 ];
 
 const tailLinks = [
-  { label: "About", to: "/crestline/about" },
-  { label: "Contact", to: "/crestline/contact" },
+  { label: "About", to: "/crestline/about", linkAccent: "gold" as const },
+  { label: "Contact", to: "/crestline/contact", linkAccent: "blue" as const },
 ];
 
 export function CrestlineNavbar() {
@@ -60,12 +60,20 @@ export function CrestlineNavbar() {
     };
   }, [open]);
 
-  const activeClass = useMemo(() => {
+  const activeClassGold = useMemo(() => {
     return "text-crestline-gold after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-crestline-gold after:opacity-100 after:transition-opacity after:duration-300";
   }, []);
 
-  const inactiveAfterClass = useMemo(() => {
+  const inactiveAfterClassGold = useMemo(() => {
     return "text-slate-600 hover:text-slate-900 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-crestline-gold after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300";
+  }, []);
+
+  const activeClassBlue = useMemo(() => {
+    return "text-blue-700 dark:text-blue-400 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-blue-600 after:opacity-100 after:transition-opacity after:duration-300";
+  }, []);
+
+  const inactiveAfterClassBlue = useMemo(() => {
+    return "text-slate-600 hover:text-blue-800 dark:text-slate-400 dark:hover:text-blue-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-blue-600 after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300";
   }, []);
 
   return (
@@ -89,9 +97,8 @@ export function CrestlineNavbar() {
             </span>
           </Link>
 
-          {/* Reserve space for viewport-pinned logout/login only */}
-          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-6 lg:ml-10 md:pr-[min(14.5rem,34vw)]">
-            {/* Nav links: core → admin (if applicable) → About → Contact → Schedule Viewing — pr clears fixed logout (~118px + inset) */}
+          {/* Desktop: nav cluster + auth in one row so logout never overlaps Schedule Viewing */}
+          <div className="hidden md:flex flex-1 min-w-0 items-center justify-end ml-6 lg:ml-10 gap-4 lg:gap-5">
             <div className="flex items-center gap-8 min-w-0">
               {coreLinks.map((link) => (
                 <Link
@@ -103,7 +110,7 @@ export function CrestlineNavbar() {
                     "text-[16px] font-medium tracking-wide leading-6",
                     "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
-                    location.pathname === link.to ? activeClass : inactiveAfterClass,
+                    location.pathname === link.to ? activeClassGold : inactiveAfterClassGold,
                   ].join(" ")}
                 >
                   {link.label}
@@ -120,29 +127,37 @@ export function CrestlineNavbar() {
                     "text-[16px] font-medium tracking-wide leading-6",
                     "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
-                    location.pathname.startsWith(link.to) ? activeClass : inactiveAfterClass,
+                    location.pathname.startsWith(link.to) ? activeClassGold : inactiveAfterClassGold,
                   ].join(" ")}
                 >
                   {link.label}
                 </Link>
               ))}
 
-              {tailLinks.map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  aria-current={location.pathname === link.to ? "page" : undefined}
-                  className={[
-                    "relative whitespace-nowrap shrink-0",
-                    "text-[16px] font-medium tracking-wide leading-6",
-                    "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
-                    location.pathname === link.to ? activeClass : inactiveAfterClass,
-                  ].join(" ")}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {tailLinks.map((link) => {
+                const active = location.pathname === link.to;
+                const gold = link.linkAccent === "gold";
+                const tailActive = gold ? activeClassGold : activeClassBlue;
+                const tailInactive = gold ? inactiveAfterClassGold : inactiveAfterClassBlue;
+                return (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    aria-current={active ? "page" : undefined}
+                    className={[
+                      "relative whitespace-nowrap shrink-0",
+                      "text-[16px] font-medium tracking-wide leading-6",
+                      "transition-colors transition-transform duration-200 hover:-translate-y-[1px]",
+                      gold
+                        ? "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                        : "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+                      active ? tailActive : tailInactive,
+                    ].join(" ")}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
 
               <div className="flex items-center gap-3 shrink-0 pl-1 border-l border-crestline-gold/15">
                 <NightModeSwitch id="crestline-night-mode" />
@@ -150,10 +165,33 @@ export function CrestlineNavbar() {
 
               <ContactPropertiesRippleButton
                 to="/crestline/contact"
-                className="shrink-0 rounded-xl px-6 py-2 text-sm font-semibold min-h-9 focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                className="shrink-0 rounded-xl px-6 py-2 text-sm font-semibold min-h-9 focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
               >
                 Schedule Viewing
               </ContactPropertiesRippleButton>
+            </div>
+
+            <div className="shrink-0 flex items-center border-l border-crestline-gold/15 pl-4 lg:pl-5">
+              {!authReady ? (
+                <Button
+                  variant="outline"
+                  disabled
+                  className="border-slate-300 text-slate-500 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
+                >
+                  Account
+                </Button>
+              ) : user ? (
+                <LogoutExpandButton />
+              ) : (
+                <Link to="/login">
+                  <Button
+                    variant="outline"
+                    className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
+                  >
+                    Login
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
 
@@ -165,32 +203,6 @@ export function CrestlineNavbar() {
           >
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
-        </div>
-      </div>
-
-      {/* Viewport-right: logout / login only (~1cm from edge) */}
-      <div className="pointer-events-none absolute right-[1cm] top-1/2 z-10 hidden -translate-y-1/2 md:flex md:items-center">
-        <div className="pointer-events-auto flex items-center">
-          {!authReady ? (
-            <Button
-              variant="outline"
-              disabled
-              className="border-slate-300 text-slate-500 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
-            >
-              Account
-            </Button>
-          ) : user ? (
-            <LogoutExpandButton />
-          ) : (
-            <Link to="/login">
-              <Button
-                variant="outline"
-                className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-sm px-4 h-9 transition-colors duration-200"
-              >
-                Login
-              </Button>
-            </Link>
-          )}
         </div>
       </div>
 
@@ -265,32 +277,38 @@ export function CrestlineNavbar() {
                   </Link>
                 ))}
 
-                {tailLinks.map((link) => (
-                  <div key={link.to}>
-                    <Link
-                      to={link.to}
-                      onClick={() => setOpen(false)}
-                      className={[
-                        "block text-[16px] font-medium tracking-wide leading-6 px-2 py-2.5 rounded-xl",
-                        "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
-                        location.pathname === link.to
-                          ? "text-crestline-gold"
-                          : "text-slate-600 hover:text-slate-900",
-                      ].join(" ")}
-                    >
-                      {link.label}
-                    </Link>
-                    {link.to === "/crestline/contact" && (
-                      <ContactPropertiesRippleButton
-                        to="/crestline/contact"
+                {tailLinks.map((link) => {
+                  const active = location.pathname === link.to;
+                  const gold = link.linkAccent === "gold";
+                  const activeText = gold ? "text-crestline-gold" : "text-blue-700 dark:text-blue-400";
+                  const inactiveText = "text-slate-600 hover:text-slate-900";
+                  return (
+                    <div key={link.to}>
+                      <Link
+                        to={link.to}
                         onClick={() => setOpen(false)}
-                        className="mt-2 block w-full rounded-xl py-3 text-center text-sm font-semibold min-h-11 focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                        className={[
+                          "block text-[16px] font-medium tracking-wide leading-6 px-2 py-2.5 rounded-xl",
+                          gold
+                            ? "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crestline-gold/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                            : "transition-colors transition-transform duration-200 hover:-translate-y-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+                          active ? activeText : inactiveText,
+                        ].join(" ")}
                       >
-                        Schedule Viewing
-                      </ContactPropertiesRippleButton>
-                    )}
-                  </div>
-                ))}
+                        {link.label}
+                      </Link>
+                      {link.to === "/crestline/contact" && (
+                        <ContactPropertiesRippleButton
+                          to="/crestline/contact"
+                          onClick={() => setOpen(false)}
+                          className="mt-2 block w-full rounded-xl py-3 text-center text-sm font-semibold min-h-11 focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg"
+                        >
+                          Schedule Viewing
+                        </ContactPropertiesRippleButton>
+                      )}
+                    </div>
+                  );
+                })}
 
                 {!authReady ? (
                   <Button
