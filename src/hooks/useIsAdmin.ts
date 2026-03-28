@@ -1,6 +1,24 @@
 import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+
+const ADMIN_RESOLVE_MS = 2000;
+
+function adminEmailsFromEnv(): string[] {
+  const adminEmailsRaw =
+    (import.meta as any).env?.VITE_ADMIN_EMAILS ?? (import.meta as any).env?.VITE_ADMIN_EMAIL ?? "";
+  return String(adminEmailsRaw)
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+function isAdminByEnvEmail(user: User): boolean {
+  const emails = adminEmailsFromEnv();
+  if (emails.length === 0 || !user.email) return false;
+  return emails.includes(user.email.toLowerCase());
+}
 
 export function useIsAdmin() {
   const { user, loading: authLoading } = useAuth();
@@ -8,65 +26,78 @@ export function useIsAdmin() {
   const [checking, setChecking] = useState(false);
 
   useEffect(() => {
-    const check = async () => {
-      if (!user) {
-        setIsAdmin(null);
-        setChecking(false);
-        return;
-      }
-      setChecking(true);
+    if (!user) {
       setIsAdmin(null);
+      setChecking(false);
+      return;
+    }
 
-      // Prefer: DB-level truth via `public.is_admin()`.
-      // This keeps authorization consistent even if someone bypasses the frontend.
+    let cancelled = false;
+    let settled = false;
+    setChecking(true);
+    setIsAdmin(null);
+
+    const resolveFull = async (): Promise<boolean> => {
       try {
         const { data, error } = await supabase.rpc("is_admin");
-        if (!error && typeof data === "boolean") {
-          setIsAdmin(data);
-          setChecking(false);
-          return;
-        }
+        if (!error && typeof data === "boolean") return data;
       } catch {
-        // Fall back to client-side checks (keeps existing dev flow if the SQL migration
-        // hasn't been applied to the DB yet).
+        /* fall through */
       }
 
-      // Fallback: determine admin by configured email(s).
-      // Set in `.env.local` as: VITE_ADMIN_EMAILS="a@b.com,c@d.com"
-      const adminEmailsRaw =
-        (import.meta as any).env?.VITE_ADMIN_EMAILS ?? (import.meta as any).env?.VITE_ADMIN_EMAIL ?? "";
-      const adminEmails = String(adminEmailsRaw)
-        .split(",")
-        .map((e) => e.trim().toLowerCase())
-        .filter(Boolean);
-
-      if (adminEmails.length > 0 && user.email) {
-        setIsAdmin(adminEmails.includes(user.email.toLowerCase()));
-        setChecking(false);
-        return;
+      if (adminEmailsFromEnv().length > 0 && user.email) {
+        return isAdminByEnvEmail(user);
       }
 
-      // Fallback 2: determine admin by `public.user_roles` (role-based setup).
-      const { data, error } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", user.id)
-        .eq("role", "admin")
-        .maybeSingle();
+      try {
+        const { data, error } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id)
+          .eq("role", "admin")
+          .maybeSingle();
 
-      if (error) {
-        setIsAdmin(false);
-        setChecking(false);
-        return;
+        if (error) return false;
+        return Boolean(data);
+      } catch {
+        return false;
       }
-
-      setIsAdmin(Boolean(data));
-      setChecking(false);
     };
 
-    check();
+    const fallbackTimer = window.setTimeout(() => {
+      if (cancelled || settled) return;
+      settled = true;
+      setIsAdmin(isAdminByEnvEmail(user));
+      setChecking(false);
+    }, ADMIN_RESOLVE_MS);
+
+    void resolveFull()
+      .then((value) => {
+        if (cancelled) return;
+        window.clearTimeout(fallbackTimer);
+        if (settled) {
+          /* Prefer DB/RPC truth if it arrives after the 2s email fallback */
+          setIsAdmin(value);
+          return;
+        }
+        settled = true;
+        setIsAdmin(value);
+        setChecking(false);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        window.clearTimeout(fallbackTimer);
+        if (settled) return;
+        settled = true;
+        setIsAdmin(isAdminByEnvEmail(user));
+        setChecking(false);
+      });
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(fallbackTimer);
+    };
   }, [user]);
 
   return { user, loading: authLoading, isAdmin, checking };
 }
-

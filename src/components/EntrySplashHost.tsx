@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useReducedMotion } from "framer-motion";
 
 const SESSION_KEY = "re_session_entry_flash_v1";
-const DURATION_MS = 2200;
+const DURATION_MS = 2000;
 const DURATION_REDUCED_MS = 1000;
 
 /**

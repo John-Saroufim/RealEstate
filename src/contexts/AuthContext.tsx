@@ -20,6 +20,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    /** Never block the app on auth init longer than 2s (protected routes + splash). */
+    const forceReady = window.setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+
     /**
      * Apply auth session without awaiting `getUser()` first — that await inside
      * `onAuthStateChange` can deadlock the Supabase JS client, leaving `loading`
@@ -55,7 +60,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       applySession(session);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      clearTimeout(forceReady);
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signUp = async (email: string, password: string, fullName: string) => {
