@@ -36,6 +36,9 @@ const navLinkMotion = "transition-colors transition-transform duration-200 hover
 /** Desktop: equal spacing between all primary nav items (flex gap) */
 const DESKTOP_NAV_LINK_GAP = "gap-6 md:gap-8 lg:gap-10";
 
+/** Desktop: same distance logo→Home as Contact→night mode (single flex gap token) */
+const HEADER_SECTION_GAP = "md:gap-5 lg:gap-6";
+
 export function CrestlineNavbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
@@ -172,7 +175,13 @@ export function CrestlineNavbar() {
       ].join(" ")}
     >
       <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4">
-        <div className="flex items-center justify-between gap-2 sm:gap-3 min-w-0 h-20 w-full">
+        <div
+          className={[
+            "flex items-center min-w-0 h-20 w-full",
+            "gap-2 sm:gap-3",
+            HEADER_SECTION_GAP,
+          ].join(" ")}
+        >
           <Link
             to="/crestline"
             className="crestline-brand-logo shrink-0 text-slate-900 dark:text-slate-100"
@@ -184,13 +193,15 @@ export function CrestlineNavbar() {
           </Link>
 
           {/*
-            Desktop: logo left; nav links right with uniform gap; night mode + account.
+            Desktop: logo → Home and Contact → night mode use HEADER_SECTION_GAP; nav links use DESKTOP_NAV_LINK_GAP.
           */}
-          <div className="hidden md:flex flex-1 min-w-0 justify-end items-center gap-4 lg:gap-5">
-            <div className="min-w-0 max-w-full flex-1 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div
+            className={["hidden md:flex flex-1 min-w-0 items-center", HEADER_SECTION_GAP].join(" ")}
+          >
+            <div className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               <div
                 className={[
-                  "flex w-max min-w-0 items-center justify-end",
+                  "flex w-max min-w-0 items-center",
                   DESKTOP_NAV_LINK_GAP,
                 ].join(" ")}
               >
@@ -198,38 +209,36 @@ export function CrestlineNavbar() {
               </div>
             </div>
 
-            <div className="flex shrink-0 items-center gap-2">
-              <div className="flex shrink-0 items-center border-l border-crestline-gold/15 pl-2">
-                <NightModeSwitch id="crestline-night-mode" />
-              </div>
+            <div className="flex shrink-0 items-center">
+              <NightModeSwitch id="crestline-night-mode" />
+            </div>
 
-              <div className="flex items-center border-l border-crestline-gold/15 pl-3 lg:pl-4">
-                {!authReady ? (
+            <div className="flex shrink-0 items-center border-l border-crestline-gold/15 pl-3 lg:pl-4">
+              {!authReady ? (
+                <Button
+                  variant="outline"
+                  disabled
+                  className="border-slate-300 text-slate-500 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
+                >
+                  Account
+                </Button>
+              ) : user ? (
+                <LogoutExpandButton />
+              ) : (
+                <Link to="/login">
                   <Button
                     variant="outline"
-                    disabled
-                    className="border-slate-300 text-slate-500 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
+                    className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
                   >
-                    Account
+                    Login
                   </Button>
-                ) : user ? (
-                  <LogoutExpandButton />
-                ) : (
-                  <Link to="/login">
-                    <Button
-                      variant="outline"
-                      className="border-slate-300 text-slate-900 hover:bg-slate-50 rounded-xl font-semibold text-[15px] px-4 h-10 min-h-10 transition-colors duration-200"
-                    >
-                      Login
-                    </Button>
-                  </Link>
-                )}
-              </div>
+                </Link>
+              )}
             </div>
           </div>
 
           <button
-            className="md:hidden text-slate-900"
+            className="md:hidden ml-auto shrink-0 text-slate-900"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
