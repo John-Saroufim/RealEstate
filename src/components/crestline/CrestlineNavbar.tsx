@@ -8,7 +8,6 @@ import { useIsAdmin } from "@/hooks/useIsAdmin";
 import { MontelibanoHouseLogo } from "@/components/crestline/MontelibanoHouseLogo";
 import { LogoutExpandButton } from "@/components/crestline/LogoutExpandButton";
 import { NightModeSwitch } from "@/components/crestline/NightModeSwitch";
-import { ContactPropertiesRippleButton } from "@/components/crestline/ContactPropertiesRippleButton";
 
 const coreLinks = [
   { label: "Home", to: "/crestline" },
@@ -26,13 +25,16 @@ const tailLinks = [
   { label: "Contact", to: "/crestline/contact", linkAccent: "blue" as const },
 ];
 
-/** Default nav labels (logged-in non-admin). Schedule Viewing uses .contact-ripple-btn--nav in index.css */
+/** Default nav labels (logged-in non-admin) */
 const NAV_TEXT_DEFAULT = "text-[15px] font-medium tracking-wide leading-6";
 /** Guests: noticeably larger primary nav */
 const NAV_TEXT_GUEST = "text-lg md:text-xl font-medium tracking-wide leading-7";
 /** Admins: modest bump for Home / Properties / About / Contact (+ admin links) */
 const NAV_TEXT_ADMIN = "text-[16px] md:text-[17px] font-medium tracking-wide leading-6";
 const navLinkMotion = "transition-colors transition-transform duration-200 hover:-translate-y-[1px]";
+
+/** Desktop: equal spacing between all primary nav items (flex gap) */
+const DESKTOP_NAV_LINK_GAP = "gap-6 md:gap-8 lg:gap-10";
 
 export function CrestlineNavbar() {
   const [open, setOpen] = useState(false);
@@ -54,9 +56,6 @@ export function CrestlineNavbar() {
     () => `block ${navLinkSizeClass} px-2 py-2.5 rounded-xl ${navLinkMotion}`,
     [navLinkSizeClass],
   );
-
-  const isGuest = authReady && !user;
-  const desktopNavLinkGap = isGuest ? "gap-5 md:gap-7 lg:gap-8" : "gap-3 md:gap-4 lg:gap-5";
 
   const [scrolled, setScrolled] = useState(false);
 
@@ -98,11 +97,6 @@ export function CrestlineNavbar() {
   const inactiveAfterClassBlue = useMemo(() => {
     return "text-slate-600 hover:text-blue-800 dark:text-slate-400 dark:hover:text-blue-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-blue-600 after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300";
   }, []);
-
-  const scheduleNavBtnClass =
-    "contact-ripple-btn--nav shrink-0 focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg";
-  const scheduleNavBtnGuestClass =
-    "contact-ripple-btn--nav contact-ripple-btn--nav-guest shrink-0 rounded-l-none rounded-r-full border-l border-crestline-gold/30 pl-3 -ml-px focus-visible:ring-2 focus-visible:ring-crestline-gold/45 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-crestline-bg dark:border-crestline-gold/25";
 
   const desktopLinkList = (
     <>
@@ -190,45 +184,21 @@ export function CrestlineNavbar() {
           </Link>
 
           {/*
-            Desktop: logo left; nav + actions on the right. Guests: wider link gaps, Schedule flush after Contact.
+            Desktop: logo left; nav links right with uniform gap; night mode + account.
           */}
-          <div className="hidden md:flex flex-1 min-w-0 justify-end items-center gap-3 lg:gap-4">
-            {isGuest ? (
-              <div className="flex min-w-0 flex-1 items-center justify-end gap-0">
-                <div className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-                  <div
-                    className={[
-                      "flex w-max min-w-0 items-center justify-end",
-                      desktopNavLinkGap,
-                    ].join(" ")}
-                  >
-                    {desktopLinkList}
-                  </div>
-                </div>
-                <ContactPropertiesRippleButton to="/crestline/contact" className={scheduleNavBtnGuestClass}>
-                  Schedule Viewing
-                </ContactPropertiesRippleButton>
+          <div className="hidden md:flex flex-1 min-w-0 justify-end items-center gap-4 lg:gap-5">
+            <div className="min-w-0 max-w-full flex-1 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <div
+                className={[
+                  "flex w-max min-w-0 items-center justify-end",
+                  DESKTOP_NAV_LINK_GAP,
+                ].join(" ")}
+              >
+                {desktopLinkList}
               </div>
-            ) : (
-              <div className="min-w-0 max-w-full flex-1 overflow-x-auto overscroll-x-contain py-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-                <div
-                  className={[
-                    "flex w-max min-w-0 items-center justify-end",
-                    desktopNavLinkGap,
-                  ].join(" ")}
-                >
-                  {desktopLinkList}
-                </div>
-              </div>
-            )}
+            </div>
 
             <div className="flex shrink-0 items-center gap-2">
-              {!isGuest && (
-                <ContactPropertiesRippleButton to="/crestline/contact" className={scheduleNavBtnClass}>
-                  Schedule Viewing
-                </ContactPropertiesRippleButton>
-              )}
-
               <div className="flex shrink-0 items-center border-l border-crestline-gold/15 pl-2">
                 <NightModeSwitch id="crestline-night-mode" />
               </div>
